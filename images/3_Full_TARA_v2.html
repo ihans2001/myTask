@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>제어기 사이버보안 위협분석(TARA) 자동화</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --wine:#7A3540;
+    --wine-soft:#EEDBDD;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:25px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:680px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#E3B3B9; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:660px;
+    line-height:1.6;
+  }
+  .chip-row{
+    display:flex; gap:10px;
+    margin-top:16px;
+  }
+  .chip-pill{
+    font-size:11px;
+    font-weight:600;
+    padding:5px 12px;
+    border-radius:3px;
+    background:rgba(238,219,221,0.14);
+    color:#E7C6C9;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:19px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--wine);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--wine);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--wine);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ METHOD GRID ============ */
+  .method-grid{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px; }
+  .method-card{
+    flex:1 1 30%; min-width:230px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--steel);
+    padding:10px 12px;
+  }
+  .method-card .name{ font-family:'JetBrains Mono', monospace; font-size:11.6px; font-weight:700; color:var(--steel); margin-bottom:4px; }
+  .method-card .d{ font-size:10.4px; color:var(--ink-soft); line-height:1.5; }
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:10px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ PROPERTY MAP ============ */
+  .prop-table{
+    display:flex; flex-direction:column;
+    border:1px solid var(--line);
+    background:var(--paper-card);
+  }
+  .prop-row{
+    display:flex;
+    border-bottom:1px solid var(--line);
+  }
+  .prop-row:last-child{ border-bottom:none; }
+  .prop-row .c{
+    flex:1 1 0; padding:7px 12px; font-size:10.8px;
+  }
+  .prop-row.hdr .c{
+    font-family:'JetBrains Mono', monospace;
+    font-size:9.5px; color:var(--ink-soft); background:#EDEFEA;
+    font-weight:600;
+  }
+  .prop-row .c.prop{ font-weight:700; border-right:1px solid var(--line); }
+  .prop-row .c.threat{ color:var(--wine); }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--wine);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--wine-soft);
+    border-left:4px solid var(--wine);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--wine); }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-003</span>
+      <span class="tag">2026-09-09</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>제어기 사이버보안 위협분석<br><span class="hl">(Full TARA) 자동화</span></h1>
+    <div class="sub">국제표준(ISO/SAE 21434) 방식의 위협분석 6단계를 하나의 워크북 안에서 처음부터 끝까지 수행한다. 자산 정의부터 위험 처리, 근거 문서화까지 — 별도 서버 없이도 완결된다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">6단계 표준 프로세스</span>
+      <span class="chip-pill">6종 등급 산정 모델</span>
+      <span class="chip-pill">8대 보안 속성</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">매번 새로 만드는 분석 문서</div>
+        <div class="d">표준 양식 없이 제어기마다 위협분석 문서를 처음부터 다시 작성한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">평가 모델마다 결과가 제각각</div>
+        <div class="d">고객·조직마다 요구하는 등급 산정 방식이 달라 같은 위협을 여러 번 재평가해야 한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">방대한 문서화 부담</div>
+        <div class="d">심사·인증에 필요한 근거 자료를 별도로 정리하느라 과다한 시간이 소요된다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">효과를 숫자로 보여주기 어려움</div>
+        <div class="d">보안 조치를 적용하기 전과 후의 위험이 얼마나 줄었는지 정량적으로 설명하기 힘들다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">통합 TARA 워크북</div>
+            <div class="s">아이템 정의부터 목표·근거 문서까지 전 과정을 하나의 파일에 기록</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">6단계 표준 입력 양식</div>
+            <div class="s">국제표준 절차를 그대로 따라가며 채워 넣는 템플릿</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">위험처리 전/후 비교표</div>
+            <div class="s">보안 조치 적용 전·후의 위험 등급 변화를 자동으로 정리</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">검증 체크리스트</div>
+            <div class="s">단계별 작성 완료 여부를 스스로 점검·승인하는 표</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">자동화되는 5가지 작업</div>
+        <div class="chip-tech">
+          <span>위협 시나리오 문장 자동 생성</span>
+          <span>공격 트리 구조 자동 작성</span>
+          <span>공격 가능성 등급 자동 계산</span>
+          <span>위험처리 정량화 + 목표·클레임 자동 분류</span>
+          <span>개념설계·고객요구조건 연계(TARA 확장)</span>
+        </div>
+        <div class="h" style="margin-top:14px;">이용 방식</div>
+        <div class="chip-tech">
+          <span>단독 실행 가능(별도 서버 불필요)</span>
+          <span>AI 보조는 선택 기능</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>6단계 분석 흐름</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">아이템 정의</div><div class="d">분석 대상 제어기의 기능·구성요소·통신 인터페이스를 정리한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">자산 · 손상 시나리오</div><div class="d">지켜야 할 자산을 정하고, 침해됐을 때 발생할 피해의 등급을 평가한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">위협 시나리오</div><div class="d">8가지 공격 유형(스푸핑·변조·재전송 등) 기준으로 위협을 서술한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">공격 가능성 등급</div><div class="d">공격 트리를 구성해 실제 공격이 얼마나 쉬운지 등급을 매긴다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">위험 처리</div><div class="d">등급에 따라 조치 여부를 결정하고, 적용 전·후 위험을 비교한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">6</div>
+        <div><div class="t">목표 · 근거 문서화</div><div class="d">결정된 조치를 보안 목표와 근거(클레임) 문서로 정리한다</div></div>
+      </div>
+    </div>
+    <div class="corr-note" style="margin-top:12px;"><b>TARA 확장 — 고객요구조건 연계</b> — 6단계로 끝나지 않고, 결과를 개념설계·고객요구조건까지 연결해 정합성을 자동으로 점검한다. 기존 TARA 절차를 그대로 확장하는 선택 기능이다.</div>
+  </section>
+
+  <!-- METHODS -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>공격 가능성 등급 — 6종 산정 모델</div>
+    <div class="method-grid">
+      <div class="method-card"><div class="name">HMC4</div><div class="d">2단계 구조의 자체 정의 모델</div></div>
+      <div class="method-card"><div class="name">HEAVENS4</div><div class="d">HMC4와 동일한 2단계 구조를 적용하는 모델</div></div>
+      <div class="method-card"><div class="name">ISO18045_FULL4</div><div class="d">소요시간·전문성·지식·기회·장비 5요소를 모두 반영하는 완전판</div></div>
+      <div class="method-card"><div class="name">ISO18045_DIM4</div><div class="d">소요시간 항목을 제외한 4요소 축소판</div></div>
+      <div class="method-card"><div class="name">FTS_SUM4</div><div class="d">2단계 요소를 합산하는 방식</div></div>
+      <div class="method-card"><div class="name">FTS_MULTI4</div><div class="d">2단계 요소를 곱산하는 방식</div></div>
+    </div>
+    <div class="corr-note"><b>Correlation 자동 변환</b> — 6개 모델 중 하나만 완성해도, 나머지 5개 모델의 등급을 같은 데이터에서 자동으로 함께 산출한다. 고객·조직마다 요구 모델이 달라도 다시 평가할 필요가 없다.</div>
+  </section>
+
+  <!-- PROPERTY MAP -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>8대 보안 속성 ↔ 위협 유형</div>
+    <div class="prop-table">
+      <div class="prop-row hdr"><div class="c prop">지켜야 할 속성</div><div class="c threat">위협받는 방식</div></div>
+      <div class="prop-row"><div class="c prop">진위성 Authenticity</div><div class="c threat">스푸핑(신원 위장)</div></div>
+      <div class="prop-row"><div class="c prop">인가 Authorization</div><div class="c threat">권한 오·남용</div></div>
+      <div class="prop-row"><div class="c prop">기밀성 Confidentiality</div><div class="c threat">정보 노출</div></div>
+      <div class="prop-row"><div class="c prop">무결성 Integrity</div><div class="c threat">변조</div></div>
+      <div class="prop-row"><div class="c prop">신선성 Freshness</div><div class="c threat">재전송</div></div>
+      <div class="prop-row"><div class="c prop">가용성 Availability</div><div class="c threat">서비스 거부</div></div>
+      <div class="prop-row"><div class="c prop">부인방지 Non-repudiation</div><div class="c threat">행위 부인</div></div>
+      <div class="prop-row"><div class="c prop">개인정보보호 Privacy</div><div class="c threat">스토킹(위치·행태 추적)</div></div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">국제표준 방식 그대로 적용</div>
+        <div class="d">별도 해석 없이 표준 절차를 따라가는 것만으로 분석이 완성된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">평가 모델 재작업 제거</div>
+        <div class="d">하나만 작성해도 6개 모델의 결과를 동시에 확보한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">조치 효과를 숫자로 증명</div>
+        <div class="d">보안 조치 전·후 위험 등급 변화가 비교표로 자동 정리된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">심사 대응 자료 즉시 확보</div>
+        <div class="d">워크북 자체가 검증 체크리스트를 포함한 근거 문서가 된다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      이 워크북은 <b>단독으로 완결 동작</b>한다 — 등급 산정과 상호 변환 등 핵심 기능은 외부 서버나 AI 없이도 100% 동작한다. AI(LLM)는 시나리오 문장을 다듬는 등 선택적인 보조 기능일 뿐이며, 보안이 우려되는 환경에서는 AI 보조 기능을 끄고 <b>완전히 폐쇄된 환경</b>에서 사용할 수 있다.
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-003</div>
+      <div><span>작성일</span>2026-09-09</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

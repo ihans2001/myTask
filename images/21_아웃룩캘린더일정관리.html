@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>프로젝트 일정 아웃룩 캘린더 연동</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --rose:#8C4A5C;
+    --rose-soft:#EDDBE0;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#DBB7C1; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(237,219,224,0.16);
+    color:#E0BFC8;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--rose);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--rose);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--rose);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ ASSET TYPE TABLE ============ */
+  .type-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .type-row{ display:flex; border-bottom:1px solid var(--line); }
+  .type-row:last-child{ border-bottom:none; }
+  .type-row .c{ padding:8px 12px; font-size:10.5px; line-height:1.5; }
+  .type-row .c.type{ flex:0 0 150px; font-weight:700; border-right:1px solid var(--line); }
+  .type-row .c.match{ flex:1 1 0; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .type-row .c.tara{ flex:1 1 0; color:var(--ink); }
+  .type-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .type-row.hdr .c.type, .type-row.hdr .c.match{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ CASE A/B ============ */
+  .ba-row{ display:flex; align-items:stretch; gap:0; }
+  .ba-card{ flex:1 1 0; min-width:0; padding:13px 15px; position:relative; }
+  .ba-card.before{ background:#EDEFEA; color:var(--ink); }
+  .ba-card.after{ background:var(--rose); color:#fff; }
+  .ba-card + .ba-card{ margin-left:16px; }
+  .ba-card + .ba-card::before{
+    content:"→"; position:absolute; left:-16px; top:50%; transform:translate(-50%,-50%);
+    color:var(--ink-soft); font-size:16px; background:var(--paper); width:20px; text-align:center;
+  }
+  .ba-card .tag{ font-family:'JetBrains Mono', monospace; font-size:9.5px; opacity:0.75; margin-bottom:5px; }
+  .ba-card .t{ font-size:12.5px; font-weight:700; margin-bottom:6px; }
+  .ba-card .d{ font-size:10.8px; line-height:1.55; }
+  .ba-card.after .d{ color:#F3E3E8; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--rose);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--rose-soft);
+    border-left:4px solid var(--rose);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--rose); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-021</span>
+      <span class="tag">2026-09-10</span>
+      <span class="tag">가이드</span>
+    </div>
+    <h1>프로젝트 일정 <span class="hl">아웃룩 캘린더 연동</span></h1>
+    <div class="sub">프로세스 테일러링(문서번호 001)으로 수립된 일정을 아웃룩 캘린더에 자동 등록한다. 일정이 갱신되면 기존 등록분을 자동 삭제하고, 오늘+근무일 3일 기준 주요 태스크를 자동·수동으로 모니터링한다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">VBA-Outlook COM 연동</span>
+      <span class="chip-pill">동기화 제어(삭제/유지/제외)</span>
+      <span class="chip-pill">근무일 3일 자동 모니터링</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">수립된 일정이 캘린더에 없음</div>
+        <div class="d">프로세스 테일러링으로 만든 일정표가 엑셀에만 있으면 놓치기 쉽다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">일정이 자주 갱신됨</div>
+        <div class="d">계획이 바뀔 때마다 기존 캘린더 일정을 수동으로 지우고 다시 넣기는 번거롭다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">표준 프로세스가 70개+ 태스크</div>
+        <div class="d">단위 업무가 많아 오늘 무엇을 해야 하는지 한눈에 파악하기 어렵다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">프로젝트별 현황을 매번 찾아봐야 함</div>
+        <div class="d">여러 프로젝트를 동시에 다루면 오늘 할 일을 놓치기 쉽다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">일정 자동 등록</div>
+            <div class="s">스케줄 시트의 계획 시작/종료일을 아웃룩 캘린더에 자동으로 등록한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">갱신 시 자동 삭제·재생성</div>
+            <div class="s">"동기화(기존삭제)" 설정 시 이전 등록 일정을 지우고 최신 일정으로 재등록한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">알림 자동 설정</div>
+            <div class="s">시작 1주 전·전날, 종료 3일 후 지연확인까지 알림 일정을 자동 생성한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">근무일 3일 모니터링</div>
+            <div class="s">오늘부터 영업일 기준 3일치 태스크를 자동 분류해 표출한다</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 원리</div>
+        <div class="chip-tech">
+          <span>각 일정 본문에 [ROW:n] 태그를 심어 같은 행의 일정만 정확히 찾아 삭제</span>
+        </div>
+        <div class="h" style="margin-top:14px;">동기화 제어</div>
+        <div class="chip-tech">
+          <span>N열에서 행별로 "동기화(기존삭제) / 동기화(기존유지) / 제외" 선택</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">프로세스 테일러링</div><div class="d">문서번호 001에서 표준 프로세스 70개+ 단위 태스크로 일정표를 자동 생성한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">동기화 설정 선택</div><div class="d">스케줄 시트 N열에서 행별로 기존삭제/기존유지/제외를 선택한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">아웃룩 일정 등록</div><div class="d">SyncScheduleToOutlook이 계획 시작/종료일과 알림 일정을 캘린더에 생성한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">자동·수동 모니터링</div><div class="d">아웃룩 시작 시 자동으로, 또는 필요할 때 버튼 클릭으로 오늘+3일 현황을 확인한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">키워드 일괄 정리</div><div class="d">프로젝트가 끝나면 프로젝트명 키워드로 관련 일정을 한 번에 삭제한다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULE COMPARISON -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>모듈별 역할</div>
+    <div class="type-table">
+      <div class="type-row hdr">
+        <div class="c type">구분</div>
+        <div class="c match">Schedule_To_Outlook / mCalendarDelete</div>
+        <div class="c tara">mTodayCheck_PJT</div>
+      </div>
+      <div class="type-row"><div class="c type">실행 위치</div><div class="c match">Excel VBA (전자) / Outlook VBA (후자)</div><div class="c tara">Outlook 자체 VBA 프로젝트</div></div>
+      <div class="type-row"><div class="c type">역할</div><div class="c match">일정 등록·자동삭제·재생성 / 키워드로 일정 일괄 삭제</div><div class="c tara">근무일 3일 현황 자동·수동 모니터링</div></div>
+      <div class="type-row"><div class="c type">트리거</div><div class="c match">매크로 버튼 실행</div><div class="c tara">Outlook 시작 시 자동 또는 버튼 클릭</div></div>
+    </div>
+    <div class="corr-note">mTodayCheck_PJT는 Excel이 아니라 <b>Outlook 자체 VBA 프로젝트</b>에 설치해야 하며, ThisOutlookSession에 Application_Startup을 등록하면 아웃룩을 열 때마다 자동으로 표출된다.</div>
+  </section>
+
+  <!-- BEFORE/AFTER -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>Before / After</div>
+    <div class="ba-row">
+      <div class="ba-card before">
+        <div class="tag">이전 — 엑셀 일정표만 확인</div>
+        <div class="t">캘린더 알림 없이 오늘 할 일을 놓침</div>
+        <div class="d">수립된 일정이 엑셀에만 있어, 캘린더 알림 없이는 오늘 할 일을 놓치기 쉽다.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="tag">현재 — 캘린더 자동 등록·모니터링</div>
+        <div class="t">아웃룩을 열 때마다 오늘+3일 자동 표출</div>
+        <div class="d">일정이 캘린더에 자동 등록되고, 오늘+3일 주요 태스크가 아웃룩을 열 때마다 자동으로 보인다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">일정 누락 방지</div>
+        <div class="d">계획된 일정이 캘린더 알림으로 자동 챙겨진다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">갱신 부담 최소화</div>
+        <div class="d">일정이 바뀌어도 기존 등록분을 자동으로 지우고 다시 채운다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">오늘 할 일 즉시 확인</div>
+        <div class="d">근무일 3일 기준으로 무엇을 해야 하는지 바로 알 수 있다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">다중 프로젝트 대응</div>
+        <div class="d">프로젝트별 일정을 키워드로 구분해 관리·정리할 수 있다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>재동기화 시 <b>"동기화(기존삭제)"를 선택한 행만</b> 이전 일정이 지워지고 재생성된다 — "기존유지"는 중복 등록될 수 있어 주의한다</li>
+        <li>mTodayCheck_PJT는 <b>Outlook 자체 VBA 프로젝트에 설치</b>해야 동작하며, 매크로 보안 설정에서 실행이 허용되어 있어야 한다</li>
+        <li>근무일 3일 기준 산정은 <b>월~금만 영업일로 계산</b>하므로, 공휴일은 별도로 고려되지 않는다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-021</div>
+      <div><span>작성일</span>2026-09-10</div>
+    </div>
+    <div>본 내용은 사내 운영 가이드이며, 실제 환경 변수·경로는 배포 시 별도 관리한다.</div>
+  </div>
+
+</div>
+</body>
+</html>

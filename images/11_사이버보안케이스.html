@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>사이버보안 케이스(CS Case) 템플릿</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --slate:#4A6572;
+    --slate-soft:#DCE6E8;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --green:#2E7D5B; --green-soft:#DCEAE2;
+    --amber:#B08A1E; --amber-soft:#F2E8CC;
+    --red:#A5372B; --red-soft:#F1DAD5;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#AFC7CE; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(220,230,232,0.14);
+    color:#C4D8DC;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:18px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--slate);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--slate);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--slate);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ MATRIX GROUPS ============ */
+  .cat-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .cat-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--slate);
+    padding:10px 12px;
+  }
+  .cat-card .h{ font-size:11.6px; font-weight:700; margin-bottom:5px; }
+  .cat-card .h .clause{ font-family:'JetBrains Mono', monospace; font-weight:400; color:var(--ink-soft); font-size:10px; }
+  .cat-card .d{ font-size:10.2px; color:var(--ink-soft); line-height:1.55; }
+
+  /* ============ STATUS SCALE ============ */
+  .status-scale{ display:flex; gap:10px; }
+  .status-seg{ flex:1 1 0; padding:11px 12px; }
+  .status-seg.done{ background:var(--green-soft); border-left:4px solid var(--green); }
+  .status-seg.wip{ background:var(--amber-soft); border-left:4px solid var(--amber); }
+  .status-seg.none{ background:var(--red-soft); border-left:4px solid var(--red); }
+  .status-seg .num{ font-family:'JetBrains Mono', monospace; font-size:20px; font-weight:700; margin-bottom:3px; }
+  .status-seg.done .num{ color:var(--green); }
+  .status-seg.wip .num{ color:var(--amber); }
+  .status-seg.none .num{ color:var(--red); }
+  .status-seg .t{ font-size:11.6px; font-weight:700; margin-bottom:4px; }
+  .status-seg .d{ font-size:10.2px; color:var(--ink-soft); line-height:1.5; }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ APPROACH COMPARE ============ */
+  .app-row{ display:flex; gap:10px; }
+  .app-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:11px 12px;
+  }
+  .app-card.selected{ border-top:4px solid var(--slate); }
+  .app-card .t{ font-size:12px; font-weight:700; margin-bottom:5px; }
+  .app-card .badge{ font-family:'JetBrains Mono', monospace; font-size:9px; color:var(--slate); background:var(--slate-soft); padding:1px 6px; border-radius:2px; margin-left:6px; }
+  .app-card .d{ font-size:10.2px; color:var(--ink-soft); line-height:1.5; }
+  .app-card .fit{ font-size:10px; color:var(--ink); margin-top:6px; padding-top:6px; border-top:1px solid var(--line); }
+  .app-card .fit b{ color:var(--slate); }
+
+  /* ============ ROADMAP ============ */
+  .rm-track{ display:flex; align-items:stretch; }
+  .rm-item{ flex:1 1 0; position:relative; padding:0 6px; }
+  .rm-item .line{ height:4px; background:var(--slate-soft); position:relative; margin-bottom:10px; }
+  .rm-item .line::before{
+    content:"";
+    position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:12px; height:12px; border-radius:50%;
+    background:var(--slate);
+  }
+  .rm-item:first-child .line{ margin-left:0; }
+  .rm-item .stage{ font-family:'JetBrains Mono', monospace; font-size:9.5px; color:var(--slate); margin-bottom:3px; }
+  .rm-item .period{ font-size:11.6px; font-weight:700; margin-bottom:5px; }
+  .rm-item .d{ font-size:10px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--slate);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--slate-soft);
+    border-left:4px solid var(--slate);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--slate); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-011</span>
+      <span class="tag">2026-09-09</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>사이버보안 케이스<span class="hl">(Cybersecurity Case) 템플릿</span></h1>
+    <div class="sub">개발이 끝나도 남는 잔존 위험이 "허용 가능한 수준"임을 클레임과 증거로 논증하는 문서다. 부품업체 관점에서 클레임-증거 매트릭스로 미리 채운 모범답안 템플릿을 만들어, 프로젝트마다 필요한 부분만 고쳐 쓰면 되도록 한다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">13개 항목 매트릭스</span>
+      <span class="chip-pill">ISO/SAE 21434 Clause 6~14</span>
+      <span class="chip-pill">부품업체(Tier) 관점</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">잔존 위험은 사라지지 않음</div>
+        <div class="d">개발이 끝나도 위험은 0이 될 수 없어, 남은 위험이 허용 가능함을 문서로 논증해야 한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">근거가 여러 문서에 흩어짐</div>
+        <div class="d">TARA·설계리뷰·시험결과·침투테스트 등 서로 다른 문서의 근거를 매번 다시 취합해야 한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">매번 새로 쓰기엔 부담이 큼</div>
+        <div class="d">사이버보안 케이스를 백지에서 작성하려면 방대한 시간이 든다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">표준 조항과의 연결이 안 보임</div>
+        <div class="d">어느 근거가 표준의 어느 조항에 대응하는지 한눈에 드러나지 않는다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">클레임-증거 매트릭스 템플릿</div>
+            <div class="s">13개 항목 × 20개 열로 구성된, 미리 채워진 모범답안 상태의 엑셀</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">보유자산 ↔ 항목 매핑표</div>
+            <div class="s">TARA·설계문서·Codebeamer 등 이미 가진 자산을 항목별로 연결</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">갭 분석표</div>
+            <div class="s">13개 항목 중 무엇을 보유했고 무엇이 부족한지 현재 상태를 표시</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">자동 연동(예정)</div>
+            <div class="s">TARA·Word 보고서에서 증거를 자동으로 채워 넣는 연동</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">사용 방식</div>
+        <div class="chip-tech">
+          <span>템플릿을 새로 쓰지 않고, 필요한 셀만 부분 수정</span>
+          <span>항목 추가·삭제, 문구 교체, 증거 경로 갱신만으로 완성</span>
+        </div>
+        <div class="h" style="margin-top:14px;">근거 조항</div>
+        <div class="chip-tech">
+          <span>ISO/SAE 21434 Clause 6~14 산출물을 종합</span>
+          <span>Clause 15(TARA 방법론)는 근거 절로 인용</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATRIX GROUPS -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>13개 항목 — 5개 구간</div>
+    <div class="cat-grid">
+      <div class="cat-card">
+        <div class="h">개념 단계 <span class="clause">Clause 9</span></div>
+        <div class="d">CS Goals+TARA 완전성 · CS 목표 달성 논증 · CS 컨셉 적절성 · CS 요구사항 매핑</div>
+      </div>
+      <div class="cat-card">
+        <div class="h">제품개발 <span class="clause">Clause 10</span></div>
+        <div class="d">설계 적합성 확인(신규) · 개발 구현 추적성</div>
+      </div>
+      <div class="cat-card">
+        <div class="h">분산 활동 <span class="clause">Clause 7</span></div>
+        <div class="d">CSIA — 고객·협력사 책임분계(신규)</div>
+      </div>
+      <div class="cat-card">
+        <div class="h">검증 <span class="clause">Clause 11</span></div>
+        <div class="d">SW 시험 결과 · 침투 테스트 · 잔여위험 수용(범위 확장)</div>
+      </div>
+      <div class="cat-card">
+        <div class="h">생산·운영·폐기 <span class="clause">Clause 12~14</span></div>
+        <div class="d">생산단계 관리(신규) · 운영·유지보수 · 지원종료 및 폐기(신규)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAP STATUS -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>현재 보유 현황</div>
+    <div class="status-scale">
+      <div class="status-seg done">
+        <div class="num">4개</div>
+        <div class="t">✅ 보유</div>
+        <div class="d">CS Goals+TARA완전성, CS목표달성논증, CS컨셉적절성, 운영·유지보수</div>
+      </div>
+      <div class="status-seg wip">
+        <div class="num">3개</div>
+        <div class="t">⚠️ 진행 중</div>
+        <div class="d">CS요구사항매핑, 개발구현추적성, SW시험결과</div>
+      </div>
+      <div class="status-seg none">
+        <div class="num">6개</div>
+        <div class="t">❌ 미확보</div>
+        <div class="d">설계적합성, CSIA, 침투테스트, 잔여위험수용, 생산단계관리, 지원종료및폐기</div>
+      </div>
+    </div>
+    <div class="corr-note">미확보 항목 중 5개(설계적합성·CSIA·생산단계관리·지원종료폐기 + 잔여위험 범위 확장)는 <b>이번에 새로 식별한 신규 항목</b>이다 — 기존 체계에 없던 것을 표준 조항 검토 과정에서 추가로 찾아낸 것이다.</div>
+  </section>
+
+  <!-- APPROACH -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>템플릿 선택 전략</div>
+    <div class="app-row">
+      <div class="app-card selected">
+        <div class="t">표 기반 매트릭스<span class="badge">현재 선택</span></div>
+        <div class="d">Excel로 즉시 구현 가능, 관련 조항과 직접 대응, 자동화 연동이 쉽다.</div>
+        <div class="fit"><b>적합</b> — 부품업체, 초도 케이스 작성</div>
+      </div>
+      <div class="app-card">
+        <div class="t">서술형 보고서</div>
+        <div class="d">고객 제출용으로 가독성이 높지만, 추적성이 낮고 유지보수 부담이 있다.</div>
+        <div class="fit"><b>적합</b> — 고객 납품용 요약(중기 자동생성 예정)</div>
+      </div>
+      <div class="app-card">
+        <div class="t">GSN(Goal Structuring)</div>
+        <div class="d">논증 완결성이 가장 높지만, 전용 도구가 필요하고 작성 공수가 크다.</div>
+        <div class="fit"><b>적합</b> — 완성차사 심사, 인증 대비(장기)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>구축 로드맵</div>
+    <div class="rm-track">
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">Phase 1 · 1~2개월</div>
+        <div class="period">표 기반 매트릭스 완성</div>
+        <div class="d">기존 자산을 재활용해 심사 대응 가능한 최소 매트릭스를 완성한다</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">Phase 2 · 3~5개월</div>
+        <div class="period">이중화 + 자동 검토</div>
+        <div class="d">서술형 보고서 자동생성, AI 품질검토, 외부 시스템 연동을 갖춘다</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">Phase 3 · 6개월+</div>
+        <div class="period">GSN 도구 도입</div>
+        <div class="d">완성차사 요구나 인증 대비 시, 매트릭스 클레임을 GSN 형식으로 전환한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">07</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">백지에서 시작하지 않음</div>
+        <div class="d">모범답안이 채워진 템플릿에서 필요한 부분만 수정한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">근거와 조항이 1:1로 연결</div>
+        <div class="d">각 항목이 어느 조항에 대응하는지 바로 확인된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">보유·부족 현황을 한눈에</div>
+        <div class="d">갭 분석표로 우선순위를 바로 파악한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">점진적으로 고도화</div>
+        <div class="d">표 매트릭스에서 시작해 자동화·GSN까지 단계적으로 확장한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">08</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>매트릭스의 클레임·근거 문구는 <b>예시(모범답안)</b>이므로, 실제 프로젝트 현황에 맞게 수정이 필요하다</li>
+        <li>조항 번호 매핑은 표준 목차 구조에 근거한 <b>최선 추정치</b>이며, 정본 원문 대조 후 확정해야 한다</li>
+        <li>표 형식은 클레임 간 <b>의존관계 표현이 약하다</b> — 필요 시 장기적으로 GSN 도구로 전환을 검토한다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-011</div>
+      <div><span>작성일</span>2026-09-09</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

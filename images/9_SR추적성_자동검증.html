@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>SR지향 추적성 자동검증</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --plum:#6B3F5C;
+    --plum-soft:#EADCE4;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#DCB9CE; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(234,220,228,0.14);
+    color:#DCB9CE;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:18px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--plum);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--plum);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--plum);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ V-MODEL FLOW ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 18%; min-width:150px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 11px;
+    display:flex; gap:8px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.2px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10px; color:var(--ink-soft); line-height:1.4; }
+
+  /* ============ BEFORE/AFTER ============ */
+  .ba-row{ display:flex; align-items:stretch; gap:0; }
+  .ba-card{
+    flex:1 1 0; min-width:0;
+    padding:13px 15px;
+    position:relative;
+  }
+  .ba-card.before{ background:#EDEFEA; color:var(--ink); }
+  .ba-card.after{ background:var(--plum); color:#fff; }
+  .ba-card + .ba-card{ margin-left:16px; }
+  .ba-card + .ba-card::before{
+    content:"→";
+    position:absolute; left:-16px; top:50%; transform:translate(-50%,-50%);
+    color:var(--ink-soft); font-size:16px; background:var(--paper); width:20px; text-align:center;
+  }
+  .ba-card .tag{ font-family:'JetBrains Mono', monospace; font-size:9.5px; opacity:0.75; margin-bottom:5px; }
+  .ba-card .t{ font-size:13px; font-weight:700; margin-bottom:6px; }
+  .ba-card .d{ font-size:11px; line-height:1.55; }
+  .ba-card.after .d{ color:#F2E4EC; }
+
+  /* ============ ERROR TYPES ============ */
+  .err-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .err-card{
+    flex:1 1 22%; min-width:200px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--plum);
+    padding:10px 12px;
+  }
+  .err-card .name{ font-family:'JetBrains Mono', monospace; font-size:11.4px; font-weight:700; color:var(--plum); margin-bottom:4px; }
+  .err-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.5; }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ ROADMAP ============ */
+  .rm-track{ display:flex; align-items:stretch; }
+  .rm-item{ flex:1 1 0; position:relative; padding:0 6px; }
+  .rm-item .line{
+    height:4px; background:var(--plum-soft); position:relative; margin-bottom:10px;
+  }
+  .rm-item .line::before{
+    content:"";
+    position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:12px; height:12px; border-radius:50%;
+    background:var(--plum);
+  }
+  .rm-item:first-child .line{ margin-left:0; }
+  .rm-item .stage{ font-family:'JetBrains Mono', monospace; font-size:9.5px; color:var(--plum); margin-bottom:3px; }
+  .rm-item .period{ font-size:11.6px; font-weight:700; margin-bottom:5px; }
+  .rm-item .d{ font-size:10px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--plum);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--plum-soft);
+    border-left:4px solid var(--plum);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--plum); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-009</span>
+      <span class="tag">2026-09-09</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>SR지향 추적성 <span class="hl">자동검증</span></h1>
+    <div class="sub">V-모델 단계마다의 양방향 추적성 데이터는 그대로 두고, 그 데이터로부터 고객요구조건(CR)까지의 다단계 추적성을 자동으로 계산한다. 팬아웃·오르판·다이아몬드 같은, 인접 단계만 봐서는 보이지 않던 오류까지 찾아낸다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">V-모델 전 단계 연결</span>
+      <span class="chip-pill">그래프 기반 자동계산</span>
+      <span class="chip-pill">CR 검증완료 여부 즉답</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">인접 단계 커버리지만으로는 부족</div>
+        <div class="d">A-B, B-C가 각각 100%여도 최종 체인은 끊겨 있을 수 있다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">분기·합류가 섞이면 역추적이 폭발</div>
+        <div class="d">하나의 요구조건이 여러 항목으로 갈라졌다 다시 합쳐지는 구조는 사람이 손으로 추적하기 어렵다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">심사 질문에 즉답이 어려움</div>
+        <div class="d">"이 요구조건이 검증까지 끝났는가"를 물으면 매번 수작업 역추적이 필요하다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">기존 도구의 결과도 검증되지 않음</div>
+        <div class="d">팬아웃·다이아몬드가 섞인 예외 상황에서 기존 추적 도구가 부정확한 결과를 낼 수 있다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">다단계 추적성 자동계산 엔진</div>
+            <div class="s">인접 단계 링크만으로 CR부터 임의 하위 단계까지의 연결을 계산</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">추적성 오류 자동 탐지</div>
+            <div class="s">팬아웃·오르판·다이아몬드·순환참조를 계산 과정에서 함께 검출</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">스냅샷 기반 검증 리포트</div>
+            <div class="s">마일스톤 시점마다 그 시점 기준으로 항상 일관된 결과를 산출</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">교차검증 수단</div>
+            <div class="s">기존 추적 도구의 결과가 정확한지 독립적으로 대조</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 기술</div>
+        <div class="chip-tech">
+          <span>그래프(인접 리스트) 기반 데이터 모델</span>
+          <span>그래프 순회(폐쇄, Closure) 연산</span>
+          <span>스냅샷 방식 검증</span>
+        </div>
+        <div class="h" style="margin-top:14px;">가상 데이터 검증 규모</div>
+        <div class="chip-tech">
+          <span>노드 710개 · 엣지 674개</span>
+          <span>처리시간 0.46초</span>
+          <span>테스트케이스 33개 전건 통과</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- V-MODEL FLOW -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>V-모델 단계별 추적성</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">고객요구조건(CR)</div><div class="d">제어기 개발에 반영할 항목을 식별한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">시스템 아키텍처</div><div class="d">CR을 시스템 요소로 구체화한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">SW 아키텍처</div><div class="d">시스템 요소를 SW 구조로 구체화한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">SW 상세설계</div><div class="d">SW 구조를 함수 단위로 구체화한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">단위 함수 설계</div><div class="d">최종 구현 단위까지 연결한다</div></div>
+      </div>
+    </div>
+    <div class="corr-note">각 단계는 대응하는 <b>검증계획</b>(시스템/SW통합/상세설계/단위 검증)과도 연결되어야 한다 — 추적성 연결의 최종 목적은 "CR이 정확히 구현되어 검증까지 완료되었는가"를 확인하는 것이다.</div>
+  </section>
+
+  <!-- BEFORE / AFTER -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>무엇이 다른가 — 인접 추적성 vs 다단계 추적성</div>
+    <div class="ba-row">
+      <div class="ba-card before">
+        <div class="tag">기존 — 인접 단계 추적성</div>
+        <div class="t">A-B, B-C 각각의 연결 %만 확인</div>
+        <div class="d">인접한 두 단계 사이의 커버리지는 보여주지만, 최종 목적지까지 체인이 끊기지 않고 이어지는지는 보여주지 못한다.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="tag">신규 — 다단계 추적성</div>
+        <div class="t">A-B, B-C는 그대로 두고 A-C, A-D를 계산</div>
+        <div class="d">인접 링크 데이터를 원본으로 유지한 채, CR부터 임의 하위 단계까지의 관계를 그래프 계산으로 자동 도출해 체인 전체의 무결성을 확인한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ERROR TYPES -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>자동 탐지되는 추적성 오류</div>
+    <div class="err-grid">
+      <div class="err-card"><div class="name">Fanout (팬아웃)</div><div class="d">상위 노드 1개가 하위 노드 여러 개로 갈라지는 것</div></div>
+      <div class="err-card"><div class="name">Orphan (오르판)</div><div class="d">상위로 거슬러 올라갈 부모 링크가 없는 노드</div></div>
+      <div class="err-card"><div class="name">Diamond (다이아몬드)</div><div class="d">갈라졌다가(팬아웃) 다시 한 노드로 합쳐지는 것</div></div>
+      <div class="err-card"><div class="name">Cycle (순환참조)</div><div class="d">A→B→C→A처럼 원을 그리며 되돌아오는 링크 구조</div></div>
+    </div>
+    <div class="corr-note">이 외에도 레벨 오매칭·중복·자기참조·댕글링 참조 등 데이터 품질 이슈 <b>9종</b>을 그래프 구성 전 단계에서 자동으로 걸러내고 로그로 남긴다.</div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>도입 로드맵</div>
+    <div class="rm-track">
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">Phase 1</div>
+        <div class="period">소규모 파일럿</div>
+        <div class="d">CR 1~2개 체인만 export해 실데이터로 검증 로직을 실증한다</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">Phase 2</div>
+        <div class="period">전체 규모 확장</div>
+        <div class="d">프로젝트 전체 규모로 확대해 실데이터 품질이슈를 실측한다</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">Phase 3</div>
+        <div class="period">API 자동화</div>
+        <div class="d">수작업 export 단계를 없애고 완전 자동화 파이프라인을 구축한다</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">Phase 4</div>
+        <div class="period">정례 운영</div>
+        <div class="d">마일스톤별 스냅샷 검증을 정례화하고 심사 대응 자료로 축적한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">07</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">심사 질문에 즉시 답변</div>
+        <div class="d">"CR이 검증까지 완료됐는가"를 스냅샷마다 자동으로 산출한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">체인 단절을 자동으로 가시화</div>
+        <div class="d">인접 %만으로는 안 보이던 끊김·오르판·다중소유를 찾아낸다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">기존 도구의 정확성 교차검증</div>
+        <div class="d">예외 상황에서도 다른 결과가 나오는지 독립적으로 대조한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">데이터 오류를 사람보다 먼저 발견</div>
+        <div class="d">오탈자·레벨오매칭·중복 등을 자동으로 선별한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">08</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>현재까지는 <b>가상 데이터</b>로 검증이 완료된 상태(33개 테스트케이스 전건 통과)이며, 실제 데이터 적용은 소규모 파일럿부터 단계적으로 진행한다</li>
+        <li>마일스톤 시점의 <b>스냅샷</b> 기준으로 계산하므로, 스냅샷 사이의 변경은 다음 스냅샷에서 반영된다</li>
+        <li>팬아웃·다이아몬드 구조가 매우 드문 프로젝트에서는 효과가 제한적일 수 있다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-009</div>
+      <div><span>작성일</span>2026-09-09</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

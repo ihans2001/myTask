@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>TARA 결과 DB화 — 쿼리 + RAG 하이브리드</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --indigo:#4A4076;
+    --indigo-soft:#E5DFEE;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:25px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#C9BEE0; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(229,223,238,0.14);
+    color:#D3C6E8;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:19px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--indigo);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--indigo);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--indigo);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ HYBRID 2-COL ============ */
+  .hybrid-row{ display:flex; gap:16px; margin-bottom:12px; }
+  .hybrid-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:4px solid var(--indigo);
+    padding:13px 15px;
+  }
+  .hybrid-card .t{ font-size:13px; font-weight:700; margin-bottom:6px; color:var(--indigo); }
+  .hybrid-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.55; margin-bottom:8px; }
+  .hybrid-card .ex{ font-size:10.3px; color:var(--ink); background:#EDEFEA; padding:6px 9px; border-radius:2px; }
+  .hybrid-card .ex b{ color:var(--indigo); }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ TABLE GROUPS ============ */
+  .group-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+  .group-chip{
+    flex:1 1 auto;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:7px 12px;
+    font-size:10.8px;
+    display:flex; align-items:baseline; gap:6px;
+  }
+  .group-chip .cnt{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700; color:var(--indigo);
+    font-size:11px;
+  }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--indigo);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--indigo-soft);
+    border-left:4px solid var(--indigo);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--indigo); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-005</span>
+      <span class="tag">2026-09-09</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>TARA 결과 DB화 <span class="hl">— 쿼리 + RAG 하이브리드</span></h1>
+    <div class="sub">제어기별 TARA 결과를 하나의 데이터베이스에 누적하고, 정확한 조회(SQL)와 의미 기반 검색(RAG)을 결합한다. 과거 결과가 다음 TARA를 시작하는 출발점이 된다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">SQL + 벡터DB 하이브리드</span>
+      <span class="chip-pill">28개 테이블</span>
+      <span class="chip-pill">Full · Tier TARA 모두 지원</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">매번 처음부터 다시 시작</div>
+        <div class="d">과거 제어기의 분석 결과를 다시 찾아보기 어려워, 유사한 위협도 매번 새로 작성한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">결과가 파일마다 흩어짐</div>
+        <div class="d">제어기별로 따로 저장된 워크북을 일일이 열어 넘나들며 비교해야 한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">판단 근거는 검색이 안 됨</div>
+        <div class="d">"왜 이 등급을 선택했는지" 같은 서술형 설명은 키워드만으로 찾기 어렵다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">현황 집계에 반복 수작업</div>
+        <div class="d">특정 등급 이상 위협, 미결정 위험처리 등을 매번 손으로 추려야 한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">통합 TARA 데이터베이스</div>
+            <div class="s">모든 제어기·모든 결과서를 28개 테이블 하나의 DB에 누적</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">자동 적재 브릿지</div>
+            <div class="s">TARA 워크북에서 매크로 하나만 실행하면 결과가 DB로 이동</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">대표 조회 8종</div>
+            <div class="s">등급 이상 위협 조회, 위험처리 미결정 목록 등 자주 찾는 질문에 즉답</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">서술형 의미 검색(RAG)</div>
+            <div class="s">판단 근거·설명 문장을 뜻으로 찾아내는 벡터 검색</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">이용 기술</div>
+        <div class="chip-tech">
+          <span>SQL DB (로컬→서버 전환 가능)</span>
+          <span>Chroma 벡터DB</span>
+          <span>VBA-Python 브릿지</span>
+        </div>
+        <div class="h" style="margin-top:14px;">지원 범위</div>
+        <div class="chip-tech">
+          <span>Full TARA·Tier TARA 하나의 DB에서 함께 관리</span>
+          <span>같은 결과서를 나중에 Tier→Full로 갱신 가능</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>동작 흐름</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">TARA 수행</div><div class="d">엔지니어가 워크북에서 매크로로 TARA를 수행한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">자동 호출</div><div class="d">결과서 작성이 끝나면 매크로가 적재 프로그램을 자동으로 부른다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">구조화 데이터 적재</div><div class="d">등급·점수 같은 정형 필드는 SQL DB에 저장된다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">서술형 데이터 임베딩</div><div class="d">설명·판단근거 같은 문장은 벡터DB에 별도로 저장된다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">조회 + 의미검색 결합</div><div class="d">정확한 조회와 의미 기반 검색을 함께 활용해 다음 TARA 초안의 출발점으로 삼는다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HYBRID ARCHITECTURE -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>SQL + 벡터DB — 왜 둘 다 필요한가</div>
+    <div class="hybrid-row">
+      <div class="hybrid-card">
+        <div class="t">SQL DB — 구조화 필드</div>
+        <div class="d">등급·점수·판정결과처럼 정해진 값을 정확하게 저장한다. "이 조건에 맞는 것만 정확히 찾기"에 강하다.</div>
+        <div class="ex"><b>예시</b> — 특정 등급 이상 위협 시나리오, 위험처리 미결정 목록, 제어기별 최신 결과서</div>
+      </div>
+      <div class="hybrid-card">
+        <div class="t">Chroma 벡터DB — 서술형 텍스트</div>
+        <div class="d">설명·판단근거 같은 자유 문장을 뜻으로 저장한다. "비슷한 의미를 찾기"에 강하다.</div>
+        <div class="ex"><b>예시</b> — 과거 유사 판단 사례 검색, 비슷한 위협 서술 찾기</div>
+      </div>
+    </div>
+    <div class="corr-note"><b>질의 라우터가 상황에 맞게 조합</b> — 정확한 숫자·목록이 필요하면 SQL 조회를, 비슷한 사례나 설명이 필요하면 벡터 검색을 사용한다. 두 저장소는 하나의 결과서에서 동시에 채워진다.</div>
+  </section>
+
+  <!-- TABLE GROUPS -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>28개 테이블 — 7개 그룹</div>
+    <div class="group-row">
+      <div class="group-chip"><span class="cnt">3</span>제어기/결과서</div>
+      <div class="group-chip"><span class="cnt">8</span>아이템정의</div>
+      <div class="group-chip"><span class="cnt">4</span>자산</div>
+      <div class="group-chip"><span class="cnt">2</span>손상/임팩트</div>
+      <div class="group-chip"><span class="cnt">5</span>위협/공격트리</div>
+      <div class="group-chip"><span class="cnt">5</span>등급/처리/목표</div>
+      <div class="group-chip"><span class="cnt">1</span>기준문서</div>
+    </div>
+    <div class="corr-note">제어기별로 DB를 나누지 않는다 — 모든 제어기, 모든 TARA 결과서가 하나의 DB에 계속 누적되므로 제어기 간 비교와 이력 추적이 가능하다.</div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">다음 TARA의 출발점 확보</div>
+        <div class="d">DB와 의미 검색으로 유사 사례를 찾아 초안 작성 시간을 줄인다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">심사·현황 집계 즉시 가능</div>
+        <div class="d">반복적으로 찾던 목록을 조회 한 번으로 확보한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">Full·Tier 이력을 함께 관리</div>
+        <div class="d">정보가 나중에 채워져도 같은 결과서를 그대로 갱신할 수 있다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">제어기 간 비교·추적 가능</div>
+        <div class="d">모든 결과가 한 곳에 쌓여 제어기를 넘나든 분석이 가능하다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>로컬 단계는 파일 하나(SQLite)로 충분하지만, 여러 사람이 동시에 쓰기 시작하면 <b>서버 전환</b>이 필요하다</li>
+        <li>서술형 검색(RAG)의 임베딩 모델은 사내망 제한 환경을 고려해 <b>대체 가능</b>하도록 설계되어 있다</li>
+        <li>구조를 변경하면 기존 테이블은 자동으로 바뀌지 않으므로 <b>별도 반영 절차</b>가 필요하다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-005</div>
+      <div><span>작성일</span>2026-09-09</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

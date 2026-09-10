@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>연구원 현황(역량) 관리</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --rose:#8C4A5C;
+    --rose-soft:#EDDBE0;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#DBB7C1; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(237,219,224,0.16);
+    color:#E0BFC8;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--rose);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--rose);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--rose);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ ASSET TYPE TABLE ============ */
+  .type-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .type-row{ display:flex; border-bottom:1px solid var(--line); }
+  .type-row:last-child{ border-bottom:none; }
+  .type-row .c{ padding:8px 12px; font-size:10.5px; line-height:1.5; }
+  .type-row .c.type{ flex:0 0 150px; font-weight:700; border-right:1px solid var(--line); }
+  .type-row .c.match{ flex:1 1 0; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .type-row .c.tara{ flex:1 1 0; color:var(--ink); }
+  .type-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .type-row.hdr .c.type, .type-row.hdr .c.match{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ CASE A/B ============ */
+  .ba-row{ display:flex; align-items:stretch; gap:0; }
+  .ba-card{ flex:1 1 0; min-width:0; padding:13px 15px; position:relative; }
+  .ba-card.before{ background:#EDEFEA; color:var(--ink); }
+  .ba-card.after{ background:var(--rose); color:#fff; }
+  .ba-card + .ba-card{ margin-left:16px; }
+  .ba-card + .ba-card::before{
+    content:"→"; position:absolute; left:-16px; top:50%; transform:translate(-50%,-50%);
+    color:var(--ink-soft); font-size:16px; background:var(--paper); width:20px; text-align:center;
+  }
+  .ba-card .tag{ font-family:'JetBrains Mono', monospace; font-size:9.5px; opacity:0.75; margin-bottom:5px; }
+  .ba-card .t{ font-size:12.5px; font-weight:700; margin-bottom:6px; }
+  .ba-card .d{ font-size:10.8px; line-height:1.55; }
+  .ba-card.after .d{ color:#F3E3E8; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--rose);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--rose-soft);
+    border-left:4px solid var(--rose);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--rose); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-031</span>
+      <span class="tag">2026-09-10</span>
+      <span class="tag">가이드</span>
+    </div>
+    <h1>연구원 <span class="hl">현황(역량) 관리</span></h1>
+    <div class="sub">전사/연구소 레벨의 정기(반기) 역량평가를 MasterDB 1개 파일에서 관리하고, 각 프로젝트는 참여 연구원 데이터만 추출해 마일스톤별 현황판으로 활용한다. Audit 등 업무 증적으로도 쓰인다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">MasterDB+프로젝트 파일 분리</span>
+      <span class="chip-pill">공통/PJT 역량 이원관리</span>
+      <span class="chip-pill">역량 갭 자동 식별</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">전사/연구소 레벨 관리 필요</div>
+        <div class="d">연구원 역량관리는 개별 프로젝트가 아니라 전사 또는 연구소 레벨에서 관리되어야 하는 중요 태스크다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">프로젝트마다 따로 평가하면 중복</div>
+        <div class="d">여러 프로젝트가 같은 연구원을 각자 평가하면 같은 역량을 중복해서 조사하게 된다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">프로젝트 고유 역량 요구도 존재</div>
+        <div class="d">공통 역량만으로는 특정 프로젝트가 요구하는 역량을 반영하지 못한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">Audit 증적 확보 필요</div>
+        <div class="d">역량관리 활동 자체가 심사·오딧에서 업무 증적으로 요구될 수 있다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">전사 MasterDB 정기평가</div>
+            <div class="s">연 2회(반기) 전체 연구원의 역량을 하나의 MasterDB에서 평가·관리한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">공통/PJT 역량 이원관리</div>
+            <div class="s">역량항목마스터의 '구분' 열로 공통역량과 프로젝트 고유역량을 하나의 시트에서 함께 관리한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">프로젝트별 현황 추출</div>
+            <div class="s">프로젝트 파일은 평가를 직접 하지 않고, MasterDB에서 참여 연구원 데이터만 추출해 마일스톤별 현황판으로 쓴다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">역량 갭 자동 식별</div>
+            <div class="s">요구수준 대비 부족한 항목을 자동으로 찾아 개발계획에 연결한다</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 원리</div>
+        <div class="chip-tech">
+          <span>콤마구분 텍스트 매칭(참여PJT↔적용PJT)만으로 다대다 관계를 표현, 항목 중복 배분 없이 자동 배분</span>
+        </div>
+        <div class="h" style="margin-top:14px;">파일 분리</div>
+        <div class="chip-tech">
+          <span>MasterDB는 전사 1개만 존재</span>
+          <span>프로젝트 파일은 프로젝트마다 사본으로 운영</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">역량항목·연구원 등록</div><div class="d">MasterDB에 공통/PJT 역량항목과 연구원별 참여PJT를 등록한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">정기평가 회차 생성</div><div class="d">CreateNewCycle이 재직 연구원에게 공통역량+해당 참여PJT 역량만 자동 배분한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">점수 입력 및 집계</div><div class="d">평가자가 점수만 입력하면 반기요약·대시보드가 자동으로 값으로 채워진다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">프로젝트 현황 동기화</div><div class="d">SyncFromMasterDB가 마일스톤 목표일 이전 가장 최근 평가를 찾아 현황판에 채운다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">역량 갭 식별 및 개발계획 연결</div><div class="d">요구수준 미달 항목을 자동 식별해 개발계획에 대상자·부족역량을 기재한다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILE COMPARISON -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>MasterDB vs 프로젝트 파일</div>
+    <div class="type-table">
+      <div class="type-row hdr">
+        <div class="c type">구분</div>
+        <div class="c match">CS_Competency_MasterDB (전사 1개)</div>
+        <div class="c tara">CS_Competency_Project_Template (프로젝트별 사본)</div>
+      </div>
+      <div class="type-row"><div class="c type">운영 주체</div><div class="c match">전사 / 연구소</div><div class="c tara">개별 프로젝트</div></div>
+      <div class="type-row"><div class="c type">수행 내용</div><div class="c match">정기(반기) 역량평가 직접 수행</div><div class="c tara">평가 없이 결과만 추출해 현황 관리</div></div>
+      <div class="type-row"><div class="c type">핵심 시트</div><div class="c match">평가입력DB / 반기요약 / 대시보드</div><div class="c tara">마일스톤역량현황 / 구성원역량한눈에보기 / 개발계획</div></div>
+    </div>
+    <div class="corr-note">프로젝트 고유의 역량개발이 필요한 경우, 역량항목마스터에 <b>'구분=PJT' 항목을 추가</b>하고 적용PJT에 프로젝트ID를 나열하면 해당 프로젝트에만 자동 배분된다.</div>
+  </section>
+
+  <!-- BEFORE/AFTER -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>Before / After</div>
+    <div class="ba-row">
+      <div class="ba-card before">
+        <div class="tag">이전 — 프로젝트마다 개별 조사</div>
+        <div class="t">같은 역량을 중복 조사</div>
+        <div class="d">프로젝트마다 따로 역량을 조사하면 같은 연구원의 같은 역량을 중복해서 파악하게 된다.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="tag">현재 — 전사 DB에서 추출해 활용</div>
+        <div class="t">현황관리와 증적을 함께 확보</div>
+        <div class="d">전사 MasterDB에서 참여 연구원 데이터만 추출해 프로젝트 현황관리와 Audit 증적으로 함께 활용한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">중복 조사 제거</div>
+        <div class="d">전사 1개 DB에서 관리해 프로젝트마다 같은 역량을 다시 조사하지 않는다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">Audit 증적 확보</div>
+        <div class="d">역량관리 활동 자체가 심사 대응 업무 증적으로 활용된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">역량 갭 조기 식별</div>
+        <div class="d">요구수준 미달 항목을 자동으로 찾아 개발계획으로 연결한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">프로젝트 고유 대응</div>
+        <div class="d">프로젝트별로 필요한 역량을 별도 추가해 공통 체계를 해치지 않고 반영한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>반기요약·대시보드는 수식이 아니라 <b>매크로가 값으로 채우는 방식</b>이라, 점수 입력 후 RefreshSummary/RefreshDashboard를 반드시 다시 실행해야 최신값이 반영된다</li>
+        <li>프로젝트 현황의 평가 시점은 마일스톤 목표일과 정확히 일치하지 않을 수 있어 <b>'시점차이(일)'로 며칠 전 데이터인지 함께 표시</b>된다</li>
+        <li>인사(HR) 연간 교육계획 연계는 아직 실제 자료 형식을 받지 못해 <b>가정된 레이아웃으로 자리만 마련</b>된 상태다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-031</div>
+      <div><span>작성일</span>2026-09-10</div>
+    </div>
+    <div>본 내용은 사내 운영 가이드이며, 실제 환경 변수·경로는 배포 시 별도 관리한다.</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>SSoT 기반 SW BOM · 형상관리 · SBOM 통합 체계</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --forest:#3F6B4A;
+    --forest-soft:#DEEAE0;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#B7D9BF; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(222,234,224,0.14);
+    color:#C4E0CB;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:19px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--forest);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--forest);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--forest);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PROCESS LIST ============ */
+  .proc-list{ display:flex; flex-direction:column; gap:8px; }
+  .proc-item{
+    display:flex; gap:12px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--forest);
+    padding:9px 13px;
+  }
+  .proc-item .code{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px; font-weight:700; color:var(--forest);
+    flex:0 0 108px;
+  }
+  .proc-item .d{ font-size:11.2px; color:var(--ink); line-height:1.5; }
+
+  /* ============ MASTER/INSTANCE 2-COL ============ */
+  .mi-wrap{ display:flex; gap:20px; }
+  .mi-col{ flex:1 1 0; min-width:0; }
+  .mi-head{ font-size:12.4px; font-weight:700; margin-bottom:8px; }
+  .mi-head.master{ color:var(--forest); }
+  .mi-head.instance{ color:#9FAAB2; }
+  .mi-list{ display:flex; flex-direction:column; gap:0; background:var(--paper-card); border:1px solid var(--line); }
+  .mi-list .row{ padding:6px 12px; font-size:10.8px; border-bottom:1px solid var(--line); }
+  .mi-list .row:last-child{ border-bottom:none; }
+  .mi-box{ background:var(--ink); color:#DCE2E4; }
+  .mi-box .row{ border-bottom:1px solid rgba(255,255,255,0.12); }
+  .mi-box .row:last-child{ border-bottom:none; }
+  .mi-note{
+    margin-top:10px; font-size:10.4px; color:var(--ink-soft); line-height:1.55;
+  }
+
+  /* ============ RELEASE NOTE ============ */
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--forest);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--forest-soft);
+    border-left:4px solid var(--forest);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--forest); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-007</span>
+      <span class="tag">2026-09-09</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>SSoT 기반 <span class="hl">SW BOM · 형상관리 · SBOM</span> 통합 체계</h1>
+    <div class="sub">모든 차종·제어기의 SW 정보를 하나의 마스터 테이블(SSoT)에 담아 모든 업무의 출발점으로 삼는다. 형상관리·변경관리·SBOM을 이 SSoT로부터 파생시켜 관리하며, 버전 이력까지 추적한다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">전차종·전제어기 통합</span>
+      <span class="chip-pill">5개 A-SPICE 프로세스</span>
+      <span class="chip-pill">마스터 + 인스턴스 구조</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">SW 정보가 문서마다 따로 관리됨</div>
+        <div class="d">차종·제어기별로 흩어진 SW 목록을 매번 다시 취합해야 한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">형상관리·변경관리·SBOM이 따로 놈</div>
+        <div class="d">세 가지가 서로 다른 도구·문서에 흩어져 있어, 불일치가 생겨도 알아채기 어렵다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">버전 이력 추적이 어려움</div>
+        <div class="d">라이선스·취약점처럼 시간에 따라 바뀌는 값이 언제 바뀌었는지 확인하기 힘들다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">심사 자료를 매번 새로 만듦</div>
+        <div class="d">제2자·제3자 심사 때마다 형상관리 근거를 수작업으로 취합해야 한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">SSoT 마스터 테이블</div>
+            <div class="s">모든 차종·제어기에 공통인 SW 정보(출처·라이선스·식별자)를 한 곳에서 관리</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">제어기별 인스턴스 테이블</div>
+            <div class="s">버전·베이스라인처럼 제어기마다 달라지는 값만 별도로 관리</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">종합현황 매트릭스</div>
+            <div class="s">SW × 제어기 표로 어떤 SW가 어느 제어기에 적용됐는지 한눈에 확인(전부 수식 자동 산출)</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">자동 동기화 매크로</div>
+            <div class="s">제어기별 파일을 정기적으로 대조해 최신 상태를 유지</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 원리</div>
+        <div class="chip-tech">
+          <span>마스터(고정값) + 인스턴스(제어기별 값) 분리</span>
+          <span>헤더 불일치 자동 탐지로 오염 방지</span>
+          <span>변경이력은 누적 기록(덮어쓰지 않음)</span>
+        </div>
+        <div class="h" style="margin-top:14px;">SW BOM · 버전관리 기준</div>
+        <div class="chip-tech">
+          <span>형상관리 아이템 기준으로 작성 → 버전 관리 가능</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASPICE PROCESSES -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>처리하는 5개 A-SPICE 프로세스</div>
+    <div class="proc-list">
+      <div class="proc-item"><div class="code">품질보증<br>SUP.1</div><div class="d">심사 대응에 필요한 근거자료를 자동으로 확보한다</div></div>
+      <div class="proc-item"><div class="code">형상관리<br>SUP.8</div><div class="d">형상관리 결과를 자동으로 추출·기록해 제2자·제3자 심사에 대비한다</div></div>
+      <div class="proc-item"><div class="code">변경관리<br>SUP.10</div><div class="d">SVN·Git·코드비머 같은 ALM 도구와 연동해 변경 이력을 관리한다</div></div>
+      <div class="proc-item"><div class="code">문제해결<br>SUP.9</div><div class="d">형상관리·변경관리·SBOM 불일치가 발견되면 이슈추적 시스템과 참조 ID로 연결된다</div></div>
+      <div class="proc-item"><div class="code">릴리즈<br>SPL2</div><div class="d">릴리즈 이전 현황을 점검하고, 해시를 적용한 릴리즈 노트를 작성한다</div></div>
+    </div>
+  </section>
+
+  <!-- MASTER / INSTANCE -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>마스터(SSoT) ↔ 인스턴스 구조</div>
+    <div class="mi-wrap">
+      <div class="mi-col">
+        <div class="mi-head master">마스터 — 차종·제어기 무관 고정값</div>
+        <div class="mi-list">
+          <div class="row">SW_ID · 이름 · 계층(L1~L5)</div>
+          <div class="row">출처(자체 / OSS / 제3자 / 자체수정OSS)</div>
+          <div class="row">공급자 · 라이선스</div>
+          <div class="row">표준 식별자(PURL / CPE)</div>
+          <div class="row">취약점 식별자(CVE / 사내 취약점ID)</div>
+        </div>
+      </div>
+      <div class="mi-col">
+        <div class="mi-head instance">인스턴스 — 제어기마다 달라지는 값</div>
+        <div class="mi-list mi-box">
+          <div class="row">제어기 ID · 버전 · 베이스라인</div>
+          <div class="row">형상관리 등록번호(예: SVN 리비전)</div>
+          <div class="row">변경요청 / CCB 승인 번호</div>
+          <div class="row">실제 산출물 해시값</div>
+          <div class="row">이슈추적 참조 · 마지막 동기화 시각</div>
+        </div>
+      </div>
+    </div>
+    <div class="mi-note">같은 SW라도 제어기마다 버전이 다르므로, 고정값(마스터)과 변동값(인스턴스)을 나누어 관리한다 — 새 제어기가 추가돼도 마스터는 그대로 두고 인스턴스만 늘어난다.</div>
+  </section>
+
+  <!-- RELEASE HASH -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>릴리즈 전 해시 검증</div>
+    <div class="corr-note"><b>릴리즈 노트 자동 작성</b> — 릴리즈 이전 현황을 점검한 뒤, SHA-256 등 해시를 적용한 릴리즈 노트를 작성한다. 해시는 파일 단위로 적용하며, 엑셀 파일은 시트 단위로도 적용할 수 있어 변경된 부분만 정확히 짚어낼 수 있다.</div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">모든 업무의 출발점 확보</div>
+        <div class="d">SW 정보를 한 곳에서 관리해 이후 모든 분석의 기준점이 된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">심사 대응 자료 자동 확보</div>
+        <div class="d">형상관리 근거를 자동 추출해 제2자·제3자 심사에 즉시 대응한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">불일치를 미리 찾아냄</div>
+        <div class="d">형상관리·변경관리·SBOM 세 축의 어긋남을 자동으로 대조한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">변경 이력을 그대로 보존</div>
+        <div class="d">버전·라이선스가 언제 무엇으로 바뀌었는지 누적 기록으로 확인한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>인스턴스 파일의 열(컬럼) 구성은 임의로 바꿀 수 없다 — 헤더가 달라지면 동기화가 자동으로 <b>건너뛰어져</b> 오염을 막는다</li>
+        <li>동기화는 <b>주간 정기 점검</b>이 기본이며, 긴급 패치·취약점 공표 시에는 즉시 1회 실행한다</li>
+        <li>세 축의 불일치가 발견돼도 이슈추적 시스템에 <b>자동으로 이슈를 만들지는 않는다</b> — 원인 파악이 쉬운 경우가 많아 자동화 실익이 낮다고 판단했다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-007</div>
+      <div><span>작성일</span>2026-09-09</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

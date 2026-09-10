@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>프로젝트 자체 평가(마일스톤 연동)</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --rose:#8C4A5C;
+    --rose-soft:#EDDBE0;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#DBB7C1; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(237,219,224,0.16);
+    color:#E0BFC8;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--rose);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--rose);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--rose);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ ASSET TYPE TABLE ============ */
+  .type-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .type-row{ display:flex; border-bottom:1px solid var(--line); }
+  .type-row:last-child{ border-bottom:none; }
+  .type-row .c{ padding:8px 12px; font-size:10.5px; line-height:1.5; }
+  .type-row .c.type{ flex:0 0 150px; font-weight:700; border-right:1px solid var(--line); }
+  .type-row .c.match{ flex:1 1 0; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .type-row .c.tara{ flex:1 1 0; color:var(--ink); }
+  .type-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .type-row.hdr .c.type, .type-row.hdr .c.match{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ CASE A/B ============ */
+  .ba-row{ display:flex; align-items:stretch; gap:0; }
+  .ba-card{ flex:1 1 0; min-width:0; padding:13px 15px; position:relative; }
+  .ba-card.before{ background:#EDEFEA; color:var(--ink); }
+  .ba-card.after{ background:var(--rose); color:#fff; }
+  .ba-card + .ba-card{ margin-left:16px; }
+  .ba-card + .ba-card::before{
+    content:"→"; position:absolute; left:-16px; top:50%; transform:translate(-50%,-50%);
+    color:var(--ink-soft); font-size:16px; background:var(--paper); width:20px; text-align:center;
+  }
+  .ba-card .tag{ font-family:'JetBrains Mono', monospace; font-size:9.5px; opacity:0.75; margin-bottom:5px; }
+  .ba-card .t{ font-size:12.5px; font-weight:700; margin-bottom:6px; }
+  .ba-card .d{ font-size:10.8px; line-height:1.55; }
+  .ba-card.after .d{ color:#F3E3E8; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--rose);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--rose-soft);
+    border-left:4px solid var(--rose);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--rose); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-029</span>
+      <span class="tag">2026-09-10</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>프로젝트 <span class="hl">자체 평가 (마일스톤 연동)</span></h1>
+    <div class="sub">차량 제어기 개발 프로젝트의 R&D 마일스톤마다 A-SPICE 4.0 요구 산출물의 성숙도를 PM이 스스로 점검·기록한다. 평가는 결재된 기준에서 시작해, 프로젝트별 테일러링과 EVMS 결과 인용으로 자동화된다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">문장형 채점기준(주관 배제)</span>
+      <span class="chip-pill">마일스톤 origin 체인 연동</span>
+      <span class="chip-pill">다중 프로젝트 포트폴리오 집계</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">심사 임박형 대응의 한계</div>
+        <div class="d">심사 직전에 산출물을 몰아서 준비하면 실제 성숙도가 아닌 서류상 완성도만 확인된다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">평가 기준의 주관성</div>
+        <div class="d">산출물 완성 여부를 개인 판단에 의존하면 프로젝트·평가자 간 편차가 생긴다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">마일스톤별 요구가 불명확</div>
+        <div class="d">어떤 산출물이 어느 단계까지 완료되어야 하는지 표준화된 근거가 없다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">파생개발 중복 평가</div>
+        <div class="d">상위 프로젝트에서 이미 확보된 산출물을 처음부터 다시 평가하는 비효율이 생긴다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">결재된 채점기준표</div>
+            <div class="s">계획수립·작성·동료검토·보고승인·PM체크 5요소 100점 만점 기준을 결재로 승인해 사용한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">프로젝트별 테일러링 자율평가 양식</div>
+            <div class="s">프로젝트 프로파일(처리유형)에 따라 표준수행/재사용완료/해당없음 등을 재정의해 시트를 자동 생성한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">마일스톤 origin 체인 연동</div>
+            <div class="s">항목이 처음 등장한 단계의 값을 다음 단계가 그대로 이어받아 중복 입력을 없앤다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">EVMS 결과 인용 자동 기록</div>
+            <div class="s">매월 진행하는 EVMS 결과를 인용해 자율평가 기록을 자동으로 작성한다</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 원리</div>
+        <div class="chip-tech">
+          <span>문장형 기준으로 점수를 "선택"하게 해 채점자 주관을 원천 배제</span>
+        </div>
+        <div class="h" style="margin-top:14px;">등급 변환</div>
+        <div class="chip-tech">
+          <span>점수구간에 따라 S(95~100)~D(0~34) 5단계 등급으로 자동 환산</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">프로젝트 프로파일 설정</div><div class="d">최초개발/파생개발 여부와 프로세스 단위 처리표를 결재 후 확정한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">시트 자동 재생성</div><div class="d">RegenerateProject 매크로가 프로파일 설정을 반영해 마일스톤별 시트를 자동 생성한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">M-Car 단계 자율평가 착수</div><div class="d">origin 항목을 대상으로 계획수립~PM체크 5요소 평가를 시작한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">마일스톤 게이트별 반복 운영</div><div class="d">Proto→P1→P2→SoP 단계마다 이월 항목 확인과 신규 항목 평가를 반복한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">종합 리뷰 및 포트폴리오 집계</div><div class="d">종합/상태변화 시트를 월간 PM 리뷰에 쓰고, 여러 프로젝트 결과를 하나로 집계한다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCORING TABLE -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>채점기준표 5요소 배점</div>
+    <div class="type-table">
+      <div class="type-row hdr">
+        <div class="c type">구분</div>
+        <div class="c match">배점</div>
+        <div class="c tara">만점 기준</div>
+      </div>
+      <div class="type-row"><div class="c type">① 계획수립</div><div class="c match">10점</div><div class="c tara">담당자·목표기한이 사전에 명확히 지정</div></div>
+      <div class="type-row"><div class="c type">② 작성</div><div class="c match">40점</div><div class="c tara">최종본 완성 (A-Spice/사내표준 요건 충족)</div></div>
+      <div class="type-row"><div class="c type">③ 동료검토</div><div class="c match">20점</div><div class="c tara">동료검토 완료 및 지적사항 반영 완료</div></div>
+      <div class="type-row"><div class="c type">④ 보고/승인</div><div class="c match">20점</div><div class="c tara">정식 승인 완료 (결재기록 존재)</div></div>
+      <div class="type-row"><div class="c type">⑤ PM 체크</div><div class="c match">10점</div><div class="c tara">PM 공식 확인 (월간 자율평가에 서명 반영)</div></div>
+    </div>
+    <div class="corr-note">100점 만점 점수는 <b>S(95~100)/A(80~94)/B(60~79)/C(35~59)/D(0~34)</b> 5단계 등급으로 자동 환산된다.</div>
+  </section>
+
+  <!-- BEFORE/AFTER -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>Before / After</div>
+    <div class="ba-row">
+      <div class="ba-card before">
+        <div class="tag">이전 — 심사 직전 몰아치기</div>
+        <div class="t">서류상 완성도만 확인</div>
+        <div class="d">공식·모의 심사 직전에만 산출물을 몰아서 준비해 실제 프로세스 성숙도와 무관한 서류상 완성도만 확인됐다.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="tag">현재 — 마일스톤마다 상시 자율평가</div>
+        <div class="t">근거가 자연스럽게 누적</div>
+        <div class="d">M-Car부터 SoP까지 마일스톤마다 PM이 스스로 점검한 근거가 자연스럽게 누적되어 심사 대응 자료로 즉시 활용된다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">심사 대응력 상시화</div>
+        <div class="d">마일스톤마다 쌓인 자율평가 근거가 공식·모의 심사 자료로 바로 활용된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">객관적 기준 확립</div>
+        <div class="d">문장형 채점기준으로 프로젝트·평가자 간 편차를 줄인다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">파생개발 효율화</div>
+        <div class="d">처리유형 설정만으로 불필요한 중복 평가를 구조적으로 제거한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">추이 기반 관리</div>
+        <div class="d">상태변화 시트로 반복 정체되는 산출물을 조기에 식별한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>이월된 항목(회색 처리)은 <b>실수 변경을 막기 위해 기본적으로 잠겨</b> 있으며, 필요 시 예외적으로만 보호를 해제해야 한다</li>
+        <li>SPL.2(제품 릴리스)는 마일스톤 게이트와 무관하게 건별로 발생하므로, <b>5개 마일스톤 시트와 별도로 릴리즈이력 시트</b>에서 관리한다</li>
+        <li>여러 프로젝트를 통합 집계할 때는 각 프로젝트 파일이 <b>정해진 명명 규칙과 [종합] 시트 구조를 반드시 따라야</b> 한다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-029</div>
+      <div><span>작성일</span>2026-09-10</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

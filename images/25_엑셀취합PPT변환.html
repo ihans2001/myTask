@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>엑셀 취합 + 파워포인트 회의자료 자동변환</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --rose:#8C4A5C;
+    --rose-soft:#EDDBE0;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#DBB7C1; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(237,219,224,0.16);
+    color:#E0BFC8;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--rose);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--rose);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--rose);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ ASSET TYPE TABLE ============ */
+  .type-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .type-row{ display:flex; border-bottom:1px solid var(--line); }
+  .type-row:last-child{ border-bottom:none; }
+  .type-row .c{ padding:8px 12px; font-size:10.5px; line-height:1.5; }
+  .type-row .c.type{ flex:0 0 150px; font-weight:700; border-right:1px solid var(--line); }
+  .type-row .c.match{ flex:1 1 0; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .type-row .c.tara{ flex:1 1 0; color:var(--ink); }
+  .type-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .type-row.hdr .c.type, .type-row.hdr .c.match{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ CASE A/B ============ */
+  .ba-row{ display:flex; align-items:stretch; gap:0; }
+  .ba-card{ flex:1 1 0; min-width:0; padding:13px 15px; position:relative; }
+  .ba-card.before{ background:#EDEFEA; color:var(--ink); }
+  .ba-card.after{ background:var(--rose); color:#fff; }
+  .ba-card + .ba-card{ margin-left:16px; }
+  .ba-card + .ba-card::before{
+    content:"→"; position:absolute; left:-16px; top:50%; transform:translate(-50%,-50%);
+    color:var(--ink-soft); font-size:16px; background:var(--paper); width:20px; text-align:center;
+  }
+  .ba-card .tag{ font-family:'JetBrains Mono', monospace; font-size:9.5px; opacity:0.75; margin-bottom:5px; }
+  .ba-card .t{ font-size:12.5px; font-weight:700; margin-bottom:6px; }
+  .ba-card .d{ font-size:10.8px; line-height:1.55; }
+  .ba-card.after .d{ color:#F3E3E8; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--rose);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--rose-soft);
+    border-left:4px solid var(--rose);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--rose); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-025</span>
+      <span class="tag">2026-09-10</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>엑셀 취합 + <span class="hl">파워포인트 회의자료 자동변환</span></h1>
+    <div class="sub">여러 개별 엑셀 자료를 하나의 테이블로 취합한 뒤, config 기반 파이프라인으로 파워포인트 회의자료를 자동 생성한다. 자료 작성 이력이 엑셀로 남아 변천 과정을 그대로 추적할 수 있다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">config 기반 변환</span>
+      <span class="chip-pill">병합셀·임베디드 개체 재현</span>
+      <span class="chip-pill">오버플로우 자동 슬라이드 분할</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">셀 단위 복사·붙여넣기 의존</div>
+        <div class="d">엑셀 표를 파워포인트로 옮길 때 셀 단위 복사·붙여넣기에 의존해 시간이 오래 걸리고 작업이 자주 끊긴다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">병합 셀 재현이 어려움</div>
+        <div class="d">가로·세로 병합이 있는 표는 옮기는 과정에서 병합 상태가 깨지기 쉽다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">행이 넘치면 수작업 분할</div>
+        <div class="d">표준양식 한 장에 담기지 않는 표는 슬라이드를 수동으로 나눠야 한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">삽입 개체는 옮기기 더 어려움</div>
+        <div class="d">엑셀 셀에 들어있는 이미지나 임베디드 개체는 그대로 옮기기 까다롭다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">엑셀 개별자료 취합</div>
+            <div class="s">여러 개별 엑셀 자료를 하나의 테이블로 취합해 관리한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">config 기반 PPT 자동 생성</div>
+            <div class="s">엑셀 데이터를 일괄 추출해 PPT 표준양식에 값만 교체해 이식한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">병합 셀·오버플로우 처리</div>
+            <div class="s">가로·세로 병합을 실제로 재현하고, 행이 넘치면 병합을 지키며 슬라이드를 자동 분할한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">임베디드 개체 재임베딩</div>
+            <div class="s">셀 속 이미지·개체를 더블클릭으로 원본이 열리는 진짜 임베디드 형태로 재삽입한다</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 원리</div>
+        <div class="chip-tech">
+          <span>모범 표 XML을 deepcopy해 텍스트만 교체 — 서식 손실이 구조적으로 불가능</span>
+        </div>
+        <div class="h" style="margin-top:14px;">실행 환경</div>
+        <div class="chip-tech">
+          <span>표 생성은 OS 무관(Python)</span>
+          <span>개체 재임베딩만 Windows+PowerPoint COM 필요</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">엑셀 일괄 추출</div><div class="d">시트별 규칙에 따라 표 데이터·병합 범위·개체 앵커 좌표를 한 번에 로드한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">표 서식 복제</div><div class="d">모범 표 XML을 복제해 텍스트만 교체한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">병합 셀 재현</div><div class="d">gridSpan/rowSpan/hMerge/vMerge를 적용해 가로·세로 병합을 실제로 재현한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">오버플로우 분할</div><div class="d">병합이 잘리지 않는 안전한 경계에서 슬라이드를 자동 복제한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">개체 재임베딩</div><div class="d">Windows에서 AddOLEObject로 클립보드 없이 원본 개체를 직접 삽입한다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>Word 변환 시스템과의 비교</div>
+    <div class="type-table">
+      <div class="type-row hdr">
+        <div class="c type">구분</div>
+        <div class="c match">Word 변환 시스템</div>
+        <div class="c tara">PowerPoint 변환 시스템 (이번)</div>
+      </div>
+      <div class="type-row"><div class="c type">문서 구조 단위</div><div class="c match">챕터/절 (최대 4단계)</div><div class="c tara">슬라이드 1장 = 조직·과제·주제 1건</div></div>
+      <div class="type-row"><div class="c type">병합 셀 처리</div><div class="c match">헤더 병합만 자동확장</div><div class="c tara">표 안 가로+세로 병합을 실제로 재현</div></div>
+      <div class="type-row"><div class="c type">오버플로우 처리</div><div class="c match">Word가 자동 개행</div><div class="c tara">슬라이드는 자동 개행 없어 직접 계산</div></div>
+      <div class="type-row"><div class="c type">실행 환경</div><div class="c match">OS 무관</div><div class="c tara">표 생성은 무관, 재임베딩은 Windows 필수</div></div>
+    </div>
+    <div class="corr-note">클립보드를 거치지 않는 <b>AddOLEObject(FileName:)</b> 방식을 채택해, 기존 셀 단위 붙여넣기의 고질적 병목(포맷 협상, 반복 모달창)을 구조적으로 제거했다.</div>
+  </section>
+
+  <!-- BEFORE/AFTER -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>Before / After</div>
+    <div class="ba-row">
+      <div class="ba-card before">
+        <div class="tag">이전 — 고정양식 PPT 직접 작성</div>
+        <div class="t">셀 단위로 옮겨 적어 시간 소요</div>
+        <div class="d">정형화된 파워포인트 양식을 매번 셀 단위로 옮겨 적어 작성 시간이 오래 걸렸다.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="tag">현재 — 엑셀 작성 후 자동 변환</div>
+        <div class="t">MH 절감 + 이력 관리</div>
+        <div class="d">엑셀로 작성하고 자동 변환해 회의자료 작성 MH를 절감하고, 작성 이력도 엑셀로 남는다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">회의자료 작성 MH 절감</div>
+        <div class="d">셀 단위 복사·붙여넣기 대신 일괄 추출·생성으로 처리한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">변천 과정 모니터링</div>
+        <div class="d">자료 작성 이력이 엑셀로 관리되어 내용 변화를 추적할 수 있다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">서식 손실 없음</div>
+        <div class="d">모범 표 XML을 그대로 복제해 서식이 그대로 유지된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">이행 실적으로 확대</div>
+        <div class="d">이력 관리를 기반으로 이행 실적 관리까지 확장할 수 있다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>개체 재임베딩(AddOLEObject)은 <b>Windows+PowerPoint 환경에서만 동작</b>하며, 표 생성 자체는 OS와 무관하다</li>
+        <li>세로 병합이 분할 경계에 걸치면 <b>병합이 끝나는 행까지 강제로 포함</b>시켜, 기준 행 수를 다소 넘기더라도 병합 무결성을 우선한다</li>
+        <li>설정값(SHEET_CONFIGS)이 아직 코드에 하드코딩되어 있어, Word 시스템처럼 <b>config.py로 분리하는 작업이 향후 과제</b>로 남아있다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-025</div>
+      <div><span>작성일</span>2026-09-10</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

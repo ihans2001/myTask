@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>사이버보안 취약점(CVE) 자동 모니터링</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --olive:#6B7A3D;
+    --olive-soft:#E6EAD9;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#C7D19F; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(230,234,217,0.16);
+    color:#D2DCB6;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--olive);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--olive);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--olive);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 22%; min-width:210px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.4px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.1px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ STAT PAIR ============ */
+  .stat-row{ display:flex; gap:12px; margin-top:12px; }
+  .stat-card{ flex:1 1 0; background:var(--paper-card); border:1px solid var(--line); padding:10px 14px; text-align:center; }
+  .stat-card .num{ font-family:'JetBrains Mono', monospace; font-size:22px; font-weight:700; color:var(--olive); }
+  .stat-card .lbl{ font-size:10.4px; color:var(--ink-soft); margin-top:2px; }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ RISK TABLE ============ */
+  .risk-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .risk-row{ display:flex; border-bottom:1px solid var(--line); }
+  .risk-row:last-child{ border-bottom:none; }
+  .risk-row .c{ padding:8px 11px; font-size:10.4px; line-height:1.45; }
+  .risk-row .c.risk{ flex:0 0 160px; font-weight:700; border-right:1px solid var(--line); }
+  .risk-row .c.content{ flex:1 1 0; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .risk-row .c.resp{ flex:1 1 0; color:var(--ink); }
+  .risk-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .risk-row.hdr .c.risk, .risk-row.hdr .c.content{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--olive);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ ROADMAP ============ */
+  .rm-track{ display:flex; align-items:stretch; }
+  .rm-item{ flex:1 1 0; position:relative; padding:0 6px; }
+  .rm-item .line{ height:4px; background:var(--olive-soft); position:relative; margin-bottom:10px; }
+  .rm-item .line::before{
+    content:"";
+    position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:12px; height:12px; border-radius:50%;
+    background:var(--olive);
+  }
+  .rm-item:first-child .line{ margin-left:0; }
+  .rm-item .stage{ font-family:'JetBrains Mono', monospace; font-size:9.5px; color:var(--olive); margin-bottom:3px; }
+  .rm-item .period{ font-size:11.6px; font-weight:700; margin-bottom:5px; }
+  .rm-item .d{ font-size:10px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--olive-soft);
+    border-left:4px solid var(--olive);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--olive); }
+  .note ul, .note ol{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-014</span>
+      <span class="tag">2026-09-09</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>사이버보안 취약점(CVE) <span class="hl">자동 모니터링</span></h1>
+    <div class="sub">담당 키워드의 신규 취약점을 정해진 시각에 자동으로 찾아 기록하고, 기존 엑셀·VBA 관련도 평가 체계와 그대로 연동한다. SW BOM과 연계하면 오픈소스 구성요소로 범위를 좁힌 모니터링도 가능하다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">일간·월간 모두 지원</span>
+      <span class="chip-pill">VBA-Python 브릿지</span>
+      <span class="chip-pill">SBOM 연계 확장 가능</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">매일 수작업 검색은 부담이 큼</div>
+        <div class="d">120개 이상의 키워드를 매일 하나하나 검색·정리하려면 시간이 많이 든다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">사람이 하면 누락되기 쉬움</div>
+        <div class="d">반복 작업일수록 놓치거나 늦어지는 위험이 커진다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">CRA 규제로 SBOM 중요성 확대</div>
+        <div class="d">오픈소스 구성요소의 취약점을 지속적으로 추적해야 하는 요구가 강화된다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">며칠만 밀려도 따라잡기 어려움</div>
+        <div class="d">출장·휴가로 실행이 밀리면 그 사이 쌓인 항목을 수작업으로 확인하기 힘들다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">자동 검색·기록 에이전트</div>
+            <div class="s">담당 키워드별 신규 취약점을 자동으로 찾아 표준 형식으로 기록</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">기존 엑셀·VBA 체계와 연동</div>
+            <div class="s">새로 만들지 않고 기존 관련도 평가 매크로를 그대로 호출</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">일간/월간 실행 모두 지원</div>
+            <div class="s">매일 정해진 시각 또는 주기적(월간) 실행 방식을 선택 가능</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">백로그 자동 추적</div>
+            <div class="s">실행이 며칠 밀려도 그 사이 쌓인 신규 항목을 누락 없이 따라잡음</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 구조 — VBA-Python 브릿지</div>
+        <div class="chip-tech">
+          <span>엑셀(VBA)이 데이터 원본(SSoT)</span>
+          <span>Python이 검색·수집을 담당하는 연산 엔진</span>
+        </div>
+        <div class="h" style="margin-top:14px;">실행 방식</div>
+        <div class="chip-tech">
+          <span>윈도우 작업 스케줄러로 매일 정해진 시각 자동 실행(일간)</span>
+          <span>필요 시 주기적(월간) 검색으로 전환 가능</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">키워드 순회</div><div class="d">담당 키워드마다 최신 취약점 목록을 검색한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">신규 여부 판별</div><div class="d">직전 실행 때 저장해둔 마지막 항목을 만나면 즉시 확인을 멈춘다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">상세 정보 수집</div><div class="d">신규 항목이 있으면 상세 정보를 모두 채운다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">기존 매크로 호출</div><div class="d">저장 완료 후 기존 관련도 평가 매크로를 자동 실행한다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EARLY STOP -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>핵심 최적화 — 조기 중단(Early-Stop)</div>
+    <div class="corr-note" style="margin-top:0;">검색결과가 항상 <b>최신순으로 정렬</b>된다는 점을 이용해, 직전 실행 때의 마지막 확인 지점을 만나는 즉시 멈춘다. 실행이 며칠 밀려도 페이지당 표시 건수를 넉넉히 잡아 페이지 전환 횟수를 최소화하면서, 평소에는 여전히 빠르게 끝난다.</div>
+    <div class="stat-row">
+      <div class="stat-card"><div class="num">약 16분</div><div class="lbl">평소(전일 대비 소량 신규) — 검색+상세수집 합계</div></div>
+      <div class="stat-card"><div class="num">약 38분</div><div class="lbl">1~2주 미실행 후(백로그 발생) — 검색+상세수집 합계</div></div>
+    </div>
+  </section>
+
+  <!-- SBOM LINK -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>SBOM 연계 — 오픈소스 모니터링 범위 좁히기</div>
+    <div class="note">
+      CRA(사이버복원력법) 규제 강화로 <b>SBOM(소프트웨어 구성요소 목록)</b>의 중요성이 커지고 있다. 이 모니터링 로직은 SW BOM과 연계하면, 담당자가 정한 전체 키워드가 아니라 <b>실제 사용 중인 오픈소스 구성요소만</b>으로 검색 범위를 좁혀 수행할 수 있다 — 관련 없는 검색을 줄이고, 우리 제품에 실제로 영향을 주는 취약점에 집중한다.
+    </div>
+  </section>
+
+  <!-- RISK -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>리스크 및 대응</div>
+    <div class="risk-table">
+      <div class="risk-row hdr">
+        <div class="c risk">리스크</div>
+        <div class="c content">내용</div>
+        <div class="c resp">대응 방안</div>
+      </div>
+      <div class="risk-row"><div class="c risk">사이트 구조 변경</div><div class="c content">화면 구조가 바뀌면 데이터 추출 위치를 못 찾을 수 있음</div><div class="c resp">배포 전 실제 화면 검증, 운영 중 주기적 점검</div></div>
+      <div class="risk-row"><div class="c risk">접근 제한/차단</div><div class="c content">과도한 요청으로 일시적 접근 제한 발생 가능</div><div class="c resp">요청 간 딜레이 적용, 재시도 로직 보강</div></div>
+      <div class="risk-row"><div class="c risk">실행 환경 의존성</div><div class="c content">VBA 매크로 호출은 Windows+Excel 환경에서만 동작</div><div class="c resp">전용 PC 또는 서버에서 상시 운영</div></div>
+      <div class="risk-row"><div class="c risk">파일 동시 접근 충돌</div><div class="c content">Python과 엑셀이 동시에 같은 파일을 열면 오류 가능</div><div class="c resp">저장 완료 후에만 매크로 호출하도록 순서 강제</div></div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">07</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">하루 20~40분 절감</div>
+        <div class="d">반복적인 수작업 검색 시간을 줄인다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">누락 위험 최소화</div>
+        <div class="d">사람이 놓치기 쉬운 신규 항목을 자동으로 포착한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">기존 자산을 그대로 활용</div>
+        <div class="d">엑셀·VBA 체계를 바꾸지 않아 추가 학습 비용이 없다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">데이터 공백 방지</div>
+        <div class="d">장기 미실행 후에도 자동으로 백로그를 따라잡는다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section>
+    <div class="sec-label"><span class="n">08</span>도입 로드맵(4주)</div>
+    <div class="rm-track">
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">1~2주차</div>
+        <div class="period">개발·통합 테스트</div>
+        <div class="d">개발 환경 구성과 전체 키워드 통합 테스트에 집중한다</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">3주차</div>
+        <div class="period">병행 운영</div>
+        <div class="d">기존 수작업과 병행 운영하며 결과를 교차 검증한다</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">4주차~</div>
+        <div class="period">정식 자동 운영</div>
+        <div class="d">검증이 끝나면 정식 자동 운영으로 전환한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LESSONS -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">09</span>실전에서 얻은 일반 원칙</div>
+    <div class="note">
+      실제 구현 과정에서, 화면을 흉내 내어 데이터를 긁어오던 방식을 <b>공식 API 직접 호출</b> 방식으로 전환한 경험이 있다. 이는 이번 도구에 국한되지 않고, 다른 웹 자동화 작업에도 그대로 적용할 수 있는 점검 순서다.
+      <ol>
+        <li>화면에 보이는 정보는 반드시 어딘가의 API 응답에서 온다 — 원본 요청을 먼저 찾아본다</li>
+        <li>'View JSON', 'Export', 'API' 같은 링크나 버튼이 있는지 가장 먼저 확인한다</li>
+        <li>고정된 포맷을 가진 값은 화면 구조가 아니라 정규식으로 직접 추출하는 편이 더 견고하다</li>
+        <li>브라우저 자동화는 '공식 API가 없을 때의 최후 수단'으로 남겨둔다</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-014</div>
+      <div><span>작성일</span>2026-09-09</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

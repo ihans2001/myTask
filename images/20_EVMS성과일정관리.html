@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>EVMS 성과·일정 관리</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --rose:#8C4A5C;
+    --rose-soft:#EDDBE0;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#DBB7C1; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(237,219,224,0.16);
+    color:#E0BFC8;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--rose);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--rose);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--rose);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ ASSET TYPE TABLE ============ */
+  .type-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .type-row{ display:flex; border-bottom:1px solid var(--line); }
+  .type-row:last-child{ border-bottom:none; }
+  .type-row .c{ padding:8px 12px; font-size:10.5px; line-height:1.5; }
+  .type-row .c.type{ flex:0 0 150px; font-weight:700; border-right:1px solid var(--line); }
+  .type-row .c.match{ flex:1 1 0; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .type-row .c.tara{ flex:1 1 0; color:var(--ink); }
+  .type-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .type-row.hdr .c.type, .type-row.hdr .c.match{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ CASE A/B ============ */
+  .ba-row{ display:flex; align-items:stretch; gap:0; }
+  .ba-card{ flex:1 1 0; min-width:0; padding:13px 15px; position:relative; }
+  .ba-card.before{ background:#EDEFEA; color:var(--ink); }
+  .ba-card.after{ background:var(--rose); color:#fff; }
+  .ba-card + .ba-card{ margin-left:16px; }
+  .ba-card + .ba-card::before{
+    content:"→"; position:absolute; left:-16px; top:50%; transform:translate(-50%,-50%);
+    color:var(--ink-soft); font-size:16px; background:var(--paper); width:20px; text-align:center;
+  }
+  .ba-card .tag{ font-family:'JetBrains Mono', monospace; font-size:9.5px; opacity:0.75; margin-bottom:5px; }
+  .ba-card .t{ font-size:12.5px; font-weight:700; margin-bottom:6px; }
+  .ba-card .d{ font-size:10.8px; line-height:1.55; }
+  .ba-card.after .d{ color:#F3E3E8; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--rose);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--rose-soft);
+    border-left:4px solid var(--rose);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--rose); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-020</span>
+      <span class="tag">2026-09-10</span>
+      <span class="tag">가이드</span>
+    </div>
+    <h1>EVMS <span class="hl">성과·일정 관리</span></h1>
+    <div class="sub">신호등 방식의 맹점을 극복하기 위해, 일정/예산의 계획-실적 대비를 수치화해 성과로 관리한다. 마일스톤 단위 산출물 평가는 EVMS 산출물에서 자동 추출한다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">PV/EV/AC 3대 지표</span>
+      <span class="chip-pill">ASPICE 자가평가 기반 EV 산정</span>
+      <span class="chip-pill">VBA 자동화</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">신호등 방식의 맹점</div>
+        <div class="d">정상/지연/위험 3색만으로는 지연 여부는 보여도 얼마나·왜 지연되는지는 알 수 없다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">일정·원가 문제 구분 불가</div>
+        <div class="d">신호등만으로는 일정 문제인지 원가 문제인지를 분리해서 볼 수 없다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">전체 지표만으로는 안심 불가</div>
+        <div class="d">프로젝트 전체는 정상이어도 특정 CA(통제계정)만 위험한 상황을 놓칠 수 있다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">정기적 산출물 평가 부담</div>
+        <div class="d">EVMS를 적용하려면 마일스톤마다 산출물을 평가해야 하는 부담이 뒤따른다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">PV/EV/AC 3대 지표 관리</div>
+            <div class="s">계획가치·획득가치·실제원가를 동시에 추적해 SV·CV·SPI·CPI를 산출한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">ASPICE 자가평가 기반 EV 산정</div>
+            <div class="s">계획수립·작성·동료검토·보고승인·PM체크 5개 체크포인트 배점으로 진도율을 객관화한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">CA 단위 드릴다운</div>
+            <div class="s">전체 지표 아래 CA(통제계정)별 위험 순위까지 함께 확인한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">마일스톤 산출물 평가 자동 추출</div>
+            <div class="s">SWE34_아카이브 모듈이 마일스톤별 자가평가 결과를 자동으로 저장한다</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 수식</div>
+        <div class="chip-tech">
+          <span>SV = EV − PV</span>
+          <span>CV = EV − AC</span>
+          <span>SPI = EV / PV</span>
+          <span>CPI = EV / AC</span>
+        </div>
+        <div class="h" style="margin-top:14px;">신뢰성 검증</div>
+        <div class="chip-tech">
+          <span>월간 30% 표본재검토로 자기채점 허위보고(그린워싱) 차단</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">월간 관리보고</div><div class="d">매월 진행 현황을 잠정치로 보고한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">배포 시점 약식 전수점검</div><div class="d">배포 게이트에서 EVMS 정합성을 약식으로 전수 점검한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">마일스톤 정식 재평가</div><div class="d">마일스톤 시점에 산출물을 5개 체크포인트로 정식 채점한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">산출물 평가 자동 추출</div><div class="d">SWE34_아카이브가 채점 결과를 마일스톤별로 자동 저장한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">성과 지표 산출</div><div class="d">EV = BAC × 진도율로 계산되어 SPI·CPI 등 성과 지표에 반영된다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>신호등 방식 vs EVMS 방식</div>
+    <div class="type-table">
+      <div class="type-row hdr">
+        <div class="c type">구분</div>
+        <div class="c match">기존 신호등 방식</div>
+        <div class="c tara">EVMS 방식</div>
+      </div>
+      <div class="type-row"><div class="c type">표현 방법</div><div class="c match">정상/지연/위험 3색</div><div class="c tara">PV/EV/AC 수치 + SPI/CPI 지수</div></div>
+      <div class="type-row"><div class="c type">일정·원가 구분</div><div class="c match">구분 불가</div><div class="c tara">SV(일정)와 CV(원가)를 분리해서 확인</div></div>
+      <div class="type-row"><div class="c type">드릴다운</div><div class="c match">전체만 표시</div><div class="c tara">CA 단위까지 위험 순위 확인 가능</div></div>
+    </div>
+    <div class="corr-note">6개 시나리오 검증 결과, 전체 CPI가 0.8 이상(양호)이어도 <b>최저 CA의 CPI는 위험 기준선 아래로 떨어질 수 있어</b>, 반드시 CA 단위 하위 3~5개를 함께 봐야 한다.</div>
+  </section>
+
+  <!-- BEFORE/AFTER -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>Before / After</div>
+    <div class="ba-row">
+      <div class="ba-card before">
+        <div class="tag">이전 — 신호등 방식</div>
+        <div class="t">지연 여부만 보이고 원인은 안 보임</div>
+        <div class="d">정상/지연/위험 3색 표시로는 지연 여부만 보이고, 일정 문제인지 원가 문제인지 구분할 수 없다.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="tag">현재 — EVMS 수치화 성과관리</div>
+        <div class="t">일정·원가 문제를 분리해서 파악</div>
+        <div class="d">PV/EV/AC를 동시에 추적해 SV·CV·SPI·CPI로 일정과 원가 문제를 분리해서 파악한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">조기경보</div>
+        <div class="d">일정 문제와 원가 문제를 구분해 더 빨리 알아챈다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">위험 CA 포착</div>
+        <div class="d">전체는 정상이어도 특정 CA만 위험한 상황을 놓치지 않는다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">객관적 진도율</div>
+        <div class="d">ASPICE 체크포인트 배점으로 주관적 추정을 배제한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">반복작업 최소화</div>
+        <div class="d">VBA 자동화로 월마감 오류검증·대시보드 갱신 부담을 줄인다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>EV(진도율 기반)와 AC(실적 공수)를 <b>절대 연동시키지 않아야</b> 한다 — 연동하면 CPI가 항상 1.0 근처로만 나와 진짜 원가초과를 감지할 수 없다</li>
+        <li>균등배분 BCWS 방식은 목표 마일스톤이 이르거나 늦은 CA를 왜곡되게 보여줄 수 있어 <b>CPI를 함께 참고</b>해야 한다</li>
+        <li>자기채점 허위보고(그린워싱)를 막기 위해 <b>월간 30% 표본재검토 절차를 반드시 유지</b>해야 한다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-020</div>
+      <div><span>작성일</span>2026-09-10</div>
+    </div>
+    <div>본 내용은 사내 운영 가이드이며, 실제 환경 변수·경로는 배포 시 별도 관리한다.</div>
+  </div>
+
+</div>
+</body>
+</html>

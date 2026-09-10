@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>QMS 사업제안서 인포그래픽</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EEF1F0;
+    --ink:#101B2B;
+    --ink-soft:#4B5A6A;
+    --line:#C9D2D3;
+    --steel:#2C5F7A;
+    --steel-dark:#1B4359;
+    --amber:#C97A26;
+    --amber-soft:#F3E3CB;
+    --green:#2E7D5B;
+    --green-soft:#D8E9E0;
+    --red:#A5372B;
+    --red-soft:#F1DAD5;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DEDB;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:960px;
+    background:var(--paper);
+    padding:0;
+    position:relative;
+    box-shadow:0 18px 50px rgba(16,27,43,0.28);
+    border:1px solid #B9C4C2;
+  }
+
+  /* ================= HEADER ================= */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 40px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .head::after{
+    content:"";
+    position:absolute;
+    right:-60px; top:-60px;
+    width:220px; height:220px;
+    border:1px solid rgba(238,241,240,0.14);
+    border-radius:50%;
+  }
+  .head::before{
+    content:"";
+    position:absolute;
+    right:20px; top:20px;
+    width:130px; height:130px;
+    border:1px solid rgba(238,241,240,0.14);
+    border-radius:50%;
+  }
+  .doc-meta{
+    display:flex;
+    gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.02em;
+    color:#B9C7CE;
+    margin-bottom:16px;
+  }
+  .doc-meta span{ white-space:nowrap; }
+  .doc-meta .tag{
+    border:1px solid rgba(238,241,240,0.35);
+    padding:2px 8px;
+    border-radius:2px;
+  }
+  .tag.confidential{
+    border-color:var(--amber);
+    color:#F2CE9C;
+  }
+  .head h1{
+    margin:0 0 6px;
+    font-size:29px;
+    line-height:1.32;
+    font-weight:700;
+    max-width:640px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 em{
+    font-style:normal;
+    color:#8FBFD6;
+  }
+  .head .sub{
+    font-size:13.5px;
+    color:#C4CCD1;
+    max-width:600px;
+    line-height:1.55;
+    margin-top:10px;
+  }
+  .head .org{
+    position:absolute;
+    right:40px; bottom:24px;
+    text-align:right;
+    font-size:12px;
+    color:#9FB2BB;
+  }
+  .head .org b{
+    display:block;
+    color:var(--paper);
+    font-size:15px;
+    margin-bottom:2px;
+  }
+
+  /* ================= SECTION SHELL ================= */
+  section{
+    padding:20px 40px;
+    border-bottom:1px solid var(--line);
+  }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--steel-dark);
+    letter-spacing:0.02em;
+    margin-bottom:10px;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper);
+    background:var(--steel-dark);
+    padding:1px 6px;
+    border-radius:2px;
+  }
+  .sec-title{
+    font-size:16.5px;
+    font-weight:700;
+    margin:0 0 12px;
+    color:var(--ink);
+  }
+
+  /* ================= WHY (problem) ================= */
+  .why-grid{
+    display:flex;
+    gap:12px;
+  }
+  .why-card{
+    flex:1 1 0;
+    min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--red);
+    padding:12px 13px;
+  }
+  .why-card .k{
+    font-size:12.5px;
+    font-weight:700;
+    margin-bottom:5px;
+  }
+  .why-card .d{
+    font-size:11.2px;
+    color:var(--ink-soft);
+    line-height:1.5;
+  }
+
+  /* ================= WHAT (deliverables + tech) ================= */
+  .what-wrap{
+    display:flex;
+    gap:20px;
+  }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--steel);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{
+    font-size:11.5px;
+    color:#9FB2BB;
+    margin-bottom:10px;
+  }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE7EA;
+  }
+
+  /* ================= ARCHITECTURE FLOW ================= */
+  .flow{
+    display:flex;
+    align-items:stretch;
+    gap:0;
+  }
+  .flow-node{
+    flex:1;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 11px;
+    position:relative;
+    min-width:0;
+  }
+  .flow-node + .flow-node{ margin-left:14px; }
+  .flow-node + .flow-node::before{
+    content:"→";
+    position:absolute;
+    left:-14px; top:50%;
+    transform:translate(-50%,-50%);
+    color:var(--ink-soft);
+    font-size:14px;
+  }
+  .flow-node .ft{
+    font-size:11.6px;
+    font-weight:700;
+    margin-bottom:5px;
+    line-height:1.35;
+  }
+  .flow-node .fs{
+    font-family:'JetBrains Mono', monospace;
+    font-size:9.3px;
+    color:var(--steel-dark);
+    display:block;
+    margin-bottom:6px;
+    line-height:1.4;
+    word-break:break-word;
+  }
+  .badge{
+    display:inline-block;
+    font-size:9.3px;
+    font-weight:700;
+    padding:2px 7px;
+    border-radius:2px;
+  }
+  .badge.done{ background:var(--green-soft); color:var(--green); }
+  .badge.plan{ background:var(--amber-soft); color:var(--amber); }
+  .flow-note{
+    margin-top:12px;
+    font-size:10.7px;
+    color:var(--ink-soft);
+    display:flex;
+    gap:16px;
+  }
+  .flow-note .lg{ display:flex; align-items:center; gap:5px; }
+  .dot{ width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .dot.done{ background:var(--green); }
+  .dot.plan{ background:var(--amber); }
+
+  /* ================= ROADMAP ================= */
+  .rm-head{
+    display:flex;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .rm-head .sp{ width:190px; flex-shrink:0; }
+  .rm-head .m{ flex:1 1 0; text-align:center; }
+  .rm-row{
+    display:flex;
+    align-items:center;
+    margin-bottom:7px;
+  }
+  .rm-row .lbl{
+    width:190px;
+    flex-shrink:0;
+    font-size:11.6px;
+    font-weight:700;
+    padding-right:10px;
+    line-height:1.35;
+  }
+  .rm-row .lbl small{
+    display:block;
+    font-weight:400;
+    color:var(--ink-soft);
+    font-size:10.2px;
+    margin-top:2px;
+  }
+  .rm-track{
+    flex:1 1 0;
+    height:20px;
+    background:#E4E8E4;
+    background-image:linear-gradient(to right, transparent 24.7%, #C9D2D3 24.7%, #C9D2D3 25.3%, transparent 25.3%, transparent 49.7%, #C9D2D3 49.7%, #C9D2D3 50.3%, transparent 50.3%, transparent 74.7%, #C9D2D3 74.7%, #C9D2D3 75.3%, transparent 75.3%);
+    position:relative;
+  }
+  .rm-bar{
+    position:absolute;
+    top:0; bottom:0;
+    background:var(--steel);
+  }
+  .rm-row.p2 .rm-bar{ background:var(--steel); }
+  .rm-row.p3 .rm-bar{ background:var(--steel-dark); }
+  .rm-row.p4 .rm-bar{ background:#4C7C8C; }
+  .rm-row.p5 .rm-bar{ background:var(--amber); }
+  .rm-foot{
+    font-size:10.5px;
+    color:var(--ink-soft);
+    margin-top:6px;
+    line-height:1.55;
+    border-left:2px solid var(--amber);
+    padding-left:10px;
+  }
+
+  /* ================= BENEFITS ================= */
+  .benefit-grid{
+    display:flex;
+    gap:12px;
+  }
+  .benefit-card{
+    flex:1 1 0;
+    min-width:0;
+    background:var(--steel-dark);
+    color:var(--paper);
+    padding:14px 12px;
+    text-align:left;
+  }
+  .benefit-card .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:26px;
+    font-weight:700;
+    color:#9AD4C9;
+    line-height:1;
+    margin-bottom:6px;
+  }
+  .benefit-card .lbl{
+    font-size:11px;
+    color:#D3DEE2;
+    line-height:1.4;
+  }
+
+  /* ================= RISK ================= */
+  .risk-grid{
+    display:flex;
+    gap:12px;
+  }
+  .risk-card{
+    flex:1 1 0;
+    min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:11px 12px;
+  }
+  .risk-card .top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:6px;
+  }
+  .risk-card .cat{
+    font-family:'JetBrains Mono', monospace;
+    font-size:9.5px;
+    color:var(--ink-soft);
+  }
+  .impact{
+    font-size:9.3px;
+    font-weight:700;
+    padding:1px 7px;
+    border-radius:2px;
+    background:var(--red-soft);
+    color:var(--red);
+  }
+  .risk-card .k{ font-size:11.8px; font-weight:700; margin-bottom:5px; line-height:1.3;}
+  .risk-card .m{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+  .risk-card .m b{ color:var(--ink); }
+
+  /* ================= FOOTER ================= */
+  .foot{
+    padding:16px 40px 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    font-size:10px;
+    color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:26px; }
+  .foot .cols > div{ margin-right:0; }
+  .foot .cols div span{ display:block; color:var(--ink); font-weight:600; margin-bottom:2px; font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;}
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .sheet{ box-shadow:none; border:none; width:auto; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-001</span>
+      <span class="tag">V2.0</span>
+      <span class="tag">2026-08-14</span>
+      <span class="tag confidential">대외비 CONFIDENTIAL</span>
+    </div>
+    <h1>QMS 기반 프로세스 테일러링 &<br><em>프로젝트 모니터링 시스템</em> (QMS)</h1>
+    <div class="sub">전사 품질 프로세스(QMS)를 프로젝트 특성에 맞게 테일러링하고, 과제 계획 수립부터 종료까지 전 과정을 Excel VBA + Outlook으로 통합 모니터링한다 — 심사용 서류가 아니라 실제 업무 자동화로.</div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>배경 및 필요성 — 반복되는 4가지 문제</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">프로세스 적용 불일치</div>
+        <div class="d">프로젝트 유형별 테일러링 기준이 불명확해 심사 시 지적 반복</div>
+      </div>
+      <div class="why-card">
+        <div class="k">수작업 테일러링</div>
+        <div class="d">QMS 적용 여부를 매번 수작업 선별 — 담당자 역량 의존, 오류 발생</div>
+      </div>
+      <div class="why-card">
+        <div class="k">일정 관리 분산</div>
+        <div class="d">마일스톤·업무 일정이 Excel·메일·개인 캘린더에 흩어져 누락·지연 상시화</div>
+      </div>
+      <div class="why-card">
+        <div class="k">심사 준비 지연</div>
+        <div class="d">ASPICE·ISO 26262·ISO/SAE 21434 심사 근거 취합에 과다 공수 소요</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>핵심 산출물 및 기술</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">QMS.xlsm</div>
+            <div class="s">테일러링 + 모니터링 통합 워크북</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">프로젝트별 .ics 일정 공유 + 원격삭제 도구</div>
+            <div class="s">일정 공유 파일과 삭제 전용 배포 워크북(xlsm)</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">암호화된 QMS 데이터 파일</div>
+            <div class="s">qms_yymmdd.qms — AES-256-GCM</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">Outlook 커스텀 메뉴</div>
+            <div class="s">일정 등록·공유·삭제, 오늘+3일 업무 확인</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 기술 스택</div>
+        <div class="chip-row">
+          <span class="chip">Excel VBA</span>
+          <span class="chip">Outlook VBA</span>
+          <span class="chip">AES-256-GCM</span>
+          <span class="chip">iCalendar(.ics)</span>
+          <span class="chip">키워드 통합검색</span>
+          <span class="chip">Application_Startup</span>
+        </div>
+        <div class="h" style="margin-top:14px;">적용 대상</div>
+        <div class="chip-row">
+          <span class="chip">수주과제 (SW 전체/일부/미개발/직접지정)</span>
+          <span class="chip">자체투자</span>
+          <span class="chip">국책과제</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>시스템 아키텍처 — 데이터 흐름</div>
+    <div class="flow">
+      <div class="flow-node">
+        <div class="ft">QMS.json 확보 · 파싱</div>
+        <span class="fs mono">getDescriptionProcess()</span>
+        <span class="badge plan">예정</span>
+      </div>
+      <div class="flow-node">
+        <div class="ft">프로세스 ↔ 일정 시트 연계</div>
+        <span class="fs mono">matchProcessLevelID()</span>
+        <span class="badge plan">예정</span>
+      </div>
+      <div class="flow-node">
+        <div class="ft">Outlook 캘린더 등록</div>
+        <span class="fs mono">Register_PJT_Schedule()</span>
+        <span class="badge done">구현 완료</span>
+      </div>
+      <div class="flow-node">
+        <div class="ft">.ics 공유 · 원격 삭제</div>
+        <span class="fs mono">Export_PJT_Schedule_To_ICS()</span>
+        <span class="badge done">구현 완료</span>
+      </div>
+      <div class="flow-node">
+        <div class="ft">오늘+3일 업무 분류</div>
+        <span class="fs mono">Show_PJT_TodayClassification()</span>
+        <span class="badge done">구현 완료</span>
+      </div>
+    </div>
+    <div class="flow-note">
+      <span class="lg"><span class="dot done"></span>Outlook 자동화 5건 — 프로토타입으로 구현·검증 완료</span>
+      <span class="lg"><span class="dot plan"></span>QMS 연계 4건 — QMS.json 확보 후 착수 예정 (최장 소요 구간)</span>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>구현 로드맵 — 4개월</div>
+    <div class="rm-head"><div class="sp"></div><div class="m">M1</div><div class="m">M2</div><div class="m">M3</div><div class="m">M4</div></div>
+
+    <div class="rm-row p2">
+      <div class="lbl">Phase 1<small>QMS.json 확보·표준화</small></div>
+      <div class="rm-track"><div class="rm-bar" style="left:0%;width:50%;"></div></div>
+    </div>
+    <div class="rm-row p3">
+      <div class="lbl">Phase 2<small>QMS 연계·테일러링 자동화</small></div>
+      <div class="rm-track"><div class="rm-bar" style="left:25%;width:50%;"></div></div>
+    </div>
+    <div class="rm-row p4">
+      <div class="lbl">Phase 3<small>통합검색·보안·Outlook 하드닝</small></div>
+      <div class="rm-track"><div class="rm-bar" style="left:50%;width:50%;"></div></div>
+    </div>
+    <div class="rm-row p5">
+      <div class="lbl">Phase 4<small>파일럿 적용·배포</small></div>
+      <div class="rm-track"><div class="rm-bar" style="left:75%;width:25%;"></div></div>
+    </div>
+    <div class="rm-foot">병목 구간은 Phase 1의 QMS.json 표준화. 일정 등록·공유·원격삭제·업무브리핑(Outlook VBA)은 이미 프로토타입으로 검증되어 Phase 3 리스크를 낮춘다.</div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>기대 효과 — 정량 지표</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="num">85%↓</div>
+        <div class="lbl">테일러링 준비 시간<br>(4~8시간 → 30분 이내)</div>
+      </div>
+      <div class="benefit-card">
+        <div class="num">90%↓</div>
+        <div class="lbl">일정 등록 공수<br>(요일 반복 규칙 기반 일괄 등록)</div>
+      </div>
+      <div class="benefit-card">
+        <div class="num">60%↓</div>
+        <div class="lbl">심사 준비 공수<br>(근거 자료 취합 시간)</div>
+      </div>
+      <div class="benefit-card">
+        <div class="num">Zero</div>
+        <div class="lbl">목표<br>일정 누락 · 프로세스 적용 오류</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RISK -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">06</span>주요 리스크 및 완화 방안 (영향도 높음)</div>
+    <div class="risk-grid">
+      <div class="risk-card">
+        <div class="top"><span class="cat">E-1 · 환경/호환성</span><span class="impact">높음</span></div>
+        <div class="k">Outlook 매크로 보안 설정 차단 가능</div>
+        <div class="m">IT 보안팀 사전 협의, <b>Trusted Location</b> 등록 권고. ActiveExplorer 재시도 로직 적용 완료.</div>
+      </div>
+      <div class="risk-card">
+        <div class="top"><span class="cat">B-1 · 운영</span><span class="impact">높음</span></div>
+        <div class="k">QMS JSON 파일 버전 불일치</div>
+        <div class="m">파일명에 날짜 포함(<b>qms_yymmdd.json</b>), 실행 시 최신 여부 사용자 확인 유도.</div>
+      </div>
+      <div class="risk-card">
+        <div class="top"><span class="cat">C-1 · 보안/키관리</span><span class="impact">높음</span></div>
+        <div class="k">마스터키 단일 관리자 집중</div>
+        <div class="m">master.key.enc와 passphrase를 분실 방지 백업, 개인 PC 외 이중화 보관 검토.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-001</div>
+      <div><span>버전</span>V2.0 (2026-08-14)</div>
+      <div><span>보안등급</span>대외비 (Confidential)</div>
+    </div>
+    <div>본 문서는 내부 검토용이며, 사전 승인 없이 외부 유출을 금합니다.</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>엑셀→워드 문서 변환 자동화</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --rose:#8C4A5C;
+    --rose-soft:#EDDBE0;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#DBB7C1; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(237,219,224,0.16);
+    color:#E0BFC8;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--rose);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--rose);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--rose);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ ASSET TYPE TABLE ============ */
+  .type-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .type-row{ display:flex; border-bottom:1px solid var(--line); }
+  .type-row:last-child{ border-bottom:none; }
+  .type-row .c{ padding:8px 12px; font-size:10.5px; line-height:1.5; }
+  .type-row .c.type{ flex:0 0 150px; font-weight:700; border-right:1px solid var(--line); }
+  .type-row .c.match{ flex:1 1 0; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .type-row .c.tara{ flex:1 1 0; color:var(--ink); }
+  .type-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .type-row.hdr .c.type, .type-row.hdr .c.match{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ CASE A/B ============ */
+  .ba-row{ display:flex; align-items:stretch; gap:0; }
+  .ba-card{ flex:1 1 0; min-width:0; padding:13px 15px; position:relative; }
+  .ba-card.before{ background:#EDEFEA; color:var(--ink); }
+  .ba-card.after{ background:var(--rose); color:#fff; }
+  .ba-card + .ba-card{ margin-left:16px; }
+  .ba-card + .ba-card::before{
+    content:"→"; position:absolute; left:-16px; top:50%; transform:translate(-50%,-50%);
+    color:var(--ink-soft); font-size:16px; background:var(--paper); width:20px; text-align:center;
+  }
+  .ba-card .tag{ font-family:'JetBrains Mono', monospace; font-size:9.5px; opacity:0.75; margin-bottom:5px; }
+  .ba-card .t{ font-size:12.5px; font-weight:700; margin-bottom:6px; }
+  .ba-card .d{ font-size:10.8px; line-height:1.55; }
+  .ba-card.after .d{ color:#F3E3E8; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--rose);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--rose-soft);
+    border-left:4px solid var(--rose);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--rose); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-024</span>
+      <span class="tag">2026-09-10</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>엑셀→워드 <span class="hl">문서 변환 자동화</span></h1>
+    <div class="sub">config 파일 하나로 시트-챕터 매핑을 정의하고, main 실행 한 번으로 엑셀 워크시트를 워드 보고서로 변환한다. 제공 가능한 부분만 선택해 담아 노하우 유출도 방지한다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">config 기반 선언적 설정</span>
+      <span class="chip-pill">병합 헤더 자동 확장</span>
+      <span class="chip-pill">북마크 3개로 최소화</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">반복적 수작업과 오류</div>
+        <div class="d">시트 수가 많을수록(과제당 15~20개) 복사·붙여넣기가 반복되고 누락·서식붕괴가 발생한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">북마크 방식의 구조적 취약성</div>
+        <div class="d">문서를 편집하다 보면 북마크가 소리 없이 사라져 시트가 통째로 누락될 수 있다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">서식 재현이 어려움</div>
+        <div class="d">코드로 표를 새로 만들면 음영·테두리·폰트 같은 서식이 라이브러리 기본값으로 대체된다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">병합 셀 헤더 처리 누락</div>
+        <div class="d">위험도처럼 상위 개념을 병합 셀로 묶은 헤더는 단순 열 지정만으로는 제대로 인식되지 않는다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">config 기반 시트-챕터 매핑</div>
+            <div class="s">config.py 하나로 시트별 규칙과 문서 구조를 선언적으로 관리한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">병합 헤더 자동 확장</div>
+            <div class="s">지정한 열이 병합 범위에 속하면 관련 열 전체를 자동으로 포함한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">표 서식 복제</div>
+            <div class="s">워드 템플릿의 모범 표 서식(음영·테두리·폰트)을 그대로 복제해 표를 생성한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">선택적 제공 범위 지정</div>
+            <div class="s">config에서 시트/열을 선택해, 제공 가능한 부분만 워드로 변환한다</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 원리</div>
+        <div class="chip-tech">
+          <span>설정(config)과 실행 엔진(excel_reader/word_writer/main)을 분리</span>
+        </div>
+        <div class="h" style="margin-top:14px;">북마크 최소화</div>
+        <div class="chip-tech">
+          <span>표지 제목·목차·모범 표 서식 3개로 관리 포인트 축소</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">config.py 설정</div><div class="d">엑셀/템플릿 경로, 시트별 규칙(SheetConfig), 챕터 목차 골격을 정의한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">엑셀 읽기</div><div class="d">excel_reader.py가 시트별 규칙에 따라 헤더·데이터를 추출하고 병합 헤더를 자동 확장한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">종료·제외 판정</div><div class="d">순환열(loop_col) 공백 여부와 skip 조건으로 데이터 종료·행 제외를 판정한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">워드 생성</div><div class="d">word_writer.py가 챕터 헤딩과 표를 모범 표 서식으로 복제해 생성한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">제목·목차 반영</div><div class="d">문서 제목을 표지에 반영하고 TOC 필드를 삽입해 저장한다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AS-IS TO-BE -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>As-Is vs To-Be</div>
+    <div class="type-table">
+      <div class="type-row hdr">
+        <div class="c type">구분</div>
+        <div class="c match">As-Is (수작업)</div>
+        <div class="c tara">To-Be (자동화)</div>
+      </div>
+      <div class="type-row"><div class="c type">변환 방식</div><div class="c match">시트별 수작업 복사·붙여넣기</div><div class="c tara">config 설정 + 1회 실행 스크립트</div></div>
+      <div class="type-row"><div class="c type">예외 처리</div><div class="c match">매번 개별 수정</div><div class="c tara">SheetConfig 파라미터로 선언적 처리</div></div>
+      <div class="type-row"><div class="c type">서식 일관성</div><div class="c match">작성자별 편차 발생</div><div class="c tara">모범 표 1개를 전 챕터에 복제 적용</div></div>
+      <div class="type-row"><div class="c type">구조 변경 대응</div><div class="c match">표 위치마다 북마크 재배치 필요</div><div class="c tara">챕터 경로(config)만 수정, 북마크 불변</div></div>
+    </div>
+    <div class="corr-note">20개 워크시트, 4단계 챕터 구조로 실제 검증했으며, <b>표 서식(음영 D9D9D9 등)까지 정상 복제</b>됨을 확인했다.</div>
+  </section>
+
+  <!-- BEFORE/AFTER -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>Before / After</div>
+    <div class="ba-row">
+      <div class="ba-card before">
+        <div class="tag">이전 — 전체 문서 그대로 제출</div>
+        <div class="t">노하우 유출 위험</div>
+        <div class="d">엔지니어링 산출물을 통째로 제출하면 당사 노하우가 그대로 유출될 위험이 있다.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="tag">현재 — 제공 범위만 선택 변환</div>
+        <div class="t">필요한 부분만 문서화</div>
+        <div class="d">config에서 제공 가능한 시트/열만 선택해, 필요한 부분만 워드 문서로 변환해 제출한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">변환 시간 단축</div>
+        <div class="d">수작업 복사·붙여넣기를 스크립트 실행 수 초로 대체한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">인수인계 리스크 감소</div>
+        <div class="d">변환 규칙이 config 파일로 문서화되어 개인 기억에 의존하지 않는다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">시각적 일관성 확보</div>
+        <div class="d">모범 표 서식을 그대로 복제해 산출물 전반의 표 서식이 통일된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">노하우 유출 방지</div>
+        <div class="d">제공 가능한 부분만 선택해 담아 제출용 문서를 만들 수 있다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>북마크는 <b>표지 제목·목차·모범 표 서식 3개</b>만 관리하면 되며, 시트별 삽입 위치는 북마크가 아니라 config의 챕터 경로로 결정된다</li>
+        <li>표는 <b>섹션 속성(w:sectPr) 바로 앞에 순서대로 삽입</b>해야 챕터 제목보다 뒤섞이지 않는다 (검증 중 발견·조치된 이슈)</li>
+        <li>모범 표를 찾지 못하거나 <b>clone_header_row=False인 시트는 기본 표 스타일로 자동 대체</b>된다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-024</div>
+      <div><span>작성일</span>2026-09-10</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

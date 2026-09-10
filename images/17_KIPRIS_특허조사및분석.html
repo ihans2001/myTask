@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>KIPRIS 특허조사 및 분석 자동화</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --rose:#8C4A5C;
+    --rose-soft:#EDDBE0;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#DBB7C1; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(237,219,224,0.16);
+    color:#E0BFC8;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--rose);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--rose);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--rose);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ ASSET TYPE TABLE ============ */
+  .type-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .type-row{ display:flex; border-bottom:1px solid var(--line); }
+  .type-row:last-child{ border-bottom:none; }
+  .type-row .c{ padding:8px 12px; font-size:10.5px; line-height:1.5; }
+  .type-row .c.type{ flex:0 0 150px; font-weight:700; border-right:1px solid var(--line); }
+  .type-row .c.match{ flex:1 1 0; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .type-row .c.tara{ flex:1 1 0; color:var(--ink); }
+  .type-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .type-row.hdr .c.type, .type-row.hdr .c.match{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ CASE A/B ============ */
+  .ba-row{ display:flex; align-items:stretch; gap:0; }
+  .ba-card{ flex:1 1 0; min-width:0; padding:13px 15px; position:relative; }
+  .ba-card.before{ background:#EDEFEA; color:var(--ink); }
+  .ba-card.after{ background:var(--rose); color:#fff; }
+  .ba-card + .ba-card{ margin-left:16px; }
+  .ba-card + .ba-card::before{
+    content:"→"; position:absolute; left:-16px; top:50%; transform:translate(-50%,-50%);
+    color:var(--ink-soft); font-size:16px; background:var(--paper); width:20px; text-align:center;
+  }
+  .ba-card .tag{ font-family:'JetBrains Mono', monospace; font-size:9.5px; opacity:0.75; margin-bottom:5px; }
+  .ba-card .t{ font-size:12.5px; font-weight:700; margin-bottom:6px; }
+  .ba-card .d{ font-size:10.8px; line-height:1.55; }
+  .ba-card.after .d{ color:#F3E3E8; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--rose);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--rose-soft);
+    border-left:4px solid var(--rose);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--rose); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-017</span>
+      <span class="tag">2026-09-10</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>KIPRIS 특허조사 및 <span class="hl">분석 자동화</span></h1>
+    <div class="sub">정부 무료 API인 KIPRIS Plus를 활용해 특허 조사·분석 업무를 자동화한다. 특허조직은 조사·분류 역할에, 연구조직은 분석에 집중하는 체계적인 업무 분담을 만든다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">VBA-Python 브릿지</span>
+      <span class="chip-pill">4개 연산자 로컬 검색식</span>
+      <span class="chip-pill">3단계 예산배분 파이프라인</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">반복적인 대량 조사 작업</div>
+        <div class="d">특허조사는 키워드별로 대량의 결과를 훑어야 하는 반복 작업이라 수작업으로는 비효율적이다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">상용 툴은 고가</div>
+        <div class="d">WIPSON 등 상용 서비스는 일 5,320원 × 365일 = 연 1,941,800원 수준의 비용이 든다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">사전 교육 없이 쓰기 어려움</div>
+        <div class="d">WIPSON은 편의기능이 풍부하지만, 연구원에게 개방해도 교육 없이는 활용이 어렵다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">조사와 분석 역할이 미분리</div>
+        <div class="d">특허조직과 연구조직의 역할이 명확히 나뉘지 않아 체계적인 업무 수행이 어렵다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">특허 기본정보 검색</div>
+            <div class="s">키워드로 제목·초록·출원인·IPC 등 서지정보를 대량으로 확보</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">무료 로컬 필터링</div>
+            <div class="s">4개 연산자(괄호&gt;NOT&gt;AND&gt;OR) 검색식으로 API 예산 없이 정밀화</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">청구항·전문 자동 확보</div>
+            <div class="s">선별된 특허만 청구항 텍스트와 전문 PDF를 확보</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">엑셀 기반 조사·분류</div>
+            <div class="s">조사된 특허는 엑셀 시트로 다운로드되어 그대로 조사·분류 작업에 활용</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 원리</div>
+        <div class="chip-tech">
+          <span>예산이 드는 단계는 필터링 이후에만 실행</span>
+          <span>검색 → 필터링(0원) → 전문조회 순서 고정</span>
+        </div>
+        <div class="h" style="margin-top:14px;">검증 방법</div>
+        <div class="chip-tech">
+          <span>무료 KIPRIS API로 성능 검증 후 필요시 확장 검토</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">기본정보 검색</div><div class="d">searchPatent → patentSearchList, 키워드당 1~수 회 API 호출로 서지정보 확보</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">특허조사·유효특허 식별</div><div class="d">괄호&gt;NOT&gt;AND&gt;OR 우선순위의 검색식으로 행을 필터링, API 예산 0회 소모</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">풀텍스트 정보 검색</div><div class="d">필터링된 특허만 대상으로 청구항·전문 PDF 확보, 건당 2~3회 소모</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COST COMPARISON -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>비용 비교</div>
+    <div class="type-table">
+      <div class="type-row hdr">
+        <div class="c type">구분</div>
+        <div class="c match">KIPRIS API (무료)</div>
+        <div class="c tara">WIPSON (상용)</div>
+      </div>
+      <div class="type-row"><div class="c type">비용</div><div class="c match">월 1,000회 무료 한도</div><div class="c tara">일 5,320원 × 365일 = 연 1,941,800원</div></div>
+      <div class="type-row"><div class="c type">사용 난이도</div><div class="c match">자동화 스크립트로 직접 구현</div><div class="c tara">편의기능 풍부하나 사전 교육 필요</div></div>
+      <div class="type-row"><div class="c type">확장성</div><div class="c match">VBA-Python 브릿지로 자체 커스터마이즈</div><div class="c tara">벤더 제공 기능 범위 내로 제한</div></div>
+    </div>
+    <div class="corr-note">무료 API로 기능·성능을 먼저 검증하고, 예산이 부족해지면 그때 유료 확장을 검토하는 순서로 접근한다.</div>
+  </section>
+
+  <!-- BEFORE/AFTER -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>Before / After</div>
+    <div class="ba-row">
+      <div class="ba-card before">
+        <div class="tag">이전 — 조사와 분석이 미분리</div>
+        <div class="t">역할이 섞여 비효율 발생</div>
+        <div class="d">특허조직과 연구조직이 조사와 분석을 명확히 나누지 못해 업무가 섞이고 체계적으로 진행되기 어려웠다.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="tag">이후 — KIPRIS 자동화로 역할 분리</div>
+        <div class="t">조사와 분석을 체계적으로 분담</div>
+        <div class="d">특허조직은 조사·분류에 집중하고, 연구조직은 분석에 집중하는 역할 분담이 가능해진다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">비용 절감</div>
+        <div class="d">연 194만원 상당의 상용 서비스 없이 무료 API로 우선 검증한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">예산 낭비 방지</div>
+        <div class="d">필터링을 먼저 거쳐 예산이 큰 전문조회 호출을 최소화한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">역할 분리</div>
+        <div class="d">조사는 특허조직, 분석은 연구조직으로 업무가 체계화된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">정확도 보장</div>
+        <div class="d">검증된 로컬 집합연산으로 AND/OR 조합 결과의 정확도를 보장한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>KIPRIS 웹다운로드 자동화는 <b>robots.txt로 명시적으로 금지</b>되어 있어 API 경로만 사용한다</li>
+        <li><b>year 파라미터는 실제 연도가 아닌 0~10 사이 "N년차" 정수</b>만 유효하다</li>
+        <li>잔여 API 예산은 API로 조회할 수 없어, <b>로컬 카운터와 마이페이지를 정기적으로 수동 대조</b>해야 한다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-017</div>
+      <div><span>작성일</span>2026-09-10</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

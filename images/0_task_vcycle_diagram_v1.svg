@@ -1,0 +1,614 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3400" height="1930" viewBox="0 0 3400 1930" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTplNmQ4MzQxMy1iY2ZhLTQ3NGMtOTQ5NS04MWI0NTMyNDFmY2QAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaM/hPGKIMy4tT1r+x1z1ETgAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDowN2M1NmIwNi1mZmM0LTQxMWQtYWZjYy0yNzdkYjVjZGYxMjNscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNogEQ2HcpcGedgqV9jZ9wWAAAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggq9ecp8Qwf5/1QOGyzf7FBXGFYkXOWov7jjnW9NVIswKkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaH/NF85z5Vb1t69gHHnxOFkAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCBrZ7c0ZfWO6AF9oJAF74+vxTSvAbfIQiwBuhN15x1ZdGRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBiaZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOmU2ZDgzNDEzLWJjZmEtNDc0Yy05NDk1LTgxYjQ1MzI0MWZjZC9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjA5M2RkYzZhLWM4ODQtNGUyZS1iNWViLWI0NmQ3ZTllNmE4ZnJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCCr15ynxDB/n/VA4bLN/sUFcYViRc5ai/uOOdb01UizAqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggZs/YNzerk+iQyem4923Vl6VzV92/hcALG6Rlv75eWIqiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggQa773Egmt8pWfJDWdDOXQxxYzb6rbmf+Ae6YKmKSTLZ0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQOSyr8P/sTOKpRcg2/3DFX46Dmc1WtDk3aSRIl1z0H+HnvIzWTBYKXZTnw9ofyKexLx609DblnKl+jLwZVAEXyk=</c2pa:manifest></metadata>
+
+<defs>
+  <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M0,0 L8,3.5 L0,7 Z" fill="#555"/>
+  </marker>
+  <marker id="arrowBlue" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M0,0 L8,3.5 L0,7 Z" fill="#2b6cb0"/>
+  </marker>
+  <marker id="arrowGreen" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M0,0 L8,3.5 L0,7 Z" fill="#2f855a"/>
+  </marker>
+  <marker id="arrowOrange" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M0,0 L8,3.5 L0,7 Z" fill="#c05621"/>
+  </marker>
+  <marker id="arrowPurple" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M0,0 L8,3.5 L0,7 Z" fill="#6b46c1"/>
+  </marker>
+  <marker id="arrowGray" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M0,0 L8,3.5 L0,7 Z" fill="#718096"/>
+  </marker>
+  <style>
+    text { font-family: 'Noto Sans CJK KR', sans-serif; }
+  </style>
+</defs>
+
+<rect x="0" y="0" width="3400" height="1930" fill="#fafaf8"/>
+<text x="1700" y="55" font-size="40.5" font-weight="800" text-anchor="middle" fill="#1a202c">SW 프로젝트 관리 자동화 34개 태스크 — V-Cycle 기반 인과관계도</text>
+<text x="1700" y="95" font-size="21.75" text-anchor="middle" fill="#666">계획수립 → TARA/HARA·개념설계 → 요구조건 → 시스템/SW 아키텍처링 → 상세/유닛설계 → (검증·시험 단계) → 배포 → 관리지원 태스크로 이어지는 흐름</text>
+<path d="M 154.0 317.0 L 386.0 442.0" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<path d="M 386.0 442.0 L 618.0 567.0" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<path d="M 618.0 567.0 L 850.0 642.0" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<path d="M 850.0 642.0 L 1082.0 704.5" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<path d="M 1082.0 704.5 L 1314.0 754.5" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<path d="M 1314.0 754.5 L 1546.0 798.2" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<path d="M 1546.0 798.2 L 1778.0 798.2" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<path d="M 1778.0 798.2 L 2010.0 754.5" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<path d="M 2010.0 754.5 L 2242.0 704.5" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<path d="M 2242.0 704.5 L 2474.0 642.0" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<path d="M 2474.0 642.0 L 2706.0 567.0" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<path d="M 2706.0 567.0 L 2938.0 442.0" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<path d="M 2938.0 442.0 L 3170.0 317.0" fill="none" stroke="#94a3b8" stroke-width="2.2"  marker-end="url(#arrowGray)"/>
+
+<g>
+<rect x="70.0" y="280.0" width="168.0" height="74.0" rx="10" ry="10" fill="#fef3c7" stroke="#b45309" stroke-width="2.2"/>
+<text x="154.0" y="301.3" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">① 계획수립</text>
+<text x="154.0" y="323.0" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">(프로세스 테일러링+</text>
+<text x="154.0" y="344.8" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">일정 테이블 자동생성)</text>
+</g>
+
+<g>
+<rect x="302.0" y="405.0" width="168.0" height="74.0" rx="10" ry="10" fill="#dbeafe" stroke="#2b6cb0" stroke-width="2.2"/>
+<text x="386.0" y="437.2" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">TARA/HARA</text>
+<text x="386.0" y="458.9" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">+ 개념설계</text>
+</g>
+
+<g>
+<rect x="534.0" y="530.0" width="168.0" height="74.0" rx="10" ry="10" fill="#dbeafe" stroke="#2b6cb0" stroke-width="2.2"/>
+<text x="618.0" y="573.0" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">요구조건</text>
+</g>
+
+<g>
+<rect x="766.0" y="605.0" width="168.0" height="74.0" rx="10" ry="10" fill="#dbeafe" stroke="#2b6cb0" stroke-width="2.2"/>
+<text x="850.0" y="637.2" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">시스템</text>
+<text x="850.0" y="658.9" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">아키텍처링</text>
+</g>
+
+<g>
+<rect x="998.0" y="667.5" width="168.0" height="74.0" rx="10" ry="10" fill="#dbeafe" stroke="#2b6cb0" stroke-width="2.2"/>
+<text x="1082.0" y="710.5" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">SW 아키텍처링</text>
+</g>
+
+<g>
+<rect x="1230.0" y="717.5" width="168.0" height="74.0" rx="10" ry="10" fill="#dbeafe" stroke="#2b6cb0" stroke-width="2.2"/>
+<text x="1314.0" y="760.5" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">SW 상세설계</text>
+</g>
+
+<g>
+<rect x="1462.0" y="761.2" width="168.0" height="74.0" rx="10" ry="10" fill="#dbeafe" stroke="#2b6cb0" stroke-width="2.2"/>
+<text x="1546.0" y="793.4" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">SW 유닛설계</text>
+<text x="1546.0" y="815.2" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">/구현</text>
+</g>
+
+<g>
+<rect x="1694.0" y="761.2" width="168.0" height="74.0" rx="10" ry="10" fill="#dcfce7" stroke="#2f855a" stroke-width="2.2"/>
+<text x="1778.0" y="793.4" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">SW 유닛</text>
+<text x="1778.0" y="815.2" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">테스트</text>
+</g>
+
+<g>
+<rect x="1926.0" y="717.5" width="168.0" height="74.0" rx="10" ry="10" fill="#dcfce7" stroke="#2f855a" stroke-width="2.2"/>
+<text x="2010.0" y="760.5" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">SW 통합시험</text>
+</g>
+
+<g>
+<rect x="2158.0" y="667.5" width="168.0" height="74.0" rx="10" ry="10" fill="#dcfce7" stroke="#2f855a" stroke-width="2.2"/>
+<text x="2242.0" y="699.7" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">SW 아키텍처</text>
+<text x="2242.0" y="721.4" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">검증</text>
+</g>
+
+<g>
+<rect x="2390.0" y="605.0" width="168.0" height="74.0" rx="10" ry="10" fill="#dcfce7" stroke="#2f855a" stroke-width="2.2"/>
+<text x="2474.0" y="637.2" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">시스템</text>
+<text x="2474.0" y="658.9" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">통합시험</text>
+</g>
+
+<g>
+<rect x="2622.0" y="530.0" width="168.0" height="74.0" rx="10" ry="10" fill="#dcfce7" stroke="#2f855a" stroke-width="2.2"/>
+<text x="2706.0" y="562.2" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">요구조건 검증</text>
+<text x="2706.0" y="583.9" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">(인수시험)</text>
+</g>
+
+<g>
+<rect x="2854.0" y="405.0" width="168.0" height="74.0" rx="10" ry="10" fill="#dcfce7" stroke="#2f855a" stroke-width="2.2"/>
+<text x="2938.0" y="437.2" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">사이버보안/기능안전</text>
+<text x="2938.0" y="458.9" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">최종 검증</text>
+</g>
+
+<g>
+<rect x="3086.0" y="280.0" width="168.0" height="74.0" rx="10" ry="10" fill="#fef3c7" stroke="#b45309" stroke-width="2.2"/>
+<text x="3170.0" y="323.0" font-family="Noto Sans CJK KR, sans-serif" font-size="17.25" font-weight="500" fill="#1a1a1a" text-anchor="middle">㉗ 배포/릴리즈</text>
+</g>
+
+<line x1="470.0" y1="442.0" x2="2854.0" y2="442.0" stroke="#c9d3e0" stroke-width="2.4" stroke-dasharray="9,6" opacity="0.85"/>
+<circle cx="470.0" cy="442.0" r="4.5" fill="#c9d3e0"/>
+<circle cx="2854.0" cy="442.0" r="4.5" fill="#c9d3e0"/>
+<rect x="1625.5" y="426.7" width="73.0" height="30.6" fill="#fafaf8" opacity="0.9" rx="4"/>
+<text x="1662.0" y="441.0" font-family="Noto Sans CJK KR, sans-serif" font-size="10.8" fill="#8b95a5" text-anchor="middle">위협·시나리오 대비</text>
+<text x="1662.0" y="454.3" font-family="Noto Sans CJK KR, sans-serif" font-size="10.8" fill="#8b95a5" text-anchor="middle">최종 검증</text>
+<line x1="702.0" y1="567.0" x2="2622.0" y2="567.0" stroke="#c9d3e0" stroke-width="2.4" stroke-dasharray="9,6" opacity="0.85"/>
+<circle cx="702.0" cy="567.0" r="4.5" fill="#c9d3e0"/>
+<circle cx="2622.0" cy="567.0" r="4.5" fill="#c9d3e0"/>
+<rect x="1635.6" y="551.7" width="52.9" height="30.6" fill="#fafaf8" opacity="0.9" rx="4"/>
+<text x="1662.0" y="566.0" font-family="Noto Sans CJK KR, sans-serif" font-size="10.8" fill="#8b95a5" text-anchor="middle">요구조건 대비</text>
+<text x="1662.0" y="579.3" font-family="Noto Sans CJK KR, sans-serif" font-size="10.8" fill="#8b95a5" text-anchor="middle">인수시험</text>
+<line x1="934.0" y1="642.0" x2="2390.0" y2="642.0" stroke="#c9d3e0" stroke-width="2.4" stroke-dasharray="9,6" opacity="0.85"/>
+<circle cx="934.0" cy="642.0" r="4.5" fill="#c9d3e0"/>
+<circle cx="2390.0" cy="642.0" r="4.5" fill="#c9d3e0"/>
+<rect x="1628.9" y="626.7" width="66.3" height="30.6" fill="#fafaf8" opacity="0.9" rx="4"/>
+<text x="1662.0" y="641.0" font-family="Noto Sans CJK KR, sans-serif" font-size="10.8" fill="#8b95a5" text-anchor="middle">시스템 설계 대비</text>
+<text x="1662.0" y="654.3" font-family="Noto Sans CJK KR, sans-serif" font-size="10.8" fill="#8b95a5" text-anchor="middle">시스템통합시험</text>
+<line x1="1166.0" y1="704.5" x2="2158.0" y2="704.5" stroke="#c9d3e0" stroke-width="2.4" stroke-dasharray="9,6" opacity="0.85"/>
+<circle cx="1166.0" cy="704.5" r="4.5" fill="#c9d3e0"/>
+<circle cx="2158.0" cy="704.5" r="4.5" fill="#c9d3e0"/>
+<rect x="1628.9" y="689.2" width="66.3" height="30.6" fill="#fafaf8" opacity="0.9" rx="4"/>
+<text x="1662.0" y="703.5" font-family="Noto Sans CJK KR, sans-serif" font-size="10.8" fill="#8b95a5" text-anchor="middle">SW아키텍처 대비</text>
+<text x="1662.0" y="716.8" font-family="Noto Sans CJK KR, sans-serif" font-size="10.8" fill="#8b95a5" text-anchor="middle">아키텍처 검증</text>
+<line x1="1398.0" y1="754.5" x2="1926.0" y2="754.5" stroke="#c9d3e0" stroke-width="2.4" stroke-dasharray="9,6" opacity="0.85"/>
+<circle cx="1398.0" cy="754.5" r="4.5" fill="#c9d3e0"/>
+<circle cx="1926.0" cy="754.5" r="4.5" fill="#c9d3e0"/>
+<rect x="1635.6" y="739.2" width="52.9" height="30.6" fill="#fafaf8" opacity="0.9" rx="4"/>
+<text x="1662.0" y="753.5" font-family="Noto Sans CJK KR, sans-serif" font-size="10.8" fill="#8b95a5" text-anchor="middle">상세설계 대비</text>
+<text x="1662.0" y="766.8" font-family="Noto Sans CJK KR, sans-serif" font-size="10.8" fill="#8b95a5" text-anchor="middle">SW통합시험</text>
+<line x1="1630.0" y1="798.2" x2="1694.0" y2="798.2" stroke="#c9d3e0" stroke-width="2.4" stroke-dasharray="9,6" opacity="0.85"/>
+<circle cx="1630.0" cy="798.2" r="4.5" fill="#c9d3e0"/>
+<circle cx="1694.0" cy="798.2" r="4.5" fill="#c9d3e0"/>
+<rect x="1625.5" y="783.0" width="73.0" height="30.6" fill="#fafaf8" opacity="0.9" rx="4"/>
+<text x="1662.0" y="797.3" font-family="Noto Sans CJK KR, sans-serif" font-size="10.8" fill="#8b95a5" text-anchor="middle">유닛설계/구현 대비</text>
+<text x="1662.0" y="810.6" font-family="Noto Sans CJK KR, sans-serif" font-size="10.8" fill="#8b95a5" text-anchor="middle">유닛테스트</text>
+<g>
+<rect x="302.0" y="525.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="318.0" cy="541.0" r="13" fill="#4338ca"/>
+<text x="318.0" y="541.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">3</text>
+<text x="388.0" y="555.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">Full TARA</text>
+<text x="388.0" y="576.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(6단계 자동화, VBA</text>
+<text x="388.0" y="598.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">standalone/LLM 5업무)</text>
+</g>
+
+<g>
+<rect x="302.0" y="641.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="318.0" cy="657.0" r="13" fill="#4338ca"/>
+<text x="318.0" y="657.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">4</text>
+<text x="388.0" y="671.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">Tier TARA</text>
+<text x="388.0" y="692.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(Simple TARA,</text>
+<text x="388.0" y="714.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">OEM 결과 병합)</text>
+</g>
+
+<g>
+<rect x="302.0" y="757.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="318.0" cy="773.0" r="13" fill="#4338ca"/>
+<text x="318.0" y="773.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">6</text>
+<text x="388.0" y="787.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">HARA-TARA</text>
+<text x="388.0" y="808.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">연계분석</text>
+<text x="388.0" y="830.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(기능안전 카운터메저)</text>
+</g>
+
+<g>
+<rect x="302.0" y="873.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="318.0" cy="889.0" r="13" fill="#4338ca"/>
+<text x="318.0" y="889.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">17</text>
+<text x="388.0" y="903.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">특허 조사</text>
+<text x="388.0" y="924.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(KIPRIS API,</text>
+<text x="388.0" y="946.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">VBA/Python 자동화)</text>
+</g>
+
+<g>
+<rect x="302.0" y="989.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="318.0" cy="1005.0" r="13" fill="#4338ca"/>
+<text x="318.0" y="1005.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">5</text>
+<text x="388.0" y="1019.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">TARA DB</text>
+<text x="388.0" y="1040.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(SQL+Chroma</text>
+<text x="388.0" y="1062.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">하이브리드, RAG)</text>
+</g>
+
+<path d="M 386.0 479.0 L 388.0 525.0" fill="none" stroke="#94a3b8" stroke-width="1.3"  marker-end="url(#arrowGray)"/>
+
+<g>
+<rect x="534.0" y="650.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="550.0" cy="666.0" r="13" fill="#4338ca"/>
+<text x="550.0" y="666.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">23</text>
+<text x="620.0" y="680.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">QMS RAG</text>
+<text x="620.0" y="701.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(검색기능 강화,</text>
+<text x="620.0" y="723.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">프로세스 테일러링 전단계)</text>
+</g>
+
+<g>
+<rect x="534.0" y="766.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="550.0" cy="782.0" r="13" fill="#4338ca"/>
+<text x="550.0" y="782.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">22</text>
+<text x="620.0" y="796.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">PDF 파싱</text>
+<text x="620.0" y="817.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(고객/협력사 자료 →</text>
+<text x="620.0" y="839.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">Word/RAG용 텍스트)</text>
+</g>
+
+<g>
+<rect x="534.0" y="882.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="550.0" cy="898.0" r="13" fill="#4338ca"/>
+<text x="550.0" y="898.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">7</text>
+<text x="620.0" y="912.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">SSoT SW BOM</text>
+<text x="620.0" y="933.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(형상/변경/릴리즈,</text>
+<text x="620.0" y="955.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">모든 업무의 출발점)</text>
+</g>
+
+<g>
+<rect x="534.0" y="998.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="550.0" cy="1014.0" r="13" fill="#4338ca"/>
+<text x="550.0" y="1014.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">9</text>
+<text x="620.0" y="1028.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">고객요구조건 지향</text>
+<text x="620.0" y="1049.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">Traceability 엔진</text>
+<text x="620.0" y="1071.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(양방향 추적성 오류검출)</text>
+</g>
+
+<path d="M 618.0 604.0 L 620.0 650.0" fill="none" stroke="#94a3b8" stroke-width="1.3"  marker-end="url(#arrowGray)"/>
+
+<g>
+<rect x="998.0" y="787.5" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="1014.0" cy="803.5" r="13" fill="#4338ca"/>
+<text x="1014.0" y="803.5" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">8</text>
+<text x="1084.0" y="818.0" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">SW 아키텍처링 자동화</text>
+<text x="1084.0" y="839.4" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(SSoT→테이블→</text>
+<text x="1084.0" y="860.8" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">다이어그램/명세서 자동생성)</text>
+</g>
+
+<g>
+<rect x="998.0" y="903.5" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="1014.0" cy="919.5" r="13" fill="#4338ca"/>
+<text x="1014.0" y="919.5" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">13</text>
+<text x="1084.0" y="934.0" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">아키텍처 설계-구현</text>
+<text x="1084.0" y="955.4" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">정합성 비교</text>
+<text x="1084.0" y="976.8" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(설계 vs 코드 플로우차트)</text>
+</g>
+
+<path d="M 1082.0 741.5 L 1084.0 787.5" fill="none" stroke="#94a3b8" stroke-width="1.3"  marker-end="url(#arrowGray)"/>
+
+<g>
+<rect x="1230.0" y="837.5" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="1246.0" cy="853.5" r="13" fill="#4338ca"/>
+<text x="1246.0" y="853.5" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">10</text>
+<text x="1316.0" y="868.0" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">기능안전 분석</text>
+<text x="1316.0" y="889.4" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(SW FMEA/FTA·DFA,</text>
+<text x="1316.0" y="910.8" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">함수트리 재귀 구조)</text>
+</g>
+
+<path d="M 1314.0 791.5 L 1316.0 837.5" fill="none" stroke="#94a3b8" stroke-width="1.3"  marker-end="url(#arrowGray)"/>
+
+<g>
+<rect x="1462.0" y="881.2" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="1478.0" cy="897.2" r="13" fill="#4338ca"/>
+<text x="1478.0" y="897.2" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">19</text>
+<text x="1548.0" y="911.8" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">형상관리/변경관리</text>
+<text x="1548.0" y="933.2" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(SW BOM 이용,</text>
+<text x="1548.0" y="954.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">배포 스냅샷 기록)</text>
+</g>
+
+<path d="M 1546.0 835.2 L 1548.0 881.2" fill="none" stroke="#94a3b8" stroke-width="1.3"  marker-end="url(#arrowGray)"/>
+
+<g>
+<rect x="1694.0" y="881.2" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="1710.0" cy="897.2" r="13" fill="#4338ca"/>
+<text x="1710.0" y="897.2" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">18</text>
+<text x="1780.0" y="911.8" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">해시 검증</text>
+<text x="1780.0" y="933.2" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(자료 무결성,</text>
+<text x="1780.0" y="954.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">10년 보관 대비)</text>
+</g>
+
+<path d="M 1778.0 835.2 L 1780.0 881.2" fill="none" stroke="#94a3b8" stroke-width="1.3"  marker-end="url(#arrowGray)"/>
+
+<g>
+<rect x="2854.0" y="525.0" width="172.0" height="92.0" rx="10" ry="10" fill="#fff7ed" stroke="#c05621" stroke-width="1.6"/>
+<circle cx="2870.0" cy="541.0" r="13" fill="#c05621"/>
+<text x="2870.0" y="541.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">12</text>
+<text x="2940.0" y="555.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">⑫ 성적서 리뷰 자동화</text>
+<text x="2940.0" y="576.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(DIFF·문자열·이미지</text>
+<text x="2940.0" y="598.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">유사도·PPTX 대량 리뷰)</text>
+</g>
+
+<g>
+<rect x="2854.0" y="641.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="2870.0" cy="657.0" r="13" fill="#4338ca"/>
+<text x="2870.0" y="657.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">11</text>
+<text x="2940.0" y="671.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">사이버보안 케이스</text>
+<text x="2940.0" y="692.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(잔존위험 보장</text>
+<text x="2940.0" y="714.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">문서, 템플릿화)</text>
+</g>
+
+<g>
+<rect x="2854.0" y="757.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="2870.0" cy="773.0" r="13" fill="#4338ca"/>
+<text x="2870.0" y="773.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">16</text>
+<text x="2940.0" y="787.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">태스크 관리(JIRA)</text>
+<text x="2940.0" y="808.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(엑셀↔Python↔JIRA,</text>
+<text x="2940.0" y="830.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">성적서 리뷰 현황관리)</text>
+</g>
+
+<g>
+<rect x="2854.0" y="873.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="2870.0" cy="889.0" r="13" fill="#4338ca"/>
+<text x="2870.0" y="889.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">14</text>
+<text x="2940.0" y="903.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">취약점 모니터링</text>
+<text x="2940.0" y="924.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(VBA-Python,</text>
+<text x="2940.0" y="946.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">데일리/월간 자동검색)</text>
+</g>
+
+<g>
+<rect x="2854.0" y="989.0" width="172.0" height="92.0" rx="10" ry="10" fill="#eef2ff" stroke="#4338ca" stroke-width="1.6"/>
+<circle cx="2870.0" cy="1005.0" r="13" fill="#4338ca"/>
+<text x="2870.0" y="1005.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">15</text>
+<text x="2940.0" y="1019.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">취약점 분석</text>
+<text x="2940.0" y="1040.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(SBOM 기준,</text>
+<text x="2940.0" y="1062.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">로컬 임베딩 기본)</text>
+</g>
+
+<path d="M 2938.0 479.0 L 2940.0 525.0" fill="none" stroke="#94a3b8" stroke-width="1.3"  marker-end="url(#arrowGray)"/>
+
+<path d="M 302.0 571.0 Q 207.0 803.0 302.0 1035.0" fill="none" stroke="#6b46c1" stroke-width="1.7"  marker-end="url(#arrowPurple)"/>
+<rect x="189.1" y="786.5" width="130.8" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="254.5" y="802.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">Full/Tier TARA 결과를</text>
+<text x="254.5" y="816.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">DB 설계 근거로 활용</text>
+
+<path d="M 302.0 687.0 Q 207.0 861.0 302.0 1035.0" fill="none" stroke="#6b46c1" stroke-width="1.7"  marker-end="url(#arrowPurple)"/>
+
+<path d="M 302.0 1035.0 Q 207.0 861.0 302.0 687.0" fill="none" stroke="#6b46c1" stroke-width="1.7" stroke-dasharray="6,4" marker-end="url(#arrowPurple)"/>
+<rect x="206.2" y="844.5" width="96.7" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="254.5" y="860.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">쿼리/RAG로</text>
+<text x="254.5" y="874.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">차기 TARA 초안 작성</text>
+
+<path d="M 302.0 571.0 Q 207.0 687.0 302.0 803.0" fill="none" stroke="#6b46c1" stroke-width="1.7"  marker-end="url(#arrowPurple)"/>
+<rect x="206.2" y="670.5" width="96.7" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="254.5" y="686.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">TARA 결과를 기능안전</text>
+<text x="254.5" y="700.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">카운터메저 설계에 활용</text>
+
+<path d="M 706.0 928.0 L 998.0 833.5" fill="none" stroke="#2b6cb0" stroke-width="1.7"  marker-end="url(#arrowBlue)"/>
+<rect x="793.4" y="864.2" width="117.1" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="852.0" y="880.1" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">SSoT BOM에서 아키텍처링</text>
+<text x="852.0" y="894.1" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">테이블 추출</text>
+
+<path d="M 706.0 928.0 Q 1150.0 1090.0 1548.0 973.2" fill="none" stroke="#2b6cb0" stroke-width="1.7"  marker-end="url(#arrowBlue)"/>
+<rect x="1103.8" y="1003.8" width="69.4" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="1138.5" y="1019.7" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">SW BOM 기준</text>
+<text x="1138.5" y="1033.7" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">형상관리 기록</text>
+
+<path d="M 1170.0 833.5 L 1230.0 883.5" fill="none" stroke="#2b6cb0" stroke-width="1.7"  marker-end="url(#arrowBlue)"/>
+<rect x="1161.9" y="842.0" width="76.2" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="1200.0" y="857.9" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">함수 트리 구조로</text>
+<text x="1200.0" y="871.9" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">SW FMEA 수행</text>
+
+<path d="M 998.0 833.5 Q 903.0 891.5 998.0 949.5" fill="none" stroke="#2b6cb0" stroke-width="1.7"  marker-end="url(#arrowBlue)"/>
+<rect x="915.8" y="875.0" width="69.4" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="950.5" y="890.9" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">아키텍처링 명세와</text>
+<text x="950.5" y="904.9" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">실제 코드 비교</text>
+
+<path d="M 706.0 812.0 Q 801.0 928.0 706.0 1044.0" fill="none" stroke="#2b6cb0" stroke-width="1.7"  marker-end="url(#arrowBlue)"/>
+<rect x="715.4" y="911.5" width="76.2" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="753.5" y="927.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">파싱된 요구문서를</text>
+<text x="753.5" y="941.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">추적성 연결에 활용</text>
+
+<path d="M 2854.0 571.0 Q 2759.0 629.0 2854.0 687.0" fill="none" stroke="#c05621" stroke-width="1.7"  marker-end="url(#arrowOrange)"/>
+<rect x="2747.9" y="612.5" width="117.1" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="2806.5" y="628.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">게이트리뷰 결과를</text>
+<text x="2806.5" y="642.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">사이버보안 케이스 근거로 활용</text>
+
+<path d="M 2854.0 571.0 Q 2759.0 687.0 2854.0 803.0" fill="none" stroke="#c05621" stroke-width="1.7"  marker-end="url(#arrowOrange)"/>
+<rect x="2768.4" y="670.5" width="76.2" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="2806.5" y="686.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">성적서 리뷰 현황을</text>
+<text x="2806.5" y="700.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">JIRA로 관리</text>
+
+<path d="M 2854.0 919.0 Q 2759.0 977.0 2854.0 1035.0" fill="none" stroke="#c05621" stroke-width="1.7"  marker-end="url(#arrowOrange)"/>
+<rect x="2768.4" y="960.5" width="76.2" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="2806.5" y="976.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">모니터링된 취약점</text>
+<text x="2806.5" y="990.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">정보를 분석에 활용</text>
+
+<path d="M 2854.0 1035.0 Q 1780.0 1060.0 1634.0 927.2" fill="none" stroke="#c05621" stroke-width="1.7"  marker-end="url(#arrowOrange)"/>
+<rect x="1980.7" y="1004.1" width="62.6" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="2012.0" y="1020.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">SBOM 기준</text>
+<text x="2012.0" y="1034.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">형상관리와 연계</text>
+
+<path d="M 1694.0 927.2 L 1634.0 927.2" fill="none" stroke="#c05621" stroke-width="1.7" stroke-dasharray="6,4" marker-end="url(#arrowOrange)"/>
+<rect x="1622.5" y="910.8" width="83.0" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="1664.0" y="926.6" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">해시검증 결과를</text>
+<text x="1664.0" y="940.6" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">형상관리 기록에 포함</text>
+
+<line x1="40" y1="1376" x2="3360" y2="1376" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="3,5"/>
+<text x="60" y="1400" font-size="16.5" font-weight="800" fill="#334155">관리 지원 태스크 — 프로젝트 전 구간에 걸쳐 병행 수행</text>
+<text x="70" y="1426" font-size="14.5" font-weight="700" fill="#a21caf">[리스크관리]</text>
+<g>
+<rect x="70.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="86.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="86.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">2</text>
+<text x="175.0" y="1472.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">리스크/이슈 관리</text>
+<text x="175.0" y="1493.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(메일·JIRA·Teams,</text>
+<text x="175.0" y="1515.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">톤/매너 분석)</text>
+</g>
+
+<text x="340" y="1426" font-size="14.5" font-weight="700" fill="#a21caf">[일정관리]</text>
+<g>
+<rect x="340.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="356.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="356.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">20</text>
+<text x="445.0" y="1472.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">EVMS 일정·성과관리</text>
+<text x="445.0" y="1493.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(계획-실적-집행율</text>
+<text x="445.0" y="1515.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">수치화)</text>
+</g>
+
+<g>
+<rect x="576.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="592.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="592.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">21</text>
+<text x="681.0" y="1483.2" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">아웃룩 캘린더</text>
+<text x="681.0" y="1504.6" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">자동등록·모니터링</text>
+</g>
+
+<text x="846" y="1426" font-size="14.5" font-weight="700" fill="#a21caf">[자료관리]</text>
+<g>
+<rect x="846.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="862.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="862.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">24</text>
+<text x="951.0" y="1472.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">엑셀→Word 보고서</text>
+<text x="951.0" y="1493.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(config.py 매핑,</text>
+<text x="951.0" y="1515.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">노하우 제외 제출)</text>
+</g>
+
+<g>
+<rect x="1082.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="1098.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="1098.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">25</text>
+<text x="1187.0" y="1472.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">엑셀→PPT 회의자료</text>
+<text x="1187.0" y="1493.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(작성이력 관리,</text>
+<text x="1187.0" y="1515.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">MH 절감)</text>
+</g>
+
+<g>
+<rect x="1318.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="1334.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="1334.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">26</text>
+<text x="1423.0" y="1483.2" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">회의자료 종합</text>
+<text x="1423.0" y="1504.6" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(정기 PPT 자동취합)</text>
+</g>
+
+<text x="1588" y="1426" font-size="14.5" font-weight="700" fill="#a21caf">[평가]</text>
+<g>
+<rect x="1588.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="1604.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="1604.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">28</text>
+<text x="1693.0" y="1472.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">프로젝트 자체 심사</text>
+<text x="1693.0" y="1493.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(A-SPICE 4.0,</text>
+<text x="1693.0" y="1515.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">제1자 심사)</text>
+</g>
+
+<g>
+<rect x="1824.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="1840.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="1840.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">29</text>
+<text x="1929.0" y="1472.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">프로젝트 자체 평가</text>
+<text x="1929.0" y="1493.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(마일스톤별</text>
+<text x="1929.0" y="1515.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">자율평가)</text>
+</g>
+
+<text x="2094" y="1426" font-size="14.5" font-weight="700" fill="#a21caf">[현황관리]</text>
+<g>
+<rect x="2094.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="2110.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="2110.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">30</text>
+<text x="2199.0" y="1472.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">업무현황 관리</text>
+<text x="2199.0" y="1493.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(Confluence, 조직/</text>
+<text x="2199.0" y="1515.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">개인버전 재귀 모니터링)</text>
+</g>
+
+<g>
+<rect x="2330.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="2346.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="2346.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">31</text>
+<text x="2435.0" y="1472.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">연구원 역량관리</text>
+<text x="2435.0" y="1493.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(연 2회, PJT</text>
+<text x="2435.0" y="1515.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">참여자 추출)</text>
+</g>
+
+<g>
+<rect x="2566.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="2582.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="2582.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">32</text>
+<text x="2671.0" y="1483.2" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">프로젝트 현황관리</text>
+<text x="2671.0" y="1504.6" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(메일, 톤/매너 분석)</text>
+</g>
+
+<g>
+<rect x="2802.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="2818.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="2818.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">33</text>
+<text x="2907.0" y="1483.2" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">프로젝트 현황관리</text>
+<text x="2907.0" y="1504.6" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(JIRA, 보직별 바운더리)</text>
+</g>
+
+<g>
+<rect x="3038.0" y="1444.0" width="210.0" height="88.0" rx="10" ry="10" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.6"/>
+<circle cx="3054.0" cy="1460.0" r="13" fill="#a21caf"/>
+<text x="3054.0" y="1460.0" font-family="Noto Sans CJK KR, sans-serif" font-size="11.5" font-weight="700" fill="white" text-anchor="middle" dominant-baseline="central">34</text>
+<text x="3143.0" y="1472.5" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">프로젝트 현황관리</text>
+<text x="3143.0" y="1493.9" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">(Teams, API/</text>
+<text x="3143.0" y="1515.3" font-family="Noto Sans CJK KR, sans-serif" font-size="16.875" font-weight="500" fill="#1a1a1a" text-anchor="middle">붙여넣기 방식)</text>
+</g>
+
+<path d="M 110.0 354.0 Q 175.0 1530.0 175.0 1438.0" fill="none" stroke="#a21caf" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrowPurple)"/>
+<rect x="117.2" y="1196.5" width="83.0" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="158.8" y="1212.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">계획단계부터</text>
+<text x="158.8" y="1226.4" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">리스크 모니터링 병행</text>
+
+<path d="M 190.0 354.0 Q 205.0 1330.0 445.0 1444.0" fill="none" stroke="#a21caf" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrowPurple)"/>
+<rect x="226.6" y="1098.0" width="69.4" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="261.2" y="1113.9" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">일정 테이블 기반</text>
+<text x="261.2" y="1127.9" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">성과관리 연계</text>
+
+<path d="M 534.0 696.0 Q 38.0 529.0 154.0 362.0" fill="none" stroke="#a21caf" stroke-width="1.4" stroke-dasharray="6,4" marker-end="url(#arrowPurple)"/>
+<rect x="134.9" y="513.0" width="112.2" height="32.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="191.0" y="528.5" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">QMS 검색기능이</text>
+<text x="191.0" y="542.0" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">프로세스 테일러링 전단계 지원</text>
+
+<path d="M 550.0 1488.0 L 576.0 1488.0" fill="none" stroke="#a21caf" stroke-width="1.5"  marker-end="url(#arrowPurple)"/>
+<rect x="533.0" y="1478.8" width="60.1" height="18.5" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="563.0" y="1494.2" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">캘린더 자동반영</text>
+
+<path d="M 1056.0 1488.0 L 1082.0 1488.0" fill="none" stroke="#a21caf" stroke-width="1.5"  marker-end="url(#arrowPurple)"/>
+
+<path d="M 1292.0 1488.0 L 1318.0 1488.0" fill="none" stroke="#a21caf" stroke-width="1.5"  marker-end="url(#arrowPurple)"/>
+<rect x="1278.2" y="1472.0" width="53.6" height="32.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="1305.0" y="1487.5" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">개별 회의자료</text>
+<text x="1305.0" y="1501.0" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">취합</text>
+
+<path d="M 1929.0 1532.0 Q 1811.0 1602.0 1693.0 1532.0" fill="none" stroke="#a21caf" stroke-width="1.5"  marker-end="url(#arrowPurple)"/>
+<rect x="1771.2" y="1551.0" width="79.6" height="32.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="1811.0" y="1566.5" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">자율평가 결과를</text>
+<text x="1811.0" y="1580.0" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">자체심사 근거로 활용</text>
+
+<path d="M 445.0 1532.0 Q 1187.0 1612.0 1929.0 1532.0" fill="none" stroke="#a21caf" stroke-width="1.4" stroke-dasharray="6,4" marker-end="url(#arrowPurple)"/>
+<rect x="1147.2" y="1556.0" width="79.6" height="32.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="1187.0" y="1571.5" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">월간 EVMS 결과를</text>
+<text x="1187.0" y="1585.0" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">자율평가에 인용</text>
+
+<path d="M 175.0 1532.0 Q 1423.0 1642.0 2671.0 1532.0" fill="none" stroke="#a21caf" stroke-width="1.4" stroke-dasharray="6,4" marker-end="url(#arrowPurple)"/>
+<rect x="1376.7" y="1571.0" width="92.6" height="32.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="1423.0" y="1586.5" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">메일/JIRA/Teams</text>
+<text x="1423.0" y="1600.0" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">리스크신호 연계</text>
+
+<path d="M 2199.0 1532.0 Q 2317.0 1602.0 2435.0 1532.0" fill="none" stroke="#a21caf" stroke-width="1.3"  marker-end="url(#arrowPurple)"/>
+
+<path d="M 1187.0 1444.0 Q 1588.0 1320.0 2199.0 1444.0" fill="none" stroke="#a21caf" stroke-width="1.4" stroke-dasharray="6,4" marker-end="url(#arrowPurple)"/>
+<rect x="1594.2" y="1366.0" width="92.6" height="32.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="1640.5" y="1381.5" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">회의자료 작성이력을</text>
+<text x="1640.5" y="1395.0" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">업무현황 모니터링에 활용</text>
+
+<path d="M 3026.0 803.0 Q 3246.0 1123.5 2907.0 1444.0" fill="none" stroke="#c05621" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arrowOrange)"/>
+<rect x="3059.9" y="1107.5" width="92.6" height="32.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="3106.2" y="1123.0" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">JIRA 태스크 현황을</text>
+<text x="3106.2" y="1136.5" font-family="Noto Sans CJK KR, sans-serif" font-size="10.5" fill="#333" text-anchor="middle">프로젝트 현황관리에 반영</text>
+
+<path d="M 3170.0 354.0 Q 2337.0 1270.0 1693.0 1444.0" fill="none" stroke="#b45309" stroke-width="1.6" stroke-dasharray="6,4" marker-end="url(#arrowOrange)"/>
+<rect x="2335.9" y="1068.0" width="96.7" height="33.0" fill="#ffffff" opacity="0.92" rx="4"/>
+<text x="2384.2" y="1083.9" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">배포 완료 후</text>
+<text x="2384.2" y="1097.9" font-family="Noto Sans CJK KR, sans-serif" font-size="11" fill="#333" text-anchor="middle">프로젝트 심사·평가 수행</text>
+
+<rect x="2582" y="48" width="780" height="189" rx="13" fill="white" stroke="#cbd5e1" stroke-width="1.7"/>
+<text x="2600" y="77" font-size="18.2" font-weight="800" fill="#1a202c">범례</text>
+<rect x="2600" y="94" width="26" height="18" rx="4" fill="#dbeafe" stroke="#2b6cb0" stroke-width="1.7"/>
+<text x="2636" y="108" font-size="15.6" fill="#333">V-Cycle 단계 (설계/좌측 하강)</text>
+<rect x="2600" y="123" width="26" height="18" rx="4" fill="#dcfce7" stroke="#2f855a" stroke-width="1.7"/>
+<text x="2636" y="137" font-size="15.6" fill="#333">V-Cycle 단계 (검증·시험/우측 상승)</text>
+<rect x="2600" y="152" width="26" height="18" rx="4" fill="#fef3c7" stroke="#b45309" stroke-width="1.7"/>
+<text x="2636" y="166" font-size="15.6" fill="#333">프로젝트 착수·종료(계획/배포)</text>
+<rect x="2600" y="181" width="26" height="18" rx="4" fill="#eef2ff" stroke="#4338ca" stroke-width="1.7"/>
+<text x="2636" y="195" font-size="15.6" fill="#333">엔지니어링 태스크(17개)</text>
+<rect x="2600" y="210" width="26" height="18" rx="4" fill="#fdf2f8" stroke="#a21caf" stroke-width="1.7"/>
+<text x="2636" y="224" font-size="15.6" fill="#333">관리지원 태스크(13개: 계획/리스크/일정/자료/평가/현황)</text>
+</svg>

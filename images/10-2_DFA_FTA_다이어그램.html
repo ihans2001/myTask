@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>고장전파 트리(DFA/FTA) 자동생성</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --orange:#C2661C;
+    --orange-soft:#F3E1CE;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#EABE8C; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(243,225,206,0.16);
+    color:#EABE8C;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:18px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--orange);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--orange);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--orange);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ DFA/FTA 2-COL ============ */
+  .hybrid-row{ display:flex; gap:16px; margin-bottom:12px; }
+  .hybrid-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:4px solid var(--orange);
+    padding:13px 15px;
+  }
+  .hybrid-card .t{ font-size:13px; font-weight:700; margin-bottom:6px; color:var(--orange); }
+  .hybrid-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.55; }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ NOTATION TABLE ============ */
+  .not-table{ display:flex; flex-direction:column; border:1px solid var(--line); background:var(--paper-card); }
+  .not-row{ display:flex; border-bottom:1px solid var(--line); }
+  .not-row:last-child{ border-bottom:none; }
+  .not-row .c{ flex:1 1 0; padding:8px 12px; font-size:10.6px; line-height:1.45; }
+  .not-row .c.shape{ flex:0 0 130px; font-weight:700; border-right:1px solid var(--line); }
+  .not-row .c.level{ flex:0 0 160px; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .not-row.hdr .c{
+    font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px;
+    background:var(--ink); color:var(--paper);
+  }
+  .not-row.hdr .c.shape, .not-row.hdr .c.level{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+  .not-row .swatch{ display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:6px; vertical-align:middle; }
+
+  /* ============ ROADMAP ============ */
+  .rm-track{ display:flex; align-items:stretch; }
+  .rm-item{ flex:1 1 0; position:relative; padding:0 6px; }
+  .rm-item .line{ height:4px; background:var(--orange-soft); position:relative; margin-bottom:10px; }
+  .rm-item .line::before{
+    content:"";
+    position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:12px; height:12px; border-radius:50%;
+    background:var(--orange);
+  }
+  .rm-item:first-child .line{ margin-left:0; }
+  .rm-item .stage{ font-family:'JetBrains Mono', monospace; font-size:9.5px; color:var(--orange); margin-bottom:3px; }
+  .rm-item .period{ font-size:11.6px; font-weight:700; margin-bottom:5px; }
+  .rm-item .d{ font-size:10px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--orange);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--orange-soft);
+    border-left:4px solid var(--orange);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--orange); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-010-2</span>
+      <span class="tag">2026-09-09</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>고장전파 트리(DFA/FTA) <span class="hl">자동생성</span></h1>
+    <div class="sub">SW 아키텍처링 테이블(함수 SSoT)에서 고장전파 체인을 자동으로 식별하고, 계층 트리와 고장원인 트리를 하나의 다이어그램으로 자동 생성한다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">SW 아키텍처링 연계</span>
+      <span class="chip-pill">DFA·FTA 동일 로직</span>
+      <span class="chip-pill">도형 자동 생성</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">트리를 전부 손으로 그림</div>
+        <div class="d">PowerPoint·Visio 등으로 계층과 고장전파 경로를 수작업으로 그려왔다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">SSoT가 바뀌면 그림만 남음</div>
+        <div class="d">구조가 바뀌어도 다이어그램을 따로 재작업하지 않아 정합성이 어긋난다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">대상이 늘수록 작업량 폭증</div>
+        <div class="d">함수 수가 많아질수록 작성 시간이 기하급수적으로 늘어난다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">작성자마다 표현이 다름</div>
+        <div class="d">표준화된 규칙이 없어 검토자가 매번 새로 익혀야 한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">계층 트리 자동생성</div>
+            <div class="s">함수 SSoT의 상하 관계를 그대로 도형 트리로 그린다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">고장원인 트리(DFA/FTA) 자동생성</div>
+            <div class="s">입력요소·입력변수 조합별로 고장원인 노드를 자동 생성해 연결한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">색상·좌표 자동 배치</div>
+            <div class="s">레벨별 그라데이션과 겹치지 않는 좌표를 알고리즘으로 계산한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">매크로 1회 실행</div>
+            <div class="s">기존 도형을 지우고 전체를 재생성해 항상 최신 구조를 반영한다</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 원리</div>
+        <div class="chip-tech">
+          <span>DFA·FTA는 같은 로직 — 고장원인 그룹이 1개면 DFA, 여러 개면 FTA</span>
+        </div>
+        <div class="h" style="margin-top:14px;">입력 SSoT</div>
+        <div class="chip-tech">
+          <span>diagramDFA 시트(계층+입출력 변수)</span>
+          <span>funcSSoT 시트(요소별 기능 설명)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">계층 트리 구축</div><div class="d">상속(carry-down) 규칙으로 각 행의 전체 계층 경로를 복원한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">고장원인 그룹핑</div><div class="d">말단 함수를 (입력요소, 입력변수) 조합 기준으로 그룹으로 묶는다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">좌표 배치</div><div class="d">자식 노드의 위치를 먼저 정하고 부모 위치를 평균으로 계산한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">도형·커넥터 생성</div><div class="d">계층 노드와 고장원인 노드를 도형으로 그리고 화살표로 연결한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">재실행으로 최신화</div><div class="d">SSoT가 바뀌면 매크로를 다시 실행해 다이어그램을 갱신한다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DFA vs FTA -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>DFA와 FTA — 무엇이 다른가</div>
+    <div class="hybrid-row">
+      <div class="hybrid-card">
+        <div class="t">DFA — 고장원인 1개</div>
+        <div class="d">하나의 입력요소에 이상이 생겼을 때, 그 신호를 쓰는 모든 말단 함수와 상위 계층까지 전파되는 경로를 트리로 표현한다.</div>
+      </div>
+      <div class="hybrid-card">
+        <div class="t">FTA — 고장원인 여러 개</div>
+        <div class="d">말단 함수마다 서로 다른 입력요소·입력변수를 가질 수 있어, 원인을 그룹으로 묶고 그룹별로 해당 함수에만 선택적으로 연결한다.</div>
+      </div>
+    </div>
+    <div class="corr-note"><b>그룹 수가 1개면 DFA, 여러 개면 FTA</b> — 별도의 분기 로직 없이 동일한 코드로 두 결과를 모두 얻는다.</div>
+  </section>
+
+  <!-- NOTATION -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>다이어그램 표기 규칙</div>
+    <div class="not-table">
+      <div class="not-row hdr">
+        <div class="c shape">구분</div>
+        <div class="c level">도형</div>
+        <div class="c">텍스트 구성</div>
+      </div>
+      <div class="not-row">
+        <div class="c shape">최상위(Lvl1)</div>
+        <div class="c level">둥근사각형</div>
+        <div class="c">함수명 (진한 네이비 계열)</div>
+      </div>
+      <div class="not-row">
+        <div class="c shape">중간 노드</div>
+        <div class="c level">사각형</div>
+        <div class="c">함수명 + 기능 설명 (레벨별 그라데이션)</div>
+      </div>
+      <div class="not-row">
+        <div class="c shape">말단 unit함수</div>
+        <div class="c level">타원</div>
+        <div class="c">함수명 + 출력변수</div>
+      </div>
+      <div class="not-row">
+        <div class="c shape">고장원인</div>
+        <div class="c level">마름모(주황 계열)</div>
+        <div class="c">입력요소 + 입력변수 (그룹별 톤 변화)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>확장 계획</div>
+    <div class="rm-track">
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">1단계 · 완료</div>
+        <div class="period">단일 워크북 자동생성</div>
+        <div class="d">diagramDFA/funcSSoT 기반 DFA·FTA 트리 자동 생성</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">2단계 · 제안</div>
+        <div class="period">다단 배치·페이지 분할</div>
+        <div class="d">고장원인 그룹이 많아질 경우를 대비한 자동 배치</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">3단계 · 제안</div>
+        <div class="period">TARA DB 연계</div>
+        <div class="d">AFR 계산 결과를 트리 도형에 주석으로 병기</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">4단계 · 제안</div>
+        <div class="period">공격표면 체계 결합</div>
+        <div class="d">사이버보안 관점의 고장·공격 전파 트리로 확장</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">07</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">정합성 자동 확보</div>
+        <div class="d">SSoT가 바뀌면 매크로 재실행만으로 다이어그램이 최신화된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">유지보수 대상 축소</div>
+        <div class="d">DFA·FTA를 같은 도구로 생성해 관리 대상이 줄어든다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">검토자 간 가독성 향상</div>
+        <div class="d">일관된 색상·도형 규칙으로 표준화된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">수작업 대비 시간 절감</div>
+        <div class="d">대상 함수 수가 늘어도 처리 시간은 비례해서 늘지 않는다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">08</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>현재는 말단 함수당 <b>출력변수 1개</b> 구조를 전제한다 — 여러 출력변수를 갖는 경우는 추가 설계가 필요하다</li>
+        <li>원인 그룹이 많아지면 가로 폭이 시트를 초과할 수 있어 <b>자동 줄바꿈</b> 로직이 필요하다</li>
+        <li>도형 접속점은 종류마다 내부 정의가 달라 일부는 <b>좌표 직접계산</b> 방식으로 처리한다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-010-2</div>
+      <div><span>작성일</span>2026-09-09</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>SW 산출물 해시 생성 및 검증</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --rose:#8C4A5C;
+    --rose-soft:#EDDBE0;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#DBB7C1; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(237,219,224,0.16);
+    color:#E0BFC8;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--rose);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--rose);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--rose);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ ASSET TYPE TABLE ============ */
+  .type-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .type-row{ display:flex; border-bottom:1px solid var(--line); }
+  .type-row:last-child{ border-bottom:none; }
+  .type-row .c{ padding:8px 12px; font-size:10.5px; line-height:1.5; }
+  .type-row .c.type{ flex:0 0 150px; font-weight:700; border-right:1px solid var(--line); }
+  .type-row .c.match{ flex:1 1 0; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .type-row .c.tara{ flex:1 1 0; color:var(--ink); }
+  .type-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .type-row.hdr .c.type, .type-row.hdr .c.match{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ CASE A/B ============ */
+  .ba-row{ display:flex; align-items:stretch; gap:0; }
+  .ba-card{ flex:1 1 0; min-width:0; padding:13px 15px; position:relative; }
+  .ba-card.before{ background:#EDEFEA; color:var(--ink); }
+  .ba-card.after{ background:var(--rose); color:#fff; }
+  .ba-card + .ba-card{ margin-left:16px; }
+  .ba-card + .ba-card::before{
+    content:"→"; position:absolute; left:-16px; top:50%; transform:translate(-50%,-50%);
+    color:var(--ink-soft); font-size:16px; background:var(--paper); width:20px; text-align:center;
+  }
+  .ba-card .tag{ font-family:'JetBrains Mono', monospace; font-size:9.5px; opacity:0.75; margin-bottom:5px; }
+  .ba-card .t{ font-size:12.5px; font-weight:700; margin-bottom:6px; }
+  .ba-card .d{ font-size:10.8px; line-height:1.55; }
+  .ba-card.after .d{ color:#F3E3E8; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--rose);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--rose-soft);
+    border-left:4px solid var(--rose);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--rose); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-018</span>
+      <span class="tag">2026-09-10</span>
+      <span class="tag">가이드</span>
+    </div>
+    <h1>SW 산출물 해시 <span class="hl">생성 및 검증</span></h1>
+    <div class="sub">고객이 제공한 원본 해시와 협력사 산출물의 해시를 자동으로 대조해 자료 무결성을 보장한다. CRA 대응을 위해 장기간 보관해야 하는 산출물 증적을 파일·엑셀 워크시트 단위로 남긴다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">VBA-Python 브릿지</span>
+      <span class="chip-pill">4종 해시 알고리즘 자동감지</span>
+      <span class="chip-pill">파일/워크시트 단위 검증</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">CRA 대응 보관 의무</div>
+        <div class="d">CRA(사이버보안법)에 의거해 자료 제출 후 향후 10년간 보관해야 할 필요성이 커지고 있다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">원본 훼손 여부 확인</div>
+        <div class="d">협력사에게 전달된 산출물이 고객이 제공한 원본과 정확히 같은지 확인할 방법이 필요하다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">모든 형태의 파일을 다뤄야 함</div>
+        <div class="d">바이너리·문서·압축파일 등 형식이 제각각인 산출물 전체에 동일한 방식을 적용해야 한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">엑셀은 파일 단위로 부족</div>
+        <div class="d">워크북 안의 워크시트 하나만 바뀌어도 이를 잡아낼 수 있어야 한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">해시 생성 (고객 제공)</div>
+            <div class="s">AddFilesWithHashCalc 매크로가 원본 파일들의 해시를 일괄 계산한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">해시 검증 (협력사 검증)</div>
+            <div class="s">ExecuteBatchHashVerification 매크로가 원본 해시와 대조해 PASS/FAIL을 판정한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">파일 단위 해시</div>
+            <div class="s">64KB Chunk 스트리밍으로 대용량 바이너리도 메모리 부담 없이 처리한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">워크시트 단위 해시</div>
+            <div class="s">엑셀은 "셀주소=값"으로 직렬화해 워크시트 단위로 해시를 계산한다</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 원리</div>
+        <div class="chip-tech">
+          <span>MD5 / SHA1 / SHA256 / SHA512 — 기대 해시 길이로 알고리즘 자동감지</span>
+        </div>
+        <div class="h" style="margin-top:14px;">활용 예시</div>
+        <div class="chip-tech">
+          <span>SW 배포 시 릴리즈 노트에 해시 주입 후 발송</span>
+          <span>릴리즈 자료 전체에 해시 적용 가능</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">원본 해시 계산</div><div class="d">고객이 AddFilesWithHashCalc(mHashEach.bas)로 원본 파일의 해시를 계산한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">해시 포함 자료 전달</div><div class="d">계산된 해시를 릴리즈 노트 등에 주입해 산출물과 함께 전달한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">협력사 해시 재계산</div><div class="d">협력사가 ExecuteBatchHashVerification(mHashBatch.bas)로 동일 대상의 해시를 다시 계산한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">대조 및 판정</div><div class="d">원본 해시와 자동으로 대조해 PASS/FAIL/N/A로 판정하고 기록한다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILE vs SHEET -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>파일 단위 vs 워크시트 단위</div>
+    <div class="type-table">
+      <div class="type-row hdr">
+        <div class="c type">구분</div>
+        <div class="c match">파일_해시검증 시트</div>
+        <div class="c tara">엑셀_워크시트_해시검증 시트</div>
+      </div>
+      <div class="type-row"><div class="c type">대상</div><div class="c match">모든 형태의 파일 (바이너리·문서·압축 등)</div><div class="c tara">엑셀 워크북 내 특정 워크시트</div></div>
+      <div class="type-row"><div class="c type">계산 방식</div><div class="c match">64KB Chunk 스트리밍 해시</div><div class="c tara">"셀주소=값" 직렬화 후 해시</div></div>
+      <div class="type-row"><div class="c type">용도</div><div class="c match">산출물 전체 무결성 확인</div><div class="c tara">엑셀 내 특정 시트만 변경 여부 확인</div></div>
+    </div>
+    <div class="corr-note">워크시트 해시는 <b>셀 좌표까지 포함</b>해 계산되므로, 값이 이동하거나 행/열이 삽입·삭제되면 값이 같아도 다른 해시가 된다.</div>
+  </section>
+
+  <!-- BEFORE/AFTER -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>Before / After</div>
+    <div class="ba-row">
+      <div class="ba-card before">
+        <div class="tag">이전 — 육안·수작업 대조</div>
+        <div class="t">파일을 열어 하나하나 비교</div>
+        <div class="d">산출물이 여러 개면 각각 열어 눈으로 비교해야 해서 시간이 오래 걸리고 누락 위험이 있다.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="tag">현재 — 자동 일괄 대조</div>
+        <div class="t">매크로 실행 한 번으로 전체 판정</div>
+        <div class="d">엑셀에 파일 경로와 기대 해시만 채워두면, 매크로 실행 한 번으로 전체를 PASS/FAIL로 자동 판정한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">무결성 증적 확보</div>
+        <div class="d">CRA 대응을 위한 장기 보관용 해시 증적을 자동으로 생성한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">변조 즉시 감지</div>
+        <div class="d">원본과 한 글자만 달라도 해시가 달라져 즉시 식별된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">모든 파일 형식 지원</div>
+        <div class="d">바이너리·문서·압축 등 형식 제약 없이 동일하게 적용된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">워크시트 단위 정밀 검증</div>
+        <div class="d">엑셀 파일 전체가 아니라 시트 단위로도 변경 여부를 확인할 수 있다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>워크시트 해시는 <b>셀 좌표까지 포함</b>하므로, 값이 같아도 위치가 바뀌면 해시가 달라진다</li>
+        <li>알고리즘은 기대 해시 문자열의 <b>길이(32/40/64/128자)로 자동 판별</b>되므로, 기대 해시를 정확히 입력해야 한다</li>
+        <li>verify_hash_batch.py는 <b>verify_hash_each.py와 반드시 같은 폴더</b>에 있어야 워크시트 검증 모드가 동작한다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-018</div>
+      <div><span>작성일</span>2026-09-10</div>
+    </div>
+    <div>본 내용은 사내 운영 가이드이며, 실제 환경 변수·경로는 배포 시 별도 관리한다.</div>
+  </div>
+
+</div>
+</body>
+</html>

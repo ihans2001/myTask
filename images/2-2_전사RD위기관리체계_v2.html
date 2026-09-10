@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>전사 및 R&D 위기관리체계</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --crim:#9C2B2B;
+    --crim-soft:#F2D9D9;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --green:#2E7D5B; --green-soft:#DCEAE2;
+    --amber:#B08A1E; --amber-soft:#F2E8CC;
+    --orange:#C0642A; --orange-soft:#F4E1CF;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:23px;
+    line-height:1.4;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#E3B0B0; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(242,217,217,0.16);
+    color:#E8C2C2;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--crim);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--crim);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ FORMULA ============ */
+  .formula-box{
+    background:var(--ink); color:#fff; padding:14px 18px; text-align:center;
+    font-family:'JetBrains Mono', monospace; font-size:14px; font-weight:700;
+    margin-bottom:12px; letter-spacing:0.01em;
+  }
+  .formula-box span{ color:#E8C2C2; }
+  .axis-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .axis-card{
+    flex:1 1 22%; min-width:210px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--crim);
+    padding:10px 12px;
+  }
+  .axis-card .name{ font-family:'JetBrains Mono', monospace; font-size:10.8px; font-weight:700; color:var(--crim); margin-bottom:4px; }
+  .axis-card .d{ font-size:10.2px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ GRADE SCALE ============ */
+  .grade-scale{ display:flex; gap:10px; }
+  .grade-seg{ flex:1 1 0; padding:11px 12px; }
+  .grade-seg.g1{ background:var(--green-soft); border-left:4px solid var(--green); }
+  .grade-seg.g2{ background:var(--amber-soft); border-left:4px solid var(--amber); }
+  .grade-seg.g3{ background:var(--orange-soft); border-left:4px solid var(--orange); }
+  .grade-seg.g4{ background:var(--crim-soft); border-left:4px solid var(--crim); }
+  .grade-seg .range{ font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--ink-soft); margin-bottom:3px; }
+  .grade-seg .t{ font-size:12.5px; font-weight:700; margin-bottom:4px; }
+  .grade-seg.g1 .t{ color:var(--green); }
+  .grade-seg.g2 .t{ color:var(--amber); }
+  .grade-seg.g3 .t{ color:var(--orange); }
+  .grade-seg.g4 .t{ color:var(--crim); }
+  .grade-seg .d{ font-size:10.2px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ TWO LEVELS ============ */
+  .lvl-wrap{ display:flex; gap:20px; }
+  .lvl-col{ flex:1 1 0; min-width:0; }
+  .lvl-head{ font-size:12.4px; font-weight:700; margin-bottom:8px; }
+  .lvl-head.co{ color:var(--crim); }
+  .lvl-head.rd{ color:#9FAAB2; }
+  .lvl-list{ display:flex; flex-direction:column; gap:0; background:var(--paper-card); border:1px solid var(--line); }
+  .lvl-list .row{ padding:6px 12px; font-size:10.5px; border-bottom:1px solid var(--line); }
+  .lvl-list .row:last-child{ border-bottom:none; }
+  .lvl-box{ background:var(--ink); color:#DCE2E4; }
+  .lvl-box .row{ border-bottom:1px solid rgba(255,255,255,0.12); }
+  .lvl-box .row:last-child{ border-bottom:none; }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ PROCESS LIST ============ */
+  .proc-list{ display:flex; flex-direction:column; gap:7px; }
+  .proc-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--crim);
+    padding:8px 12px;
+  }
+  .proc-item .t{ font-size:11.4px; font-weight:600; }
+  .proc-item .s{ font-size:10.2px; color:var(--ink-soft); margin-top:1px; }
+
+  /* ============ PRINCIPLES ============ */
+  .princ-row{ display:flex; gap:12px; }
+  .princ-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:11px 13px;
+  }
+  .princ-card .t{ font-size:11.6px; font-weight:700; margin-bottom:5px; color:var(--crim); }
+  .princ-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.55; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--crim);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--crim-soft);
+    border-left:4px solid var(--crim);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--crim); }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-002-2</span>
+      <span class="tag">2026-09-09</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>전사 및 R&D 위기관리체계 <span class="hl">— 자율평가 기반 대응</span></h1>
+    <div class="sub">위기의 징후를 가장 먼저, 가장 정확히 아는 것은 늘 담당 조직 자신이다. 전사와 R&D, 서로 다른 층위의 위기를 같은 4대 판단축과 하나의 산식으로 진단해 같은 언어로 비교·보고한다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">4대 판단축 공통 산식</span>
+      <span class="chip-pill">전사 8개 + R&D 12개 위기유형</span>
+      <span class="chip-pill">월간 자율평가</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">각자 자기 영역만 지킴</div>
+        <div class="d">개발·품질·프로세스가 자기 영역 안에서만 책임지려 하면, 문제는 부문 사이 틈에서 자란다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">책임 소재부터 따지는 문화</div>
+        <div class="d">문제를 먼저 드러낸 사람이 먼저 책임진다는 우려가 조기 공유를 가로막는다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">위기 징후는 이미 현장에 있음</div>
+        <div class="d">공식 보고체계로 올라오기까지의 시차 동안 위험도는 계속 커진다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">심사·감사는 사후 확인일 뿐</div>
+        <div class="d">이미 벌어진 일을 나중에 확인할 뿐, 선제적 발견 수단이 되지 못한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULA -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>공통 기준 — 4대 판단축과 실효위험도</div>
+    <div class="formula-box">실효위험도 = ( 비가역성 × 시간탄력성 × 신뢰자본 ) <span>÷ 해결가능성(역량)</span></div>
+    <div class="axis-grid">
+      <div class="axis-card"><div class="name">A1. 비가역성</div><div class="d">임계점을 넘으면 손실이 영구 고정되는가</div></div>
+      <div class="axis-card"><div class="name">A2. 시간탄력성</div><div class="d">지연 1시간(1일)당 손실이 얼마나 가파르게 커지는가</div></div>
+      <div class="axis-card"><div class="name">A3. 신뢰자본</div><div class="d">이해관계자의 신뢰가 얼마나 비대칭적 속도로 소모되는가</div></div>
+      <div class="axis-card"><div class="name">A4. 해결가능성(역량)</div><div class="d">원인이 내부 통제권 안에 있고, 고칠 역량을 보유하고 있는가</div></div>
+    </div>
+  </section>
+
+  <!-- GRADE SCALE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>등급과 전결권한</div>
+    <div class="grade-scale">
+      <div class="grade-seg g1">
+        <div class="range">0~4</div>
+        <div class="t">관찰(MONITOR)</div>
+        <div class="d">자체관리 · 담당자(실무자) · 정기 보고로 충분</div>
+      </div>
+      <div class="grade-seg g2">
+        <div class="range">4~10</div>
+        <div class="t">주의(CAUTION)</div>
+        <div class="d">자체관리 · 부서장 · 부서장 결재, 주간 모니터링</div>
+      </div>
+      <div class="grade-seg g3">
+        <div class="range">10~20</div>
+        <div class="t">심각(SERIOUS)</div>
+        <div class="d">에스컬레이션 · 임원 · 임원 보고 및 TF 구성, 일일 모니터링</div>
+      </div>
+      <div class="grade-seg g4">
+        <div class="range">20 이상</div>
+        <div class="t">비상(CRITICAL)</div>
+        <div class="d">에스컬레이션 · 대표이사·이사회 · 위기대응본부 즉시 가동</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TWO LEVELS -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>두 층위 — 전사 8개 & R&D 12개 위기유형</div>
+    <div class="lvl-wrap">
+      <div class="lvl-col">
+        <div class="lvl-head co">전사 관점 (8개)</div>
+        <div class="lvl-list">
+          <div class="row">재무 · 법률/컴플라이언스 · 품질/안전</div>
+          <div class="row">사이버보안 · 평판/PR · 인사/노무</div>
+          <div class="row">공급망 · 자연재해/BCP</div>
+        </div>
+      </div>
+      <div class="lvl-col">
+        <div class="lvl-head rd">R&D 관점 (12개)</div>
+        <div class="lvl-list lvl-box">
+          <div class="row">요구사항 변경 · 설계/아키텍처 결함 · 검증(V&V) 실패</div>
+          <div class="row">일정지연(V-Cycle) · SW-HW 통합실패 · 신규 취약점(CVE)</div>
+          <div class="row">사이버보안 성적서 게이트리뷰 Fail · 인증/규제 미준수</div>
+          <div class="row">핵심 개발인력 이탈 · 협력사 기술이슈 · 툴체인/인프라 장애 · IP/기술 유출</div>
+        </div>
+      </div>
+    </div>
+    <div class="corr-note">동일한 <b>'Fail'</b>이라는 단어 아래에도 사유(단순오류→항목누락→재검증필요→설계변경필요)에 따라 실효위험도가 <b>최대 160배</b>까지 벌어질 수 있다 — R&D 위기를 정성적 표현이 아니라 정량적 기준으로 다뤄야 하는 이유다.
+    <br><span class="mono" style="font-size:10px;">Lv.1 단순오류 (1×1×1)÷5 = 0.2(관찰) → Lv.4 설계변경 필요 (4×4×4)÷2 = 32(비상) — 실제 채점기준표 기준 160배 차이</span></div>
+  </section>
+
+  <!-- MONTHLY SELF-ASSESSMENT -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>월간 자율평가 운영 방식 (R&D, PM 주도)</div>
+    <div class="proc-list">
+      <div class="proc-item"><div><div class="t">월 1회, 12개 유형 전체를 예외 없이 점검</div><div class="s">특정 이슈가 있을 때만 등록하지 않고, 매달 전 항목을 체크리스트형으로 점검한다</div></div></div>
+      <div class="proc-item"><div><div class="t">문장형 1~5점 기준에서 선택</div><div class="s">채점자의 주관에 따라 기준이 흔들리지 않도록 미리 정의된 문장에서 고른다</div></div></div>
+      <div class="proc-item"><div><div class="t">판단사유를 근거와 함께 기록</div><div class="s">어떤 사건, 어떤 데이터에 근거했는지 구체적으로 남긴다</div></div></div>
+      <div class="proc-item"><div><div class="t">담당자·목표기한 지정, 기한 자동 점검</div><div class="s">실효위험도가 높은 항목은 방치되지 않도록 기한 경과 여부를 자동 확인한다</div></div></div>
+      <div class="proc-item"><div><div class="t">등급·에스컬레이션 자동 산정</div><div class="s">PM 개인의 판단이 아니라 공통 기준에 따라 자동으로 계산된다</div></div></div>
+    </div>
+  </section>
+
+  <!-- PSYCHOLOGICAL SAFETY -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>자체평가를 심리적으로 안전하게 만드는 장치</div>
+    <div class="princ-row">
+      <div class="princ-card">
+        <div class="t">조기 발견·정직한 보고는 긍정적 성과</div>
+        <div class="d">문제의 발생과 문제의 은폐를 분리하여 다룬다</div>
+      </div>
+      <div class="princ-card">
+        <div class="t">에스컬레이션은 문책의 시작이 아니다</div>
+        <div class="d">회사 차원의 자원과 권한을 동원하는 절차의 시작으로 규정한다</div>
+      </div>
+      <div class="princ-card">
+        <div class="t">공통 채점기준표를 사용한다</div>
+        <div class="d">점수는 개인의 주관적 고백이 아니라 회사가 정한 객관적 진단 결과다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">07</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">자율경보체계 확립</div>
+        <div class="d">임계점 전에 스스로 위험 상승을 인지하고 조치한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">공통 언어의 확보</div>
+        <div class="d">서로 다른 층위의 위기를 같은 축·산식으로 비교·보고한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">방어적 문화에서 협업적 문화로</div>
+        <div class="d">프로세스 조직이 심사자가 아닌 가이드로 자리매김한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">책임 있는 리더십의 정착</div>
+        <div class="d">리더가 책임지는 각오로 이끌 때 체계가 형식이 아닌 실질로 작동한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section>
+    <div class="sec-label"><span class="n">08</span>실제 자동화 도구 구성</div>
+    <div class="proc-list">
+      <div class="proc-item"><div><div class="t">에스컬레이션 대장 + 자동 메일 발송</div><div class="s">심각·비상 등급 항목은 지정된 수신/참조/숨은참조 대상에게 자동으로 보고 메일이 발송된다</div></div></div>
+      <div class="proc-item"><div><div class="t">취약점·품질관리대장 (사이버보안 특화)</div><div class="s">CVE·품질이슈별로 CVSS, TARA 재수행 여부, 조치방안, ECR/ECO까지 한 줄로 추적한다</div></div></div>
+      <div class="proc-item"><div><div class="t">TARA 재수행 판단 4대 게이트</div><div class="s">자산/인터페이스 변경, 영향도 변동, 공격가능성 상승, 보안목표 미달 — 이 네 가지 중 하나라도 해당되면 TARA를 재수행한다</div></div></div>
+    </div>
+  </section>
+
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">09</span>유의할 점</div>
+    <div class="note">
+      이 체계는 <b>엑셀 기반 자동화 도구</b>(월간 자율평가 양식)로 등급 산정과 에스컬레이션 판단을 자동 계산하도록 지원된다. 다만 이 가이드는 완성된 결론이 아니라 출발점이다 — 실제 운영 과정에서 드러나는 판단기준의 공백과 등급 경계의 모호함은, 프로세스 조직과 각 부문이 함께 다듬어가야 할 <b>살아있는 기준</b>이다.
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-002-2</div>
+      <div><span>작성일</span>2026-09-09</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>MS Teams 채널 대화 리스크 분석·보고</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --rose:#8C4A5C;
+    --rose-soft:#EDDBE0;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#DBB7C1; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(237,219,224,0.16);
+    color:#E0BFC8;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--rose);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--rose);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--rose);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ ASSET TYPE TABLE ============ */
+  .type-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .type-row{ display:flex; border-bottom:1px solid var(--line); }
+  .type-row:last-child{ border-bottom:none; }
+  .type-row .c{ padding:8px 12px; font-size:10.5px; line-height:1.5; }
+  .type-row .c.type{ flex:0 0 150px; font-weight:700; border-right:1px solid var(--line); }
+  .type-row .c.match{ flex:1 1 0; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .type-row .c.tara{ flex:1 1 0; color:var(--ink); }
+  .type-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .type-row.hdr .c.type, .type-row.hdr .c.match{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ CASE A/B ============ */
+  .ba-row{ display:flex; align-items:stretch; gap:0; }
+  .ba-card{ flex:1 1 0; min-width:0; padding:13px 15px; position:relative; }
+  .ba-card.before{ background:#EDEFEA; color:var(--ink); }
+  .ba-card.after{ background:var(--rose); color:#fff; }
+  .ba-card + .ba-card{ margin-left:16px; }
+  .ba-card + .ba-card::before{
+    content:"→"; position:absolute; left:-16px; top:50%; transform:translate(-50%,-50%);
+    color:var(--ink-soft); font-size:16px; background:var(--paper); width:20px; text-align:center;
+  }
+  .ba-card .tag{ font-family:'JetBrains Mono', monospace; font-size:9.5px; opacity:0.75; margin-bottom:5px; }
+  .ba-card .t{ font-size:12.5px; font-weight:700; margin-bottom:6px; }
+  .ba-card .d{ font-size:10.8px; line-height:1.55; }
+  .ba-card.after .d{ color:#F3E3E8; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--rose);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--rose-soft);
+    border-left:4px solid var(--rose);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--rose); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-034</span>
+      <span class="tag">2026-09-10</span>
+      <span class="tag">가이드</span>
+    </div>
+    <h1>MS Teams <span class="hl">채널 대화 리스크 분석·보고</span></h1>
+    <div class="sub">메일·JIRA 현황관리와 같은 목적으로, Teams 채널의 대화를 주기적으로 또는 필요 시점에 분석해 요약·톤앤매너·리스크(변화 추이 포함)를 자동 기록한다. Teams API와 수동 복사-붙여넣기 두 가지 방식을 모두 지원한다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">LLM 기반 톤앤매너·리스크 분석</span>
+      <span class="chip-pill">변경 감지 시에만 LLM 호출</span>
+      <span class="chip-pill">Confluence 타임라인 누적 게시</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">대화가 여러 채널에 흩어져 있음</div>
+        <div class="d">고객·협력사 채널마다 대화를 따로 확인해야 한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">변화만 짚어내기 어려움</div>
+        <div class="d">매주 전체 대화를 다시 읽으면 실제로 뭐가 달라졌는지 찾기 어렵다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">소통 분위기까지는 파악 못함</div>
+        <div class="d">단순 진행상황 요약만으로는 갈등이나 긴장 같은 신호를 놓치기 쉽다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">Teams API를 못 쓰는 환경도 있음</div>
+        <div class="d">권한·인증 문제로 API 연동이 막힌 조직도 대비해야 한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">채널별 대화 수집</div>
+            <div class="s">Teams API 또는 수동 복사-붙여넣기로 채널(하위 채널 포함)의 대화를 수집한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">변경 감지(콘텐츠 해시)</div>
+            <div class="s">주제별 콘텐츠 해시로 직전 대비 신규/변경/삭제를 판정하고, 변경 없는 주제는 LLM 호출을 건너뛴다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">LLM 요약·톤앤매너·리스크 분석</div>
+            <div class="s">변경된 주제만 골라 주간 요약, 소통 톤앤매너, 리스크 등급·사유를 LLM으로 추출한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">Confluence·엑셀·메일 3중 기록</div>
+            <div class="s">분석 결과를 Confluence 타임라인에 누적 게시하고, 엑셀 리포트로 정리해 지정 수신자에게 메일로 보낸다</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 원리</div>
+        <div class="chip-tech">
+          <span>주제(Topic)마다 대화+답글+첨부파일을 합쳐 SHA-256 해시 계산, 동일하면 UNCHANGED로 LLM 재호출 차단</span>
+        </div>
+        <div class="h" style="margin-top:14px;">발송 경로</div>
+        <div class="chip-tech">
+          <span>1차 Outlook 데스크톱(COM) 시도 → 실패 시 Office 365 SMTP로 자동 전환</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">대화 수집(2가지 방식)</div><div class="d">Teams API 또는 GUI로 복사-붙여넣기한 대화를 raw_text로 수집한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">구조화 파싱</div><div class="d">LLM이 비정형 대화를 주제·스레드·답글·첨부파일 구조의 JSON으로 정규화한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">변경 감지</div><div class="d">직전 스냅샷과 주제별 해시를 비교해 ADDED/MODIFIED/UNCHANGED/DELETED를 판정한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">LLM 리스크 분석</div><div class="d">변경된 주제만 요약·톤앤매너·리스크 등급·사유를 분석한다 (UNCHANGED는 캐시 재사용)</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">게시·리포트·발송</div><div class="d">Confluence 타임라인 게시, 엑셀 리포트 생성, 메일 자동 발송을 순서대로 수행한다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLLECTION MODE COMPARISON -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>2가지 수집 방식 비교</div>
+    <div class="type-table">
+      <div class="type-row hdr">
+        <div class="c type">구분</div>
+        <div class="c match">① Teams API 연동</div>
+        <div class="c tara">② 수동 복사-붙여넣기 (GUI)</div>
+      </div>
+      <div class="type-row"><div class="c type">전제조건</div><div class="c match">Teams API 권한·인증 필요</div><div class="c tara">별도 인증 없이 사람이 직접 붙여넣기</div></div>
+      <div class="type-row"><div class="c type">구현 상태</div><div class="c match">설계상 자리 마련 (ingestion_mode 필드)</div><div class="c tara">manual_input_gui.py로 구현 완료</div></div>
+      <div class="type-row"><div class="c type">용도</div><div class="c match">API 사용 가능한 조직의 기본 경로</div><div class="c tara">API 연동이 막힌 경우의 대체 경로</div></div>
+    </div>
+    <div class="corr-note">ingestion_mode 값으로 두 경로를 구분하며, 이후 파이프라인(LLM 파싱~메일발송)은 <b>동일하게 재사용</b>된다.</div>
+  </section>
+
+  <!-- BEFORE/AFTER -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>Before / After</div>
+    <div class="ba-row">
+      <div class="ba-card before">
+        <div class="tag">이전 — 채널마다 수작업 확인</div>
+        <div class="t">사람이 리스크를 직접 판단</div>
+        <div class="d">여러 채널의 대화를 각자 열어 읽고, 무엇이 리스크인지 사람이 판단해야 했다.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="tag">현재 — 변경분만 자동 분석</div>
+        <div class="t">3중 기록으로 자동 정리</div>
+        <div class="d">바뀐 주제만 LLM이 요약·톤앤매너·리스크로 분석해 Confluence·엑셀·메일로 자동 기록한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">LLM 비용 절감</div>
+        <div class="d">변경 없는 주제는 캐시를 재사용해 불필요한 API 호출을 막는다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">소통 리스크 조기 포착</div>
+        <div class="d">진행상황뿐 아니라 톤앤매너까지 분석해 갈등·긴장 신호를 놓치지 않는다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">이력 추적 가능</div>
+        <div class="d">주제별 history가 누적되어 여러 주에 걸친 변화 추이를 볼 수 있다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">API 유무에 관계없이 동작</div>
+        <div class="d">Teams API가 막혀도 수동 입력 GUI로 동일한 파이프라인을 쓸 수 있다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>현재 첨부에는 <b>수동 복사-붙여넣기(GUI) 경로만 실제 코드로 포함</b>되어 있으며, Teams API 연동은 ingestion_mode 필드로 자리만 마련된 상태다</li>
+        <li>메일 발송은 1차로 <b>Windows Outlook 데스크톱(COM)을 시도</b>하고, 실패하면 Office 365 SMTP로 자동 전환한다</li>
+        <li>LLM 분석 결과가 <b>캐시(is_cached=true)로 표시</b>되면 이번 주 새로 분석한 것이 아니라 직전 결과를 재사용한 것이다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-034</div>
+      <div><span>작성일</span>2026-09-10</div>
+    </div>
+    <div>본 내용은 사내 운영 가이드이며, 실제 환경 변수·경로는 배포 시 별도 관리한다.</div>
+  </div>
+
+</div>
+</body>
+</html>

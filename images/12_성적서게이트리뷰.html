@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>성적서 게이트 리뷰 자동화</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --terra:#A8532E;
+    --terra-soft:#F0DDD2;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --green:#2E7D5B; --green-soft:#DCEAE2;
+    --amber:#B08A1E; --amber-soft:#F2E8CC;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:23px;
+    line-height:1.4;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#E8BFA9; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(240,221,210,0.16);
+    color:#E8BFA9;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--terra);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--terra);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--terra);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ METHOD EVAL TABLE ============ */
+  .eval-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .eval-row{ display:flex; border-bottom:1px solid var(--line); }
+  .eval-row:last-child{ border-bottom:none; }
+  .eval-row .c{ padding:8px 12px; font-size:10.8px; line-height:1.45; }
+  .eval-row .c.no{ flex:0 0 34px; font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--terra); }
+  .eval-row .c.name{ flex:1 1 0; font-weight:600; }
+  .eval-row .c.grade{ flex:0 0 140px; font-weight:700; text-align:right; }
+  .eval-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .grade.best{ color:var(--green); }
+  .grade.ok{ color:var(--ink); }
+  .grade.warn{ color:var(--amber); }
+
+  /* ============ FUTURE ITEMS ============ */
+  .fut-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .fut-card{
+    flex:1 1 22%; min-width:210px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--terra);
+    padding:10px 12px;
+  }
+  .fut-card .name{ font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:700; color:var(--terra); margin-bottom:4px; }
+  .fut-card .d{ font-size:10.2px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ PRINCIPLES ============ */
+  .princ-row{ display:flex; gap:16px; }
+  .princ-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:12px 14px;
+  }
+  .princ-card .t{ font-size:12px; font-weight:700; margin-bottom:6px; color:var(--terra); }
+  .princ-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.55; }
+
+  /* ============ ROADMAP ============ */
+  .rm-track{ display:flex; align-items:stretch; }
+  .rm-item{ flex:1 1 0; position:relative; padding:0 6px; }
+  .rm-item .line{ height:4px; background:var(--terra-soft); position:relative; margin-bottom:10px; }
+  .rm-item .line::before{
+    content:"";
+    position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:12px; height:12px; border-radius:50%;
+    background:var(--terra);
+  }
+  .rm-item:first-child .line{ margin-left:0; }
+  .rm-item .stage{ font-family:'JetBrains Mono', monospace; font-size:9.5px; color:var(--terra); margin-bottom:3px; }
+  .rm-item .period{ font-size:11.2px; font-weight:700; margin-bottom:5px; }
+  .rm-item .d{ font-size:9.8px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--terra);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--terra-soft);
+    border-left:4px solid var(--terra);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--terra); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-012</span>
+      <span class="tag">2026-09-09</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>성적서 게이트 리뷰 자동화 <span class="hl">— 정형 양식이면 무엇이든</span></h1>
+    <div class="sub">사이버보안 성적서를 위해 개발했지만, <b>정형화된 양식을 쓰는 모든 성적서</b>에 확장 적용 가능하다. 수백 페이지에 이르는 증적자료를 사람이 매뉴얼로 리뷰하는 것은 현실적으로 불가능하지만, 자동화로 전체 증적 리뷰가 가능해진다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">정형 양식 전반 확장 가능</span>
+      <span class="chip-pill">자료유형별 5가지 리뷰 방식</span>
+      <span class="chip-pill">11개 방법론 검토</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">증적 자료가 방대함</div>
+        <div class="d">세부 성적서마다 수백 페이지에 이르는 증적이 재귀적으로 임베딩되어 있다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">사람이 다 열어보는 건 불가능</div>
+        <div class="d">매뉴얼 리뷰로는 현실적으로 전체 자료를 검토할 수 없다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">자료 종류가 제각각</div>
+        <div class="d">워드·PPTX·엑셀·PDF·이미지·바이너리가 뒤섞여 있어 검토 방법이 자료마다 다르다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">육안 검토는 비효율적</div>
+        <div class="d">수백 페이지 슬라이드를 하나하나 눈으로 보는 것은 효율적이지 못하다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가 — 자료유형별 5가지 리뷰 방식</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">템플릿 자동 비교(DIFF)</div>
+            <div class="s">관련 자료를 템플릿으로 자동으로 불러와 기준과의 차이를 체크(기본 방식)</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">문자열 검색</div>
+            <div class="s">특정 신호·문구가 있는지 문자열로 존재 유무를 확인</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">이미지 유사도 교차비교</div>
+            <div class="s">육안은 물론, 이미지 유사도 로직으로 교차 비교하고 결과를 차트화(구현 중)</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">바이너리 → 텍스트 변환</div>
+            <div class="s">바이너리 파일을 텍스트로 바꾼 뒤 문자열 파싱으로 리뷰</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">⑤</div>
+          <div>
+            <div class="t">PPTX → 이미지 변환</div>
+            <div class="s">수백 페이지 슬라이드를 이미지로 바꿔 자동 로직으로 리뷰</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">적용 범위</div>
+        <div class="chip-tech">
+          <span>사이버보안 성적서 전용이 아니다</span>
+          <span>정형화된 양식을 쓰는 모든 성적서에 확장 가능</span>
+        </div>
+        <div class="h" style="margin-top:14px;">평가 기준(6가지)</div>
+        <div class="chip-tech">
+          <span>기술적 견고성</span><span>정확성·신뢰성</span><span>자동화 완성도</span>
+          <span>확장성</span><span>감사 방어력</span><span>유지보수 비용</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 METHODS EVAL -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>검증된 7가지 방법론 — 종합 평가</div>
+    <div class="eval-table">
+      <div class="eval-row hdr">
+        <div class="c no">순번</div>
+        <div class="c name">방법</div>
+        <div class="c grade">종합 평가</div>
+      </div>
+      <div class="eval-row"><div class="c no">①</div><div class="c name">VBA 템플릿 비교(diff)</div><div class="c grade ok">타당</div></div>
+      <div class="eval-row"><div class="c no">②</div><div class="c name">재귀적 임베디드 파일 추출</div><div class="c grade warn">병목 존재</div></div>
+      <div class="eval-row"><div class="c no">③</div><div class="c name">이미지 유사도 교차검증</div><div class="c grade best">최우수 설계</div></div>
+      <div class="eval-row"><div class="c no">④</div><div class="c name">pptx 슬라이드 이미지 변환</div><div class="c grade ok">타당</div></div>
+      <div class="eval-row"><div class="c no">⑤</div><div class="c name">텍스트 문자열 검색</div><div class="c grade warn">조건 보완 필요</div></div>
+      <div class="eval-row"><div class="c no">⑥</div><div class="c name">바이너리→텍스트 변환</div><div class="c grade warn">조건부 타당</div></div>
+      <div class="eval-row"><div class="c no">⑦</div><div class="c name">펜테스트 LLM 분석</div><div class="c grade warn">검증절차 필요</div></div>
+    </div>
+  </section>
+
+  <!-- FUTURE EXPANSION -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>향후 확장 검토(⑧~⑪)</div>
+    <div class="fut-grid">
+      <div class="fut-card"><div class="name">⑧ 바이너리 파일 Emulating</div><div class="d">원본 이미지 위에 판정 영역만 주석으로 표시(원본 훼손 없음)</div></div>
+      <div class="fut-card"><div class="name">⑨ 자동 종합 보고서</div><div class="d">①~⑦ 결과를 공통 스키마로 적재한 뒤 템플릿으로 자동 생성</div></div>
+      <div class="fut-card"><div class="name">⑩ PDF 정적분석 결과 추출</div><div class="d">규칙기반 파서를 우선 적용, 불명확한 경우만 보완 검토</div></div>
+      <div class="fut-card"><div class="name">⑪ 임베디드 파일 추출 라이브러리</div><div class="d">포맷별 전용 라이브러리로 안정적으로 해결(LLM은 후처리만 담당)</div></div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>신뢰를 지키는 설계 원칙</div>
+    <div class="princ-row">
+      <div class="princ-card">
+        <div class="t">판정에는 반드시 원문 근거를 함께</div>
+        <div class="d">LLM이 요약만 내놓으면 다시 원본을 열어봐야 한다. 판정 근거가 된 원문 스니펫을 함께 표시해, 원본과 즉시 대조 가능한 '근거 앵커'를 남긴다.</div>
+      </div>
+      <div class="princ-card">
+        <div class="t">원본은 절대 재구성하지 않는다</div>
+        <div class="d">판정 영역은 원본 위에 주석으로만 표시한다. 도구 화면을 통째로 모사하는 방식은 원본과 구분이 안 돼 감사 시 논란이 될 수 있어 지양한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>실행 로드맵</div>
+    <div class="rm-track">
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">1단계 · 현재</div>
+        <div class="period">방법론 검토 완료</div>
+        <div class="d">반출 승인 대기</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">2단계</div>
+        <div class="period">함수 리뷰 및 개선</div>
+        <div class="d">①~⑦ 함수를 순서대로 리뷰하고 개선안을 반영</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">3단계</div>
+        <div class="period">스키마 보정·프로토타입</div>
+        <div class="d">실제 양식 확인 후 공통 스키마 보정, 자동 종합보고서 제작</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">4단계</div>
+        <div class="period">실데이터 검증</div>
+        <div class="d">규칙기반 파서·정합성 체크 로직을 실데이터로 검증</div>
+      </div>
+      <div class="rm-item">
+        <div class="line"></div>
+        <div class="stage">5단계</div>
+        <div class="period">확장 항목 적용</div>
+        <div class="d">⑧⑩⑪번 확장 항목을 순차 적용</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">07</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">전체 증적 리뷰가 현실화</div>
+        <div class="d">수백 페이지도 자동으로 빠짐없이 검토한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">사이버보안을 넘어 전 영역 확장</div>
+        <div class="d">정형 양식을 쓰는 모든 성적서에 동일하게 적용한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">감사 근거가 자동으로 남음</div>
+        <div class="d">판정 결과와 근거가 함께 기록되어 심사 대응력이 높아진다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">새 도구·포맷 추가가 쉬움</div>
+        <div class="d">프로파일만 추가하면 새로운 도구에도 대응한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">08</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>②재귀적 임베디드 파일 추출이 유일한 <b>실질적 병목</b>이다 — xlsx/pptx 외 포맷은 자동추출이 안 되어 수기 추출에 의존한다</li>
+        <li>도구 UI 화면을 통째로 재구성(모사)하는 방식은 <b>지양</b>한다 — 원본과 시각적으로 구분되지 않아 감사 시 논란의 소지가 있다</li>
+        <li>LLM은 컨테이너를 여는 역할이 아니다 — 포맷 해석은 <b>전용 라이브러리</b>가, LLM은 추출된 내용의 판단·요약만 담당한다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-012</div>
+      <div><span>작성일</span>2026-09-09</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>

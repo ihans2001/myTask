@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>설계~구현 시퀀스 다이어그램 Diff 자동화</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --prus:#1F4E79;
+    --prus-soft:#D7E3ED;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:23px;
+    line-height:1.4;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#A9C4DC; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(215,227,237,0.14);
+    color:#B7CFE2;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--prus);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--prus);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--prus);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ 4-CHIP GRID ============ */
+  .group-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .group-chip{
+    flex:1 1 22%; min-width:210px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:8px 12px;
+    font-size:10.6px;
+    line-height:1.5;
+  }
+  .group-chip .idx{ font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--prus); margin-right:5px; }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ COMPARE TABLE ============ */
+  .cmp-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .cmp-row{ display:flex; border-bottom:1px solid var(--line); }
+  .cmp-row:last-child{ border-bottom:none; }
+  .cmp-row .c{ padding:8px 11px; font-size:10.5px; line-height:1.45; }
+  .cmp-row .c.dim{ flex:0 0 150px; font-weight:700; border-right:1px solid var(--line); }
+  .cmp-row .c.method{ flex:1 1 0; border-right:1px solid var(--line); }
+  .cmp-row .c.auto{ flex:0 0 210px; color:var(--ink-soft); }
+  .cmp-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .cmp-row.hdr .c.dim, .cmp-row.hdr .c.method{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  /* ============ AUTOMATION BOUNDARY ============ */
+  .bound-row{ display:flex; gap:16px; }
+  .bound-card{ flex:1 1 0; min-width:0; padding:13px 15px; }
+  .bound-card.auto{ background:var(--prus); color:#fff; }
+  .bound-card.human{ background:#EDEFEA; color:var(--ink); }
+  .bound-card .t{ font-size:12.5px; font-weight:700; margin-bottom:6px; }
+  .bound-card .d{ font-size:10.8px; line-height:1.6; }
+  .bound-card.auto .d{ color:#DCE7F0; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--prus);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--prus-soft);
+    border-left:4px solid var(--prus);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--prus); }
+  .note ol{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-013</span>
+      <span class="tag">2026-09-09</span>
+      <span class="tag">제안서</span>
+    </div>
+    <h1>설계~구현 시퀀스 다이어그램 <span class="hl">Diff 자동화</span></h1>
+    <div class="sub">설계 의도와 실제 코드가 시간이 지나며 벌어지는 드리프트(Drift)를, 사람이 전수 비교하지 않고도 자동으로 드러낸다. 설계 단계의 플로우차트와 코드 기반 다이어그램을 각각 자동 생성해 구조 단위로 비교한다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">설계-구현 정합성 자동검증</span>
+      <span class="chip-pill">폴더 전체 배치 처리</span>
+      <span class="chip-pill">PlantUML 표준 형식</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">설계 문서가 코드 변경을 못 따라감</div>
+        <div class="d">설계 시점에 한 번 그려진 다이어그램이 이후 코드 변경사항을 반영하지 못한다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">드리프트가 안전·보안 분석에 영향</div>
+        <div class="d">설계와 구현의 괴리는 추적성 훼손과 영향도 분석 오류로 이어진다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">소급 보완 작업이 방대함</div>
+        <div class="d">뒤늦게 아키텍처 문서를 실제 구현 기준으로 맞추는 작업에 많은 시간이 든다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">전체를 다 그리면 아무도 안 읽음</div>
+        <div class="d">수백~수천 개 함수를 전부 그리면 정작 중요한 것이 묻힌다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">설계 시퀀스 다이어그램(초안)</div>
+            <div class="s">설계단계 플로우차트 테이블을 PlantUML로 자동 변환</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">구현 시퀀스 다이어그램(As-built)</div>
+            <div class="s">폴더 내 전체 코드를 스캔해 실제 구현 기준으로 자동 생성</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">설계-구현 정합성 리포트</div>
+            <div class="s">참가자·분기구조·메시지 순서 차이를 구조 단위로 자동 비교</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">배치(batch) 처리</div>
+            <div class="s">폴더에 저장된 모든 코드에 대해 한 번에 수행 가능</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 기술</div>
+        <div class="chip-tech">
+          <span>AST(추상구문트리) 기반 자동 추출</span>
+          <span>프로젝트 심볼 인덱스(콜그래프)</span>
+          <span>구조화 모델로 변환 후 의미 단위 Diff</span>
+        </div>
+        <div class="h" style="margin-top:14px;">3단계 흐름</div>
+        <div class="chip-tech">
+          <span>① 설계(플로우차트 작성)</span>
+          <span>② 코딩완료(코드에서 자동 추출)</span>
+          <span>③ 비교분석(구조 Diff)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEQUENCE BOM -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>왜 Sequence BOM이 꼭 필요한가</div>
+    <div class="group-row">
+      <div class="group-chip"><span class="idx">1</span>타 파일 전역변수 소유관계 — 프로젝트 전체를 인덱싱해야 알 수 있다</div>
+      <div class="group-chip"><span class="idx">2</span>함수 콜의 실제 정의처 — 같은 파일/다른 파일/외부 라이브러리 중 어디인지 별도 확인 필요</div>
+      <div class="group-chip"><span class="idx">3</span>TaskTime(트리거 주기) — 보통 코드가 아니라 스케줄러 설정 파일에 있다</div>
+      <div class="group-chip"><span class="idx">4</span>UDN/고장모드 — 코드 안에 애초에 존재하지 않는, 엔지니어의 안전분석 판단</div>
+    </div>
+    <div class="corr-note">AST는 <b>'구조적 사실'</b>만 알려준다 — 위 4가지 <b>'의미 정보'</b>(Sequence BOM)는 계속 사람이 채워야 완전한 다이어그램이 완성된다.</div>
+  </section>
+
+  <!-- O/X RULE -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>작도 대상 선정 — 왜 전체를 다 그리면 안 되는가</div>
+    <div class="group-row">
+      <div class="group-chip"><span class="idx">•</span>문서 피로도 — 수백~수천 개 다이어그램은 정작 중요한 것을 묻히게 한다</div>
+      <div class="group-chip"><span class="idx">•</span>재사용 모듈 제외 — 변경 없는 검증된 모듈까지 매번 다시 그릴 필요 없다</div>
+      <div class="group-chip"><span class="idx">•</span>유지보수 비용 — 코드가 바뀔 때마다 갱신해야 하는 지속적 비용이다</div>
+      <div class="group-chip"><span class="idx">•</span>우선순위 — 신규개발·인터페이스 변경·안전/보안 critical 함수부터 그린다</div>
+    </div>
+    <div class="corr-note">O 함수가 내부에서 만나는 X 함수는 leaf 참가자로 표시하되, 반드시 <b>'미전개(블랙박스)'</b> 상태를 기록한다 — 안전하다고 확인된 것과 단순히 안 그린 것을 구분하기 위해서다.</div>
+  </section>
+
+  <!-- COMPARE DIMENSIONS -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>무엇을, 어디까지 비교하는가</div>
+    <div class="cmp-table">
+      <div class="cmp-row hdr">
+        <div class="c dim">비교 차원</div>
+        <div class="c method">비교 방법</div>
+        <div class="c auto">자동화 가능 여부</div>
+      </div>
+      <div class="cmp-row">
+        <div class="c dim">① 참가자 집합</div>
+        <div class="c method">설계 vs 구현의 전역변수·호출함수 집합을 비교</div>
+        <div class="c auto">완전 자동화</div>
+      </div>
+      <div class="cmp-row">
+        <div class="c dim">② 분기·루프 구조</div>
+        <div class="c method">조건/반복의 개수·중첩을 트리로 변환해 비교</div>
+        <div class="c auto">구조는 자동, 조건식 의미는 사람 확인</div>
+      </div>
+      <div class="cmp-row">
+        <div class="c dim">③ 메시지 순서/방향</div>
+        <div class="c method">참가자별 Read/Write 순서를 위상 비교</div>
+        <div class="c auto">완전 자동화</div>
+      </div>
+      <div class="cmp-row">
+        <div class="c dim">④ UDN/고장모드</div>
+        <div class="c method">그 방향에 도달하는 코드 경로 존재 여부만 확인</div>
+        <div class="c auto">도달가능성만 자동, 타당성은 사람 판단</div>
+      </div>
+    </div>
+    <div class="corr-note">설계 단계에 <b>명시적으로 기재된 항목만</b> 비교 대상으로 삼는다 — 미기재 항목은 '비교불가(N/A)'로 분류해 오탐(노이즈)을 막는다.</div>
+  </section>
+
+  <!-- AUTOMATION BOUNDARY -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>자동화 경계</div>
+    <div class="bound-row">
+      <div class="bound-card auto">
+        <div class="t">완전 자동화</div>
+        <div class="d">AST 파싱, 심볼 인덱스 구축, 콜그래프 추적, PlantUML 생성·렌더링, 설계-구현 구조적 Diff 계산</div>
+      </div>
+      <div class="bound-card human">
+        <div class="t">사람이 계속 담당</div>
+        <div class="d">Sequence BOM 작성(참가자 그룹핑·UDN·TaskTime), 작도 대상 O/X 선정, 설계 플로우차트 테이블 작성, Diff 리포트의 최종 조치 판단</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">07</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">드리프트를 전수검토 없이 탐지</div>
+        <div class="d">설계와 구현 사이 어긋난 지점을 자동으로 드러낸다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">명세서 소급 보완 부담 감소</div>
+        <div class="d">코딩 완료 후 문서화 작업의 상당 부분이 자동화된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">숨은 결합을 조기에 발견</div>
+        <div class="d">전역변수 공유·콜체인 확장을 미리 찾아 후속 안전·보안 분석 품질을 높인다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">설계 후보안 비교에도 재사용</div>
+        <div class="d">같은 Diff 엔진으로 여러 아키텍처 후보안을 정량 비교할 수 있다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP / NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">08</span>향후 진행 순서</div>
+    <div class="note">
+      <ol>
+        <li>프로젝트 폴더 스캔 + 전역 심볼 인덱스 빌드 스크립트 개발</li>
+        <li>Sequence BOM 스키마 확정 및 샘플 1개 함수로 End-to-End 파이프라인 검증</li>
+        <li>실제 소스코드 엣지케이스(switch fallthrough, goto/label 등)에 대한 AST 변환 규칙 강건화</li>
+        <li>구조화 모델(중간표현) 스키마 설계 및 설계-구현 Diff 엔진 프로토타입 개발</li>
+        <li>여러 함수·콜체인으로 확대 적용, 자동화 배치(batch) 스크립트화</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-013</div>
+      <div><span>작성일</span>2026-09-09</div>
+    </div>
+    <div>본 내용은 제안 단계이며, 조직의 검토·승인을 거쳐 확정된다.</div>
+  </div>
+
+</div>
+</body>
+</html>
