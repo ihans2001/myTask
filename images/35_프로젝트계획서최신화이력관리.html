@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>프로젝트계획서 최신화 이력 관리</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --rose:#8C4A5C;
+    --rose-soft:#EDDBE0;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#DBB7C1; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(237,219,224,0.16);
+    color:#E0BFC8;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--rose);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--rose);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--rose);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ ASSET TYPE TABLE ============ */
+  .type-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .type-row{ display:flex; border-bottom:1px solid var(--line); }
+  .type-row:last-child{ border-bottom:none; }
+  .type-row .c{ padding:8px 12px; font-size:10.5px; line-height:1.5; }
+  .type-row .c.type{ flex:0 0 150px; font-weight:700; border-right:1px solid var(--line); }
+  .type-row .c.match{ flex:1 1 0; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .type-row .c.tara{ flex:1 1 0; color:var(--ink); }
+  .type-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .type-row.hdr .c.type, .type-row.hdr .c.match{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ CASE A/B ============ */
+  .ba-row{ display:flex; align-items:stretch; gap:0; }
+  .ba-card{ flex:1 1 0; min-width:0; padding:13px 15px; position:relative; }
+  .ba-card.before{ background:#EDEFEA; color:var(--ink); }
+  .ba-card.after{ background:var(--rose); color:#fff; }
+  .ba-card + .ba-card{ margin-left:16px; }
+  .ba-card + .ba-card::before{
+    content:"→"; position:absolute; left:-16px; top:50%; transform:translate(-50%,-50%);
+    color:var(--ink-soft); font-size:16px; background:var(--paper); width:20px; text-align:center;
+  }
+  .ba-card .tag{ font-family:'JetBrains Mono', monospace; font-size:9.5px; opacity:0.75; margin-bottom:5px; }
+  .ba-card .t{ font-size:12.5px; font-weight:700; margin-bottom:6px; }
+  .ba-card .d{ font-size:10.8px; line-height:1.55; }
+  .ba-card.after .d{ color:#F3E3E8; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--rose);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--rose-soft);
+    border-left:4px solid var(--rose);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--rose); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-035</span>
+      <span class="tag">2026-09-10</span>
+      <span class="tag">가이드</span>
+    </div>
+    <h1>프로젝트계획서 <span class="hl">최신화 이력 관리</span></h1>
+    <div class="sub">프로젝트계획서는 초기 v1에서 멈춘 채 심사 때마다 지적받는 사문서가 되기 쉽다. 마일스톤마다 최신화 여부를 점검하고, 실제로 바뀔 때만 버전을 올리며, 이전 내용은 히스토리로 그대로 남긴다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">마일스톤별 버전 스탬프</span>
+      <span class="chip-pill">신규항목 자동 편입</span>
+      <span class="chip-pill">변경 이력 전량 보존</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">초기 v1에서 멈춘 계획서</div>
+        <div class="d">프로젝트 초반에 작성된 뒤 끝까지 그대로 유지되면 실제 진행 상황과 어긋난다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">심사 때마다 지적받는 사문서</div>
+        <div class="d">최신화되지 않은 계획서는 심사·감사에서 반복적으로 지적 대상이 된다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">최초엔 없던 항목이 나중에 생김</div>
+        <div class="d">프로젝트 초기엔 존재하지 않던 항목이 마일스톤을 지나며 새로 필요해지는 경우가 있다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">바뀐 내용을 되짚어볼 수 없음</div>
+        <div class="d">계획서가 최신화되면 이전에 뭐라고 적혀 있었는지 확인할 방법이 없어진다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">마일스톤별 최신화 점검·버전 스탬프</div>
+            <div class="s">착수/Mcar/Proto/P1/P2/SoP 열마다 실제로 최신화됐을 때만 버전을 한 칸 올려 기록한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">v1 고정관념 탈피</div>
+            <div class="s">v1은 착수 열이 아니라 그 행에서 처음 값이 채워지는 열이며, 끝까지 최신화가 없으면 v1이 계속 유지된다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">변경 이력 전량 보존(R~V)</div>
+            <div class="s">새 버전이 스탬프되는 순간, 직전까지의 내용이 히스토리 칸으로 그대로 이관되어 남는다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">config 기반 신규 항목 자동 편입</div>
+            <div class="s">새로 필요해진 항목은 config.py 구역 정의에 추가하면 엑셀·PPT 양쪽에 자동 반영된다</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 원리</div>
+        <div class="chip-tech">
+          <span>버전 번호는 건너뛰기 금지(v1→v3 불가) + 이후 마일스톤 열에 더 낮은 버전이 있으면 순서 오류로 거부</span>
+        </div>
+        <div class="h" style="margin-top:14px;">내부 스냅샷</div>
+        <div class="chip-tech">
+          <span>W열(숨김)이 "마지막 확정 시점"의 내용을 보관했다가, 다음 버전 스탬프 때 히스토리로 이관</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">내용 수정</div><div class="d">H열(내용)을 수정하고 G열 상태를 진행/완료로 바꾼다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">마일스톤 도래 시 최신화 여부 판단</div><div class="d">해당 마일스톤에서 실제로 내용이 바뀌었는지 점검한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">버전 스탬프</div><div class="d">바뀐 경우에만 착수~SoP 중 해당 마일스톤 열에 다음 버전을 입력한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">히스토리 이관</div><div class="d">스탬프 순간, 스냅샷의 이전 내용이 히스토리 칸으로 옮겨지고 스냅샷은 현재 내용으로 갱신된다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">검증 후 PPT 생성</div><div class="d">버튼 클릭 시 1차 검증을 통과하면 Python pipeline이 최신 내용으로 PPT를 만든다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>기존 방식 vs 마일스톤 버전관리</div>
+    <div class="type-table">
+      <div class="type-row hdr">
+        <div class="c type">구분</div>
+        <div class="c match">기존 방식 (v1 고정)</div>
+        <div class="c tara">마일스톤 버전관리 (이번)</div>
+      </div>
+      <div class="type-row"><div class="c type">갱신 시점</div><div class="c match">프로젝트 초반 1회 작성 후 방치</div><div class="c tara">마일스톤마다 최신화 필요 여부를 점검</div></div>
+      <div class="type-row"><div class="c type">버전 표시</div><div class="c match">버전 개념 없음 (v1 그대로)</div><div class="c tara">실제 변경 시에만 버전을 1씩 증가</div></div>
+      <div class="type-row"><div class="c type">이전 내용</div><div class="c match">덮어써서 사라짐</div><div class="c tara">히스토리 칸에 그대로 보존되어 대조 가능</div></div>
+      <div class="type-row"><div class="c type">심사 대응</div><div class="c match">"언제 확인했는지" 근거 없음</div><div class="c tara">마일스톤별 점검·변경 이력 자체가 근거가 됨</div></div>
+    </div>
+    <div class="corr-note">버전이 v1에 계속 머물러 있어도, 그 자체가 <b>"여러 마일스톤을 거치는 동안 실제로 바뀔 내용이 없었다"</b>는 근거로 남는다.</div>
+  </section>
+
+  <!-- BEFORE/AFTER -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>Before / After</div>
+    <div class="ba-row">
+      <div class="ba-card before">
+        <div class="tag">이전 — 초반 작성 후 방치</div>
+        <div class="t">사문서로 지적받음</div>
+        <div class="d">프로젝트 초기에 쓴 계획서가 끝까지 v1으로 남아, 실제 진행과 괴리된 사문서로 지적받았다.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="tag">현재 — 마일스톤마다 점검+이력 보존</div>
+        <div class="t">변경 여부와 이전 내용 모두 확인 가능</div>
+        <div class="d">마일스톤마다 최신화 여부를 점검하고, 바뀐 내용과 이전 내용을 모두 확인할 수 있다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">심사 대응력 향상</div>
+        <div class="d">마일스톤별 점검·변경 이력 자체가 감사 대응 근거가 된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">신규 항목 누락 방지</div>
+        <div class="d">나중에 필요해진 항목도 config 정의만 추가하면 놓치지 않고 반영된다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">변경 추적 가능</div>
+        <div class="d">이전 내용이 사라지지 않고 남아 무엇이 왜 바뀌었는지 확인할 수 있다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">불필요한 버전 남발 방지</div>
+        <div class="d">실제 변경이 없으면 버전을 올리지 않아, 버전 자체가 의미 있는 신호로 남는다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>버전 값은 <b>"v1, v2..." 형식만 허용</b>되며, 번호를 건너뛰거나(v1→v3) 이후 마일스톤 열에 더 낮은 버전을 입력하면 자동으로 되돌려진다</li>
+        <li>히스토리 이관은 <b>새 버전이 스탬프되는 시점에만</b> 일어나며, 내용을 여러 번 고치는 것 자체는 이관을 유발하지 않는다</li>
+        <li>히스토리 저장 칸은 <b>5개로 제한</b>되어 있어, 다 차면 담당자에게 별도 문의가 필요하다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-035</div>
+      <div><span>작성일</span>2026-09-10</div>
+    </div>
+    <div>본 내용은 사내 운영 가이드이며, 실제 환경 변수·경로는 배포 시 별도 관리한다.</div>
+  </div>
+
+</div>
+</body>
+</html>
