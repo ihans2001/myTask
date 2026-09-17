@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>MITRE CVE 월간(또는 주간) 모니터링</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2F3EF;
+    --ink:#171F2A;
+    --ink-soft:#59626B;
+    --line:#D5D8D1;
+    --rose:#8C4A5C;
+    --rose-soft:#EDDBE0;
+    --steel:#37506B;
+    --steel-soft:#DCE4EA;
+    --paper-card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#D9DBD6;
+    font-family:'Pretendard', 'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 12px;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  .sheet{
+    width:980px;
+    background:var(--paper);
+    box-shadow:0 18px 50px rgba(23,31,42,0.26);
+    border:1px solid #BFC4BC;
+  }
+
+  /* ============ HEADER ============ */
+  .head{
+    background:var(--ink);
+    color:var(--paper);
+    padding:26px 42px 24px;
+    position:relative;
+  }
+  .doc-meta{
+    display:flex; gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:#B9C0C4;
+    margin-bottom:16px;
+  }
+  .doc-meta .tag{
+    border:1px solid rgba(242,243,239,0.35);
+    padding:2px 8px; border-radius:2px;
+  }
+  .head h1{
+    margin:0 0 10px;
+    font-size:24px;
+    line-height:1.38;
+    font-weight:700;
+    max-width:700px;
+    letter-spacing:-0.01em;
+  }
+  .head h1 .hl{ color:#DBB7C1; }
+  .head .sub{
+    font-size:13px;
+    color:#C6CBCC;
+    max-width:680px;
+    line-height:1.6;
+  }
+  .chip-row{ display:flex; gap:10px; margin-top:16px; }
+  .chip-pill{
+    font-size:11px; font-weight:600;
+    padding:5px 12px; border-radius:3px;
+    background:rgba(237,219,224,0.16);
+    color:#E0BFC8;
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{ padding:17px 42px; border-bottom:1px solid var(--line); }
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--rose);
+    margin-bottom:10px;
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .sec-label .n{
+    color:var(--paper); background:var(--rose);
+    padding:1px 6px; border-radius:2px;
+  }
+
+  /* ============ WHY ============ */
+  .why-grid{ display:flex; gap:12px; }
+  .why-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-soft);
+    padding:11px 12px;
+  }
+  .why-card .k{ font-size:12.3px; font-weight:700; margin-bottom:5px; }
+  .why-card .d{ font-size:11px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ WHAT ============ */
+  .what-wrap{ display:flex; gap:20px; }
+  .deliv-list{ display:flex; flex-direction:column; gap:8px; flex:1.15 1 0; min-width:0; }
+  .deliv-item{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:9px 12px;
+  }
+  .deliv-item .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:700;
+    color:var(--rose);
+    padding-top:1px;
+  }
+  .deliv-item .t{ font-size:12px; font-weight:600; }
+  .deliv-item .s{ font-size:10.7px; color:var(--ink-soft); margin-top:1px;}
+
+  .tech-box{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 16px;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .tech-box .h{ font-size:11.5px; color:#9FAAB2; margin-bottom:10px; }
+  .chip-tech{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip-tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.18);
+    padding:3px 8px;
+    border-radius:2px;
+    color:#DCE2E4;
+  }
+
+  /* ============ PIPELINE ============ */
+  .step-grid{ display:flex; flex-wrap:wrap; gap:10px; }
+  .step-card{
+    flex:1 1 30%; min-width:250px;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    display:flex; gap:9px;
+  }
+  .step-card .idx{
+    width:20px; height:20px; border-radius:50%;
+    background:var(--steel); color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:1px;
+  }
+  .step-card .t{ font-size:11.6px; font-weight:700; margin-bottom:3px; }
+  .step-card .d{ font-size:10.3px; color:var(--ink-soft); line-height:1.45; }
+
+  /* ============ ASSET TYPE TABLE ============ */
+  .type-table{ border:1px solid var(--line); background:var(--paper-card); }
+  .type-row{ display:flex; border-bottom:1px solid var(--line); }
+  .type-row:last-child{ border-bottom:none; }
+  .type-row .c{ padding:8px 12px; font-size:10.5px; line-height:1.5; }
+  .type-row .c.type{ flex:0 0 150px; font-weight:700; border-right:1px solid var(--line); }
+  .type-row .c.match{ flex:1 1 0; border-right:1px solid var(--line); color:var(--ink-soft); }
+  .type-row .c.tara{ flex:1 1 0; color:var(--ink); }
+  .type-row.hdr .c{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size:9.6px; background:var(--ink); color:var(--paper); }
+  .type-row.hdr .c.type, .type-row.hdr .c.match{ background:var(--ink); border-right:1px solid rgba(255,255,255,0.15); }
+
+  .corr-note{
+    background:var(--steel-soft);
+    border-left:4px solid var(--steel);
+    padding:11px 13px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+    margin-top:12px;
+  }
+  .corr-note b{ color:var(--steel); }
+
+  /* ============ CASE A/B ============ */
+  .ba-row{ display:flex; align-items:stretch; gap:0; }
+  .ba-card{ flex:1 1 0; min-width:0; padding:13px 15px; position:relative; }
+  .ba-card.before{ background:#EDEFEA; color:var(--ink); }
+  .ba-card.after{ background:var(--rose); color:#fff; }
+  .ba-card + .ba-card{ margin-left:16px; }
+  .ba-card + .ba-card::before{
+    content:"→"; position:absolute; left:-16px; top:50%; transform:translate(-50%,-50%);
+    color:var(--ink-soft); font-size:16px; background:var(--paper); width:20px; text-align:center;
+  }
+  .ba-card .tag{ font-family:'JetBrains Mono', monospace; font-size:9.5px; opacity:0.75; margin-bottom:5px; }
+  .ba-card .t{ font-size:12.5px; font-weight:700; margin-bottom:6px; }
+  .ba-card .d{ font-size:10.8px; line-height:1.55; }
+  .ba-card.after .d{ color:#F3E3E8; }
+
+  /* ============ BENEFITS ============ */
+  .benefit-grid{ display:flex; gap:12px; }
+  .benefit-card{
+    flex:1 1 0; min-width:0;
+    background:var(--paper-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--rose);
+    padding:12px 12px;
+  }
+  .benefit-card .t{ font-size:12.4px; font-weight:700; margin-bottom:5px; }
+  .benefit-card .d{ font-size:10.6px; color:var(--ink-soft); line-height:1.5; }
+
+  /* ============ NOTE ============ */
+  .note{
+    background:var(--rose-soft);
+    border-left:4px solid var(--rose);
+    padding:12px 14px;
+    font-size:11px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .note b{ color:var(--rose); }
+  .note ul{ margin:6px 0 0; padding-left:18px; }
+  .note li{ margin-bottom:4px; }
+
+  /* ============ FOOTER ============ */
+  .foot{
+    padding:15px 42px 20px;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    font-size:10px; color:var(--ink-soft);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .foot .cols{ display:flex; gap:24px; }
+  .foot .cols > div{ margin-right:24px; }
+  .foot .cols > div:last-child{ margin-right:0; }
+  .foot .cols div span{
+    display:block; color:var(--ink); font-weight:600; margin-bottom:2px;
+    font-family:'Pretendard','Noto Sans KR',sans-serif; font-size:11px;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="doc-meta">
+      <span class="tag">IHANS-PRO-2026-014-2</span>
+      <span class="tag">2026-09-17</span>
+      <span class="tag">가이드</span>
+    </div>
+    <h1>MITRE CVE <span class="hl">월간(또는 주간) 모니터링</span></h1>
+    <div class="sub">매일 자동 실행되는 monthMonitoring 체계가 구조적으로 놓치는 "지연 공개 CVE"를, MITRE 저장소의 zip 스냅샷 델타(delta) 정보로 주기적으로 보완한다. 자동 추출된 결과는 dayMonitoring과 유사한 필드로 별도 raw 파일에 기록된다.</div>
+    <div class="chip-row">
+      <span class="chip-pill">zip 부분추출(전체 압축해제 없음)</span>
+      <span class="chip-pill">delta+baseline 합집합 탐지</span>
+      <span class="chip-pill">Repository_ID 읽기전용 대조</span>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <section>
+    <div class="sec-label"><span class="n">01</span>왜 필요한가</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="k">번호 기반 탐지는 지연공개 CVE를 놓침</div>
+        <div class="d">baseline보다 항상 작은 번호로 남는 CVE는 매일 모니터링에서 영구히 감지되지 않는다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">기존 재스윕은 처리시간이 너무 김</div>
+        <div class="d">main.zip 전체 압축해제에 수 시간이 걸렸다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">두 체계의 데이터 형식이 달랐음</div>
+        <div class="d">개별 CVE별 xlsx와 가변 컬럼 구조라 monthMonitoring의 고정 스키마와 호환되지 않았다</div>
+      </div>
+      <div class="why-card">
+        <div class="k">중복 CVE 체크 로직이 없었음</div>
+        <div class="d">이미 저장소에 있는 CVE가 다시 섞여 들어올 수 있었다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT -->
+  <section>
+    <div class="sec-label"><span class="n">02</span>무엇을 만드는가</div>
+    <div class="what-wrap">
+      <div class="deliv-list">
+        <div class="deliv-item">
+          <div class="num">①</div>
+          <div>
+            <div class="t">zip 부분 추출</div>
+            <div class="s">main.zip을 통째로 풀지 않고 delta.json/deltalog.json과 실제 변경 CVE만 메모리에서 직접 읽는다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">②</div>
+          <div>
+            <div class="t">delta+baseline 합집합 탐지</div>
+            <div class="s">delta 목록과 직전 baseline보다 큰 번호를 모두 모아 사각지대를 서로 보완한다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">③</div>
+          <div>
+            <div class="t">dayMonitoring과 동일한 필드로 rawData 생성</div>
+            <div class="s">resweep_yymmdd.xlsx를 monthMonitoring!Repository_ID와 같은 고정 B~S 스키마로 만든다</div>
+          </div>
+        </div>
+        <div class="deliv-item">
+          <div class="num">④</div>
+          <div>
+            <div class="t">Audit 대비 저장 옵션</div>
+            <div class="s">자동 추출된 원본 CVE json을 실적 증적용으로 저장할지 옵션으로 선택한다</div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-box">
+        <div class="h">핵심 원리</div>
+        <div class="chip-tech">
+          <span>monthMonitoring.xlsm은 xlwings로 읽기 전용 대조만 하고 절대 저장하지 않아 손상을 방지</span>
+        </div>
+        <div class="h" style="margin-top:14px;">사각지대 보완</div>
+        <div class="chip-tech">
+          <span>deltaLog.json은 최근 30일치만 롤링 보관 → 30일 넘긴 다운로드 공백은 baseline 번호 스캔으로 보완</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section>
+    <div class="sec-label"><span class="n">03</span>어떻게 동작하는가</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="idx">1</div>
+        <div><div class="t">zip 목차만 조회</div><div class="d">main.zip을 열고 namelist()로 목차만 읽어 압축을 풀지 않는다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">2</div>
+        <div><div class="t">delta 변경목록 추출</div><div class="d">delta.json/deltalog.json을 메모리에서 읽어 변경된 CVE ID 집합을 구한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">3</div>
+        <div><div class="t">baseline 이후 번호 합집합</div><div class="d">직전 baseline보다 큰 번호를 zip 목차에서 스캔해 delta 목록과 합친다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">4</div>
+        <div><div class="t">기존 저장소 대조</div><div class="d">Repository_ID를 읽기 전용으로 조회해 이미 등록된 CVE를 제외한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">5</div>
+        <div><div class="t">동일 규칙으로 필드 파싱</div><div class="d">dayMonitoring의 파싱 로직과 같은 규칙으로 CWE/CVSS/Vendor 등을 파싱한다</div></div>
+      </div>
+      <div class="step-card">
+        <div class="idx">6</div>
+        <div><div class="t">rawData 저장 및 반영</div><div class="d">resweep_yymmdd.xlsx로 저장한 뒤 monthMonitoring.xlsm에 반영하고 이후는 dayMonitoring과 동일하게 분석한다</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section>
+    <div class="sec-label"><span class="n">04</span>일일 모니터링 vs 델타 재스윕</div>
+    <div class="type-table">
+      <div class="type-row hdr">
+        <div class="c type">구분</div>
+        <div class="c match">monthMonitoring (일일 모니터링)</div>
+        <div class="c tara">mitre_delta_resweep (재스윕)</div>
+      </div>
+      <div class="type-row"><div class="c type">실행 주기</div><div class="c match">매일 (스케줄러 자동)</div><div class="c tara">비정기 (zip 수동 다운로드 시, 월~2개월)</div></div>
+      <div class="type-row"><div class="c type">탐지 방식</div><div class="c match">키워드 검색+baseline 번호 비교, 조기중단</div><div class="c tara">delta 변경목록 ∪ baseline 번호 스캔 (합집합)</div></div>
+      <div class="type-row"><div class="c type">주요 사각지대</div><div class="c match">번호가 baseline보다 작은 지연공개 CVE를 영구히 놓침</div><div class="c tara">delta 자체 사각지대(30일 롤링 한계)는 baseline 스캔으로 보완</div></div>
+      <div class="type-row"><div class="c type">monthMonitoring 접근</div><div class="c match">직접 열어 읽기+쓰기 후 매크로 호출</div><div class="c tara">읽기 전용으로만 열람, 쓰기·저장 없음</div></div>
+    </div>
+    <div class="corr-note">두 체계는 서로 <b>대체 관계가 아니라 상호보완 관계</b>로 설계되었다 — 각자 놓치는 사각지대를 서로 상쇄한다.</div>
+  </section>
+
+  <!-- BEFORE/AFTER -->
+  <section>
+    <div class="sec-label"><span class="n">05</span>Before / After</div>
+    <div class="ba-row">
+      <div class="ba-card before">
+        <div class="tag">이전 — 수 시간짜리 전체 압축해제</div>
+        <div class="t">형식도 달라 그대로 반영 불가</div>
+        <div class="d">main.zip을 통째로 풀어야 했고, 결과물 형식도 monthMonitoring과 달라 그대로 반영할 수 없었다.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="tag">현재 — 수 분 내 부분추출+동일 스키마</div>
+        <div class="t">같은 필드의 rawData로 바로 반영</div>
+        <div class="d">필요한 파일만 부분 추출해 수 분 내 처리하고, dayMonitoring과 같은 필드의 rawData로 바로 반영한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section>
+    <div class="sec-label"><span class="n">06</span>기대 효과</div>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="t">처리시간 대폭 단축</div>
+        <div class="d">main.zip 처리시간을 수 시간에서 수 분 이내로 줄인다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">탐지 완전성 향상</div>
+        <div class="d">번호 기반과 delta 기반, 두 탐지 방식의 사각지대를 서로 보완한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">데이터 정합성 확보</div>
+        <div class="d">동일한 필드 파싱 규칙과 출력 스키마로 두 체계 간 형식을 통일한다</div>
+      </div>
+      <div class="benefit-card">
+        <div class="t">파일 손상 위험 차단</div>
+        <div class="d">monthMonitoring.xlsm을 읽기 전용으로만 대조해 손상 위험을 원천 차단한다</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTE -->
+  <section style="border-bottom:none;">
+    <div class="sec-label"><span class="n">07</span>유의할 점</div>
+    <div class="note">
+      <ul>
+        <li>main.zip 다운로드 자체는 <b>자동화되어 있지 않으며</b>(수동 다운로드 후 스크립트 실행), Resweep_ID 스테이징 결과를 Repository_ID로 병합하는 과정도 <b>수동 검토가 전제</b>된다</li>
+        <li>Triage/Trigger(벤더·키워드) 자동 분류는 <b>이 스크립트의 책임 범위 밖</b>이며, 후속 필터링 단계에서 진행할 예정이다</li>
+        <li>xlwings 특성상 <b>실행 PC에 Excel이 설치·구동 가능해야</b> 하며, 실제 monthMonitoring.xlsm을 이용한 최종 통합 검증은 Windows+Excel 운영 PC에서 확인이 필요하다</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <div class="cols">
+      <div><span>문서번호</span>IHANS-PRO-2026-014-2</div>
+      <div><span>작성일</span>2026-09-17</div>
+    </div>
+    <div>본 내용은 사내 운영 가이드이며, 실제 환경 변수·경로는 배포 시 별도 관리한다.</div>
+  </div>
+
+</div>
+</body>
+</html>
