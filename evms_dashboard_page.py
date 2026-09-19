@@ -4,12 +4,15 @@
 # -------------------------------------------------------------
 
 import base64
+import io
 import os
 import pandas as pd
 import streamlit as st
 
 # 고정 S-Curve 차트 이미지 경로 (엑셀 시트에서 자동 생성하지 않고 고정 이미지로 표시)
-SCURVE_SVG_PATH = os.path.join("images", "evms_curve_chart.svg")
+# 주의: 파일명은 실제 파일과 대소문자까지 정확히 일치해야 함 (Linux 배포 환경은 대소문자 구분)
+_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SCURVE_SVG_PATH = os.path.join(_BASE_DIR, "images", "evms_curve_chart.svg")
 
 
 def _load_svg_as_img_tag(svg_path, width="100%"):
@@ -55,7 +58,7 @@ def _force_read_excel_direct(file_source):
         if isinstance(file_source, str):
             with open(file_source, "rb") as f:
                 file_bytes = f.read()
-            xl = pd.ExcelFile(file_bytes, engine="openpyxl")
+            xl = pd.ExcelFile(io.BytesIO(file_bytes), engine="openpyxl")
         else:
             file_source.seek(0)
             xl = pd.ExcelFile(file_source, engine="openpyxl")
