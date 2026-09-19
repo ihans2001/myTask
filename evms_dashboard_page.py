@@ -3,10 +3,22 @@
 # EVMS(획득가치관리) 성과 대시보드. app.py 인라인 코드에서 분리.
 # -------------------------------------------------------------
 
+import base64
 import os
 import pandas as pd
-import plotly.graph_objects as go
 import streamlit as st
+
+# 고정 S-Curve 차트 이미지 경로 (엑셀 시트에서 자동 생성하지 않고 고정 이미지로 표시)
+SCURVE_SVG_PATH = os.path.join("images", "evms_curve_chart.svg")
+
+
+def _load_svg_as_img_tag(svg_path, width="100%"):
+    """SVG 파일을 base64로 인코딩해 <img> 태그 문자열로 반환.
+    st.image()보다 크기 조절이 안정적이라 st.markdown(unsafe_allow_html=True)로 삽입한다."""
+    with open(svg_path, "rb") as f:
+        svg_bytes = f.read()
+    b64 = base64.b64encode(svg_bytes).decode("utf-8")
+    return f'<img src="data:image/svg+xml;base64,{b64}" style="width:{width}; max-width:900px;" />'
 
 PROJECT_FILES = [
     "Project_01_Normal.xlsx",
@@ -130,55 +142,13 @@ def render():
     st.markdown("---")
     st.subheader("📈 EVMS S-Curve 추이 분석 그래프")
 
-    curve_data_ok = False
-    months, pv_s, ac_s, ev_s = [], [], [], []
-
-    if curve_sheet_used is None:
-        st.warning(
-            f"⚠️ 'EVMS_S커브_예시' 시트를 찾지 못했습니다. (현재 파일의 시트 목록: {sheet_names}) "
-            "이 파일은 '계획곡선_보정'+'실적MM_입력' 조합 형식으로 보이며, 해당 조합 지원은 아직 구현되지 않았습니다. "
-            "그래프는 임시 샘플 데이터로 표시됩니다."
-        )
-    elif df_curve_raw is None or len(df_curve_raw) <= 4:
-        st.warning(
-            f"⚠️ '{curve_sheet_used}' 시트를 찾았지만 데이터 행 수가 부족합니다. "
-            "그래프가 실제 데이터로 갱신되지 않고 있을 수 있습니다."
-        )
+    if os.path.exists(SCURVE_SVG_PATH):
+        st.markdown(_load_svg_as_img_tag(SCURVE_SVG_PATH), unsafe_allow_html=True)
     else:
-        try:
-            curve_data = df_curve_raw.iloc[3:, :4].dropna()
-            months = curve_data.iloc[:, 0].tolist()
-            pv_s = pd.to_numeric(curve_data.iloc[:, 1], errors="coerce").tolist()
-            ac_s = pd.to_numeric(curve_data.iloc[:, 2], errors="coerce").tolist()
-            ev_s = pd.to_numeric(curve_data.iloc[:, 3], errors="coerce").tolist()
-            curve_data_ok = True
-        except Exception as e:
-            st.warning(
-                f"⚠️ '{curve_sheet_used}' 시트 파싱 중 오류가 발생했습니다: {e} "
-                "그래프가 실제 데이터로 갱신되지 않고 있을 수 있습니다."
-            )
-
-    if not curve_data_ok:
-        months = [f"{i}월" for i in range(1, 13)]
-        pv_s = [5, 15, 30, 50, 70, 90, 110, 130, 145, 155, 160, 165]
-        ac_s = [6, 18, 35, 55, 78, 100, 122, 140, 155, 165, 172, 180]
-        ev_s = [4, 12, 25, 42, 60, 78, 95, 112, 128, 138, 145, 150]
-
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=months, y=pv_s, mode="lines+markers", name="PV (Planned Value, 계획가치)", line=dict(color="blue", dash="dash", width=3)))
-    fig.add_trace(go.Scatter(x=months, y=ev_s, mode="lines+markers", name="EV (Earned Value, 획득가치)", line=dict(color="green", width=4)))
-    fig.add_trace(go.Scatter(x=months, y=ac_s, mode="lines+markers", name="AC (Actual Cost, 실제비용)", line=dict(color="red", width=3)))
-
-    fig.update_layout(
-        title=f"프로젝트 누적 성과 S-Curve 곡선 ({display_name})",
-        xaxis_title="Timeline (월 / 마일스톤)",
-        yaxis_title="공수 / 예산 (MM / 원)",
-        height=600,
-        hovermode="x unified",
-        template="plotly_white",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-    )
-    st.plotly_chart(fig, use_container_width=True)
+        st.warning(
+            f"⚠️ 고정 차트 이미지 파일을 찾을 수 없습니다: `{SCURVE_SVG_PATH}` "
+            "(앱 실행 폴더 기준 `images/evm_scurve_chart.svg` 경로에 파일을 넣어주세요.)"
+        )
 
     st.subheader("📋 세부 Control Account 현황 (EVMS_대시보드)")
-    st.dataframe(df_dash, use_container_width=True)
+    st.dataframe(df_dash, width="stretch")
