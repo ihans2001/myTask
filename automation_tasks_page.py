@@ -11,6 +11,7 @@
 
 import os
 import io
+import html as _html
 import streamlit as st
 import pandas as pd
 import streamlit.components.v1 as components
@@ -86,25 +87,39 @@ def _load_tasks_dataframe(file_source):
 
 
 # ---------------------------------------------------------------
-# 설명(▷/ㄴ 불릿 텍스트)을 마크다운 리스트로 변환
+# 설명(▶/▷/ㄴ/※/- 등 다단계 불릿 텍스트)을 "원문 그대로" 표시
+#
+# 주의: st.markdown(..., unsafe_allow_html=True)은 넘겨준 문자열을
+# Streamlit이 먼저 마크다운 파서에 통과시킨다. 그 안에 있는 raw HTML
+# 블록(<div>...) 은 "빈 줄"을 만나면 거기서 끝난 것으로 간주되고,
+# 이후 텍스트는 일반 마크다운 문단으로 재해석되어 들여쓰기 공백이
+# 사라지고 단일 줄바꿈이 공백으로 합쳐지는 문제가 있었다.
+# (white-space:pre-wrap 같은 CSS로는 이 문제를 막을 수 없음 —
+#  마크다운 파서가 원본을 재해석한 "이후"에 CSS가 적용되기 때문)
+#
+# 해결: 아예 줄바꿈 문자를 하나도 남기지 않도록, 줄바꿈은 <br>로,
+# 들여쓰기 공백은 &nbsp;로 미리 치환해 "빈 줄이 없는 한 줄짜리"
+# HTML 문자열을 만든다. 그러면 마크다운 파서가 중간에 끼어들 여지가
+# 없어 원본 들여쓰기·줄바꿈·기호가 몇 단계든 그대로 보존된다.
 # ---------------------------------------------------------------
-def _format_description_markdown(desc) -> str:
+def _format_description_html(desc) -> str:
     if not isinstance(desc, str) or not desc.strip():
-        return "_설명 없음_"
+        return "<em>설명 없음</em>"
 
-    lines = desc.replace("\r\n", "\n").split("\n")
-    md_lines = []
-    for line in lines:
-        stripped = line.strip()
-        if not stripped:
-            continue
-        if stripped.startswith("▷"):
-            md_lines.append(f"- {stripped[1:].strip()}")
-        elif stripped.startswith("ㄴ"):
-            md_lines.append(f"    - {stripped[1:].strip()}")
-        else:
-            md_lines.append(f"- {stripped}")
-    return "\n".join(md_lines)
+    text = desc.replace("\r\n", "\n").replace("\r", "\n").strip("\n")
+    rendered_lines = []
+    for line in text.split("\n"):
+        stripped = line.lstrip(" ")
+        leading = len(line) - len(stripped)
+        escaped = _html.escape(stripped)
+        rendered_lines.append(("&nbsp;" * leading) + escaped)
+
+    body = "<br>".join(rendered_lines)
+    return (
+        '<div style="font-family:inherit; font-size:0.95rem; line-height:1.7;">'
+        f'{body}'
+        '</div>'
+    )
 
 
 def _format_note_badges(note) -> str:
@@ -159,7 +174,7 @@ def _render_detail(df: pd.DataFrame, task_id):
 
     st.markdown("---")
     st.subheader("📋 핵심 기능")
-    st.markdown(_format_description_markdown(row["설명"]))
+    st.markdown(_format_description_html(row["설명"]), unsafe_allow_html=True)
 
     infographic_files = _parse_infographic_list(row["인포그래픽"])
     if infographic_files:
