@@ -28,7 +28,12 @@ INFOGRAPHIC_HEIGHT = 1600
 
 # 목록 페이지 상단에 고정으로 표시할 V-Cycle 태스크 개요 다이어그램
 VCYCLE_DIAGRAM_FILENAME = "0_task_vcycle_diagram_v1.html"
-VCYCLE_DIAGRAM_HEIGHT = 900
+# 다이어그램 HTML이 폭 1200px 기준으로 높이를 스스로 계산해 고정 배치되므로
+# (JS로 iframe을 재조정하지 않음 — sandbox 환경에서 신뢰할 수 없어 폐기),
+# 이 값은 HTML의 실제 총 높이와 정확히 일치해야 한다.
+# HTML 쪽 치수(디자인 폭 1200px, 프레임 패딩 16px, 테두리 1px, 하단 여백 12px 등)를
+# 바꾸면 이 값도 함께 다시 계산해서 맞춰야 한다.
+VCYCLE_DIAGRAM_HEIGHT = 769
 
 
 # ---------------------------------------------------------------
@@ -197,14 +202,17 @@ def _render_detail(df: pd.DataFrame, task_id):
 # 목록 페이지
 # ---------------------------------------------------------------
 def _render_list(df: pd.DataFrame):
-    st.title("🗂️ SW 프로젝트 관리 자동화 태스크")
+    st.title("🗂️ SW 개발을 포함하는 프로젝트 엔지니어링 및 관리 업무 자동화 태스크")
     st.caption(f"총 {len(df)}개 태스크 · 자동화태스크.xlsx / {SHEET_NAME} 시트 연동")
 
     vcycle_path = _get_infographic_path(VCYCLE_DIAGRAM_FILENAME)
     if vcycle_path:
         with open(vcycle_path, "r", encoding="utf-8") as f:
             vcycle_html = f.read()
-        components.html(vcycle_html, height=VCYCLE_DIAGRAM_HEIGHT, scrolling=True)
+        # scrolling=False: 높이가 결정론적으로 정확히 계산되어 있으므로
+        # 스크롤바가 나타날 일이 없다 (스크롤바가 보인다면 위 높이 값이나
+        # HTML의 디자인 폭 설정이 어긋난 것이니 함께 재계산해야 한다).
+        components.html(vcycle_html, height=VCYCLE_DIAGRAM_HEIGHT, scrolling=False)
 
     area_options = ["전체"] + sorted(df["영역"].dropna().unique().tolist())
     selected_area = st.sidebar.selectbox("🔎 업무영역 필터", area_options)
