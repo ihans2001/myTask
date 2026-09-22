@@ -93,19 +93,6 @@ def _load_tasks_dataframe(file_source):
 
 # ---------------------------------------------------------------
 # 설명(▶/▷/ㄴ/※/- 등 다단계 불릿 텍스트)을 "원문 그대로" 표시
-#
-# 주의: st.markdown(..., unsafe_allow_html=True)은 넘겨준 문자열을
-# Streamlit이 먼저 마크다운 파서에 통과시킨다. 그 안에 있는 raw HTML
-# 블록(<div>...) 은 "빈 줄"을 만나면 거기서 끝난 것으로 간주되고,
-# 이후 텍스트는 일반 마크다운 문단으로 재해석되어 들여쓰기 공백이
-# 사라지고 단일 줄바꿈이 공백으로 합쳐지는 문제가 있었다.
-# (white-space:pre-wrap 같은 CSS로는 이 문제를 막을 수 없음 —
-#  마크다운 파서가 원본을 재해석한 "이후"에 CSS가 적용되기 때문)
-#
-# 해결: 아예 줄바꿈 문자를 하나도 남기지 않도록, 줄바꿈은 <br>로,
-# 들여쓰기 공백은 &nbsp;로 미리 치환해 "빈 줄이 없는 한 줄짜리"
-# HTML 문자열을 만든다. 그러면 마크다운 파서가 중간에 끼어들 여지가
-# 없어 원본 들여쓰기·줄바꿈·기호가 몇 단계든 그대로 보존된다.
 # ---------------------------------------------------------------
 def _format_description_html(desc) -> str:
     if not isinstance(desc, str) or not desc.strip():
@@ -136,8 +123,6 @@ def _format_note_badges(note) -> str:
 
 # ---------------------------------------------------------------
 # 인포그래픽 셀 값 파싱: 콤마로 구분된 여러 파일명을 지원한다.
-# 엑셀에서 Alt+Enter로 줄바꿈(콤마 뒤 개행 포함)을 넣어둔 경우에도
-# 안전하게 개별 파일명 목록으로 분리한다.
 # ---------------------------------------------------------------
 def _parse_infographic_list(raw_value) -> list:
     if not isinstance(raw_value, str) or not raw_value.strip():
@@ -209,10 +194,42 @@ def _render_list(df: pd.DataFrame):
     if vcycle_path:
         with open(vcycle_path, "r", encoding="utf-8") as f:
             vcycle_html = f.read()
-        # scrolling=False: 높이가 결정론적으로 정확히 계산되어 있으므로
-        # 스크롤바가 나타날 일이 없다 (스크롤바가 보인다면 위 높이 값이나
-        # HTML의 디자인 폭 설정이 어긋난 것이니 함께 재계산해야 한다).
         components.html(vcycle_html, height=VCYCLE_DIAGRAM_HEIGHT, scrolling=False)
+
+        # V-Cycle 다이어그램 다운로드 기능 추가 (html, svg, png, jpg 포맷 선택 지원)
+        base_name, _ = os.path.splitext(VCYCLE_DIAGRAM_FILENAME)
+        available_formats = []
+        for ext in ["html", "svg", "png", "jpg"]:
+            candidate_name = f"{base_name}.{ext}"
+            if _get_infographic_path(candidate_name):
+                available_formats.append(ext)
+        if not available_formats:
+            available_formats = ["html"]
+
+        col_dl1, col_dl2 = st.columns([1, 2])
+        with col_dl1:
+            dl_format = st.selectbox("다운로드 형식 선택", available_formats, key="vcycle_dl_format")
+
+        target_dl_filename = f"{base_name}.{dl_format}"
+        target_dl_path = _get_infographic_path(target_dl_filename)
+        if target_dl_path and os.path.exists(target_dl_path):
+            file_mime_map = {
+                "html": "text/html",
+                "svg": "image/svg+xml",
+                "png": "image/png",
+                "jpg": "image/jpeg"
+            }
+            with open(target_dl_path, "rb") as dl_f:
+                file_bytes = dl_f.read()
+            with col_dl2:
+                st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+                st.download_button(
+                    label=f"📥 V-Cycle 다이어그램 다운로드 ({dl_format.upper()})",
+                    data=file_bytes,
+                    file_name=target_dl_filename,
+                    mime=file_mime_map.get(dl_format, "application/octet-stream"),
+                    key="vcycle_download_btn"
+                )
 
     area_options = ["전체"] + sorted(df["영역"].dropna().unique().tolist())
     selected_area = st.sidebar.selectbox("🔎 업무영역 필터", area_options)
@@ -273,7 +290,6 @@ def render():
         file_valid = target_file is not None and os.path.exists(target_file)
         current_mtime = os.path.getmtime(target_file) if file_valid else 0
 
-    # 파일 변경 자동 감지(다른 메뉴와 동일한 방식, 별도 세션 키 사용)
     if "atk_last_mtime" not in st.session_state:
         st.session_state["atk_last_mtime"] = current_mtime
     elif st.session_state["atk_last_mtime"] != current_mtime:
