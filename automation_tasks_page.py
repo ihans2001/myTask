@@ -179,6 +179,29 @@ def _render_detail(df: pd.DataFrame, task_id):
                 with open(infographic_path, "r", encoding="utf-8") as f:
                     html_content = f.read()
                 components.html(html_content, height=INFOGRAPHIC_HEIGHT, scrolling=True)
+                
+                # 개별 인포그래픽 파일 다운로드 버튼 추가
+                if os.path.exists(infographic_path):
+                    with open(infographic_path, "rb") as dl_f:
+                        file_bytes = dl_f.read()
+                    
+                    ext = infographic_name.split('.')[-1].lower()
+                    mime_map = {
+                        "html": "text/html",
+                        "svg": "image/svg+xml",
+                        "png": "image/png",
+                        "jpg": "image/jpeg",
+                        "jpeg": "image/jpeg"
+                    }
+                    mime_type = mime_map.get(ext, "application/octet-stream")
+                    
+                    st.download_button(
+                        label=f"📥 인포그래픽 파일 다운로드 ({infographic_name})",
+                        data=file_bytes,
+                        file_name=infographic_name,
+                        mime=mime_type,
+                        key=f"info_dl_{task_id}_{idx}"
+                    )
             else:
                 st.info(f"인포그래픽 파일을 찾을 수 없습니다: `{IMAGES_FOLDER}/{infographic_name}`")
 
